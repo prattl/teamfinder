@@ -1,0 +1,227 @@
+@import 'colors.sass';
+@import 'typography';
+
+$sm: 35.5rem;
+$md: 48rem;
+$lg: 64rem;
+$xl: 80rem;
+
+@mixin mq($size) {
+    @media screen and (min-width: $size) {@content;}
+}
+
+$footer-height-small: 4rem;
+$footer-height: 3rem;
+
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html, body, #react-root, #react-base {
+    min-height: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+div#page-wrapper {
+    min-height: 100%;
+    height: auto !important;
+    margin: 0 auto (-$footer-height-small);
+    position: relative;
+
+    @include mq($md) {
+        margin: 0 auto (-$footer-height);
+    }
+
+    header#page-header {
+        .home-menu {
+            background-color: $theme-color;
+            text-align: left;
+            font-size: 1.2rem;
+            font-weight: 400;
+            height: 60px;
+            padding: 0.5rem;
+
+            .pure-menu-heading {
+                color: $color1-text;
+                padding: 0.5rem;
+                line-height: 28px;
+                @include mq($md) {
+                    padding: 0.5rem 1rem;
+                }
+            }
+
+            ul {
+                @include mq($md) {
+                    float: right;
+                }
+            }
+
+            .home-link {
+                display: none;
+                @include mq($md) {
+                    display: inline-block;
+                }
+            }
+
+            li {
+                a:hover {
+                    color: $link-color-hover;
+                }
+            }
+
+            .pure-menu-selected {
+                color: $color1-text;
+            }
+
+            a {
+                text-decoration: none;
+                color: $link-color;
+                &:hover, &:focus {
+                    background-color: $theme-color;
+                }
+            }
+        }
+
+    }
+
+
+    div#page-content {
+        #header-push {
+            height: 60px;
+        }
+        div#main {
+            margin: 0;
+        }
+    }
+
+    div.push {
+        height: $footer-height-small;
+        clear: both;
+
+        @include mq($md) {
+            height: $footer-height;
+        }
+    }
+}
+
+div#page-footer {
+    padding: 1rem;
+    background-color: $theme-color;
+    color: $color1-text;
+    height: $footer-height-small;
+    text-align: center;
+    position: absolute;
+    bottom: -$footer-height-small;
+    width: 100%;
+
+    @include mq($md) {
+        height: $footer-height;
+        bottom: -$footer-height;
+    }
+}
+
+.container-fluid {
+    width: 100%;
+}
+
+.pure-g {
+}
+
+.pure-g > [class *=pure-u] {
+    padding: 0 0.5rem;
+}
+
+form.pure-form-stacked {
+    input, select, textarea {
+        width: 100%
+    }
+
+    .form-row {
+        margin-bottom: 1.5rem;
+    }
+
+    .pure-button {
+        padding: 1rem 3rem;
+    }
+}
+
+form {
+    label.has-error {
+        & {
+            color: $color2;
+        }
+        input {
+            border-color: $color2 !important;
+        }
+    }
+
+    .error {
+        color: $color2;
+    }
+
+    .success {
+        color: $color6;
+    }
+
+    .Select .Select-input input {
+        display: inline-block;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        border-radius: 0;
+    }
+}
+
+ul.inline {
+    list-style: none;
+    padding: 0;
+
+    & > li {
+        display: inline;
+    }
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.toolbar {
+    a, span {
+        color: #000;
+        margin-right: 0.75rem;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.label {
+    border-radius: 2px;
+    padding: 0.15rem 0.5rem;
+    font-size: 80%;
+}
+
+.label-success {
+    background-color: $success-color;
+    color: #FFF;
+}
+
+.Select .Select-input input {
+    line-height: 34px;
+}
