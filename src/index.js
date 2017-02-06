@@ -7,9 +7,10 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from './store/configureStore'
 import routes from './routes'
 
-import './styles//index.css'
+import './styles/index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap-theme.css'
+import 'font-awesome/css/font-awesome.css'
 
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)

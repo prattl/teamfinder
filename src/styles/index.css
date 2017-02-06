@@ -1,5 +1,22 @@
-body {
-  margin: 0;
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+html body {
+  margin: 0 0 10rem 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+#footer {
+  position: absolute;
+  //height: 10rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#footer nav {
+  margin: 0;
 }
