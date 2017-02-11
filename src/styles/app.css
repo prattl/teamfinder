@@ -11,12 +11,19 @@ html body {
 
 #footer {
   position: absolute;
-  //height: 10rem;
   left: 0;
   right: 0;
   bottom: 0;
 }
 
-#footer nav {
+#footer nav.navbar {
   margin: 0;
+  border-radius: 0;
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
+}
+
+#footer nav.navbar .navbar-collapse {
+  border: none;
 }

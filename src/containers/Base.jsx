@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import TopNav from 'components/TopNav'
-import Footer from 'components/Footer'
+import { Grid } from 'react-bootstrap'
+import TopNav from 'components/layout/TopNav'
+import Footer from 'components/layout/Footer'
 
 
 class Base extends Component {
-
-    // componentDidMount() {
-    //     this.props.dispatch(fetchPlayerInfo())
-    // }
 
     render() {
         // const { authToken, tokenVerified } = this.props.auth
@@ -19,7 +16,9 @@ class Base extends Component {
                 <TopNav loggedIn={false}/>
 
                 <div id='page-content'>
-                    {this.props.children}
+                    <Grid>
+                        {this.props.children}
+                    </Grid>
                 </div>
 
                 <Footer />

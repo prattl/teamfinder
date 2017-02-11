@@ -1,10 +1,12 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 
-import Base from 'containers/Base'
+import Base from 'containers/Base.jsx'
+import Index from 'components/Index.jsx'
 
 export default (
     <Route path='/' component={Base}>
+        <IndexRoute component={Index} />
 
     </Route>
 )
