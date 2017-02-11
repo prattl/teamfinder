@@ -10,6 +10,7 @@
   disk usage. You can use [nvm](https://github.com/creationix/nvm#usage) to easily
   switch Node versions between different projects.
   ```
+
 * Install project requirements
   * `npm install`
 * Run development server
