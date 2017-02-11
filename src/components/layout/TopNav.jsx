@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import { Link } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap'
 
 // const MenuLink = (props) => (
 //     <li className='pure-menu-item'>
@@ -54,8 +55,12 @@ class TopNav extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav pullRight>
-                        <NavItem eventKey={1} href='#'>Find Teams</NavItem>
-                        <NavItem eventKey={2} href='#'>Find Players</NavItem>
+                        <LinkContainer to='/teams'>
+                            <NavItem eventKey={1}>Find Teams</NavItem>
+                        </LinkContainer>
+                        <LinkContainer to='/players'>
+                            <NavItem eventKey={2}>Find Players</NavItem>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

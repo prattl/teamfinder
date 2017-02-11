@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router'
 import { Nav, Navbar, NavItem } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 class Footer extends Component {
 
@@ -16,10 +17,14 @@ class Footer extends Component {
                         <Navbar.Toggle />
                     </Navbar.Header>
                     <Navbar.Collapse>
-                        <Nav>
-                            <NavItem eventKey={1} href='#'>Find Teams</NavItem>
-                            <NavItem eventKey={2} href='#'>Find Players</NavItem>
-                        </Nav>
+                        {/*<Nav>*/}
+                            {/*<LinkContainer to='/teams'>*/}
+                                {/*<NavItem eventKey={1}>Find Teams</NavItem>*/}
+                            {/*</LinkContainer>*/}
+                            {/*<LinkContainer to='/players'>*/}
+                                {/*<NavItem eventKey={2}>Find Players</NavItem>*/}
+                            {/*</LinkContainer>*/}
+                        {/*</Nav>*/}
                         <Nav pullRight className='hidden-xs'>
                             <NavItem eventKey={3} href='#'><i className='fa fa-github'/>&nbsp;View on Github</NavItem>
                         </Nav>
@@ -32,15 +37,3 @@ class Footer extends Component {
 }
 
 export default Footer
-
-/*
-<Grid>
-    <div style={{ padding: '1rem 0' }}>
-    <ButtonToolbar>
-        <Button bsStyle='link' href='#'>Find Teams</Button>
-        <Button bsStyle='link' href='#'>Find Players</Button>
-        <Button bsStyle='link' href='#'><i className='fa fa-github'/>&nbsp;View on Github</Button>
-    </ButtonToolbar>
-    </div>
-</Grid>
- */

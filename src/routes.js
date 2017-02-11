@@ -1,12 +1,15 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 
-import Base from 'containers/Base.jsx'
-import Index from 'components/Index.jsx'
+import Base from 'containers/Base'
+import Index from 'components/Index'
+import PlayerSearch from 'components/PlayerSearch'
 
 export default (
     <Route path='/' component={Base}>
         <IndexRoute component={Index} />
+
+        <Route path='players' component={PlayerSearch} />
 
     </Route>
 )
