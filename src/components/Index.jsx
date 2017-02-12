@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Button, ButtonToolbar, Jumbotron } from 'react-bootstrap'
-
+import { LinkContainer } from 'react-router-bootstrap'
 
 class Index extends Component {
 
@@ -13,8 +13,12 @@ class Index extends Component {
                         Find your next competetive Dota 2 team, or recruit players!
                     </p>
                     <ButtonToolbar>
-                        <Button bsStyle='primary'>Find Teams</Button>
-                        <Button bsStyle='primary'>Find Players</Button>
+                        <LinkContainer to='/teams'>
+                            <Button bsStyle='primary'>Find Teams</Button>
+                        </LinkContainer>
+                        <LinkContainer to='/players'>
+                            <Button bsStyle='primary'>Find Players</Button>
+                        </LinkContainer>
                     </ButtonToolbar>
                 </Jumbotron>
 
