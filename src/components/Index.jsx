@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { Button, ButtonToolbar, Jumbotron } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 

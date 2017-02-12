@@ -30,9 +30,9 @@ import { LinkContainer } from 'react-router-bootstrap'
 class TopNav extends Component {
 
     render() {
-        {/*const { loggedIn, pathname } = this.props*/}
-
-        {/*const menuItems = Object.keys(menuLinks).map(key => (*/}
+        // {/*const { loggedIn, pathname } = this.props*/}
+        //
+        // {/*const menuItems = Object.keys(menuLinks).map(key => (*/}
         //     <MenuLink to={key} key={key}>{menuLinks[key]}</MenuLink>
         // ))
         // if (loggedIn) {

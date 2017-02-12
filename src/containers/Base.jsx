@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 
 import { Grid } from 'react-bootstrap'
 import TopNav from 'components/layout/TopNav'

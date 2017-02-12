@@ -9,6 +9,7 @@
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "keymirror": "^0.1.1",
+    "moment": "^2.17.1",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
@@ -21,7 +22,8 @@
     "redux-devtools-extension": "^2.13.0",
     "redux-form": "^6.5.0",
     "redux-logger": "^2.8.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "reselect": "^2.5.4"
   },
   "scripts": {
     "start": "env NODE_PATH=./src react-scripts start",

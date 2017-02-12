@@ -5,7 +5,9 @@ import fetch from 'isomorphic-fetch'
 
 const actions = keyMirror({
     REQUEST_PLAYER_SEARCH: null,
-    RECEIVE_PLAYER_SEARCH: null
+    RECEIVE_PLAYER_SEARCH: null,
+    REQUEST_NEXT_PAGE_OF_PLAYERS: null,
+    RECEIVE_NEXT_PAGE_OF_PLAYERS: null
 })
 export default actions
 
@@ -17,8 +19,11 @@ export const requestPlayerSearch = keywords => (dispatch, getState) => {
             'Content-Type': 'application/json',
         }
     }).then(response => response.json().then(json => {
-        console.log('requestPlayerSearch got json', json)
         const payload = response.ok ? json : new Error('Error retrieving player search results.')
-        return dispatch(createAction(actions.RECEIVE_PLAYER_SEARCH, null, metaGenerator)(payload))
+        dispatch(createAction(actions.RECEIVE_PLAYER_SEARCH, null, metaGenerator)(payload))
+        if (!response.ok) {
+            return Promise.reject(json)
+        }
+        return json
     }))
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { requestAllFixtures } from 'actions/fixtures'
 import PlayerSearchForm from 'components/forms/PlayerSearchForm'
-// import PlayerSearchResults from 'containers/PlayerSearchResults'
+import PlayerSearchResults from 'containers/PlayerSearchResults'
 
 class PlayerSearch extends Component {
 
@@ -17,7 +17,7 @@ class PlayerSearch extends Component {
             <div>
                 <h1>Players</h1>
                 <PlayerSearchForm />
-                {/*<PlayerSearchResults />*/}
+                <PlayerSearchResults />
             </div>
         )
     }
