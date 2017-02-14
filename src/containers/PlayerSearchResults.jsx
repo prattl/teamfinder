@@ -9,6 +9,8 @@ import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
 import { Col, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 
+// TODO: Connect this component to the fixtures store (or connect each line item to its own slice of the
+// TODO: fixtures store?)
 const PlayerSearchResult = ({ player, fixtures }) => (
     <Col sm={6}>
         <div className='player-search-result' style={{ border: '1px solid #DDD', padding: '2rem', marginBottom: '2rem' }}>

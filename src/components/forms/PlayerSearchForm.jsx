@@ -38,6 +38,9 @@ class PlayerSearchForm extends Component {
 
 PlayerSearchForm = reduxForm({
     form: 'playerSearch',
+    initialValues: {
+        keywords: ''
+    },
     onSubmit: submit
 })(PlayerSearchForm)
 

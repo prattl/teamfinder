@@ -13,7 +13,7 @@ export default actions
 
 export const requestPlayerSearch = keywords => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
-    return fetch(createUrl('/api/players/'), {
+    return fetch(createUrl(`/api/players/?keywords=${keywords}`), {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
