@@ -7,7 +7,6 @@ import { Button, Form, FormGroup, FormControl, HelpBlock } from 'react-bootstrap
 
 // TODO: Move this somewhere else
 const submit = (values, dispatch) => {
-    console.log('submit got', values)
     return dispatch(requestPlayerSearch(values.keywords)).then(result => console.log('result', result))
 }
 
