@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { createStructuredSelector } from 'reselect'
 
+import { requestPlayerSearch } from 'actions/playerSearch'
+import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
+
 import { Col, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
-import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
 
 const PlayerSearchResult = ({ player, fixtures }) => (
     <Col sm={6}>
@@ -39,12 +41,16 @@ class PlayerSearchResults extends PureComponent {
         }
     }
 
+    componentDidMount() {
+        this.props.requestPlayerSearch()
+    }
+
     componentWillReceiveProps(nextProps) {
         // TODO: Encapsulate updating date string into its own component
         const { playerSearch: { lastUpdated } } = this.props
         const { playerSearch: { lastUpdated: nextLastUpdated } } = nextProps
         const { lastUpdatedInterval } = this.state
-        if (lastUpdated != nextLastUpdated) {
+        if (lastUpdated !== nextLastUpdated) {
             clearInterval(lastUpdatedInterval)
             const intervalId = setInterval(() => this.setState({
                 lastUpdatedString: moment(nextLastUpdated).fromNow()
@@ -60,7 +66,11 @@ class PlayerSearchResults extends PureComponent {
 
     render() {
         console.log('PlayerSearchResults', this.props)
-        const { fixtures, playerSearch: { results, count, next, isLoading, lastUpdated } } = this.props
+        const { fixtures,
+            playerSearch: { results, count, next,
+                isLoading: playerSearchLoading, lastUpdated: playerSearchLastUpdated } } = this.props
+        const isLoading = (Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)) || playerSearchLoading
+        const lastUpdated = (Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)) && playerSearchLastUpdated
         return (
             <div>
                 <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
@@ -92,7 +102,7 @@ PlayerSearchResults = connect(
         fixtures: fixturesSelector,
         playerSearch: playerSearchSelector,
     }),
-    null
+    { requestPlayerSearch }
 )(PlayerSearchResults)
 
 export default PlayerSearchResults
