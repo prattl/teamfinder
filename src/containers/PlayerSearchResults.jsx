@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { createStructuredSelector } from 'reselect'
 
-import { requestPlayerSearch } from 'actions/playerSearch'
+import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
 import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
 
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 
 // TODO: Connect this component to the fixtures store (or connect each line item to its own slice of the
@@ -68,8 +68,8 @@ class PlayerSearchResults extends PureComponent {
 
     render() {
         console.log('PlayerSearchResults', this.props)
-        const { fixtures,
-            playerSearch: { results, count, next,
+        const { fixtures, requestNextPageOfPlayers,
+            playerSearch: { results, count, next, nextPageLoading,
                 isLoading: playerSearchLoading, lastUpdated: playerSearchLastUpdated } } = this.props
         const isLoading = (Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)) || playerSearchLoading
         const lastUpdated = (Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)) && playerSearchLastUpdated
@@ -86,11 +86,21 @@ class PlayerSearchResults extends PureComponent {
                 </div>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
-                        <Row>
-                            {results.map(result => (
-                                <PlayerSearchResult key={result.id} player={result} fixtures={fixtures} />
-                            ))}
-                        </Row>
+                        <div>
+                            <Row>
+                                {results.map(result => (
+                                    <PlayerSearchResult key={result.id} player={result} fixtures={fixtures} />
+                                ))}
+                            </Row>
+                            {next && (
+
+                                <div className='text-center'>
+                                    <Button bsStyle='default' disabled={nextPageLoading}
+                                            onClick={() => requestNextPageOfPlayers()}>&darr;&nbsp;Next</Button>
+                                    {nextPageLoading && <Loading />}
+                                </div>
+                            )}
+                        </div>
                     ) : (null)
                 )}
             </div>
@@ -104,7 +114,7 @@ PlayerSearchResults = connect(
         fixtures: fixturesSelector,
         playerSearch: playerSearchSelector,
     }),
-    { requestPlayerSearch }
+    { requestPlayerSearch, requestNextPageOfPlayers }
 )(PlayerSearchResults)
 
 export default PlayerSearchResults

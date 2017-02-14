@@ -7,6 +7,7 @@ const initialState = {
     next: null,
     previous: null,
     isLoading: false,
+    nextPageLoading: false,
     lastUpdated: null
 }
 
@@ -19,10 +20,10 @@ const playerSearch = handleActions({
         ...action.payload
     }),
     [actions.REQUEST_NEXT_PAGE_OF_PLAYERS]: (state, action) => ({
-        ...state
+        ...state, nextPageLoading: true
     }),
     [actions.RECEIVE_NEXT_PAGE_OF_PLAYERS]: (state, action) => ({
-        ...state, lastUpdated: action.meta.receivedAt,
+        ...state, nextPageLoading: false, lastUpdated: action.meta.receivedAt,
         results: [
             ...state.results, ...action.payload.results
         ],
