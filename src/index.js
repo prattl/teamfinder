@@ -11,6 +11,7 @@ import 'styles/app.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap-theme.css'
 import 'font-awesome/css/font-awesome.css'
+import 'react-select/dist/react-select.css'
 
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
