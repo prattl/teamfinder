@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import moment from 'moment'
+import { submit } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
 
 import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
@@ -8,6 +8,7 @@ import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
 
 import { Button, Col, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
+import LastUpdated from 'utils/components/LastUpdated'
 
 // TODO: Connect this component to the fixtures store (or connect each line item to its own slice of the
 // TODO: fixtures store?)
@@ -15,9 +16,9 @@ class PlayerSearchResult extends Component {
 
     static propTypes = {
         username: PropTypes.string.isRequired,
-        regions: PropTypes.array.isRequired,
-        positions: PropTypes.array.isRequired,
-        skill_bracket: PropTypes.string.isRequired
+        regions: PropTypes.array,
+        positions: PropTypes.array,
+        skill_bracket: PropTypes.string
     }
 
     render() {
@@ -38,14 +39,14 @@ class PlayerSearchResult extends Component {
                             </div>
                             <div>
                                 <i className='fa fa-line-chart fa-fw'/>&nbsp;
-                                {fixtures.skillBrackets.items[skill_bracket].name}
+                                {skill_bracket && fixtures.skillBrackets.items[skill_bracket].name}
                             </div>
                             <div>
                                 <i className='fa fa-briefcase fa-fw'/>&nbsp;
                                 {positions.map(positionId => fixtures.positions.items[positionId].name).join(', ')}
                             </div>
                         </div>
-                    ) : null
+                    ) : <p>Error, please try again.</p>
                 )}
             </div>
         )
@@ -63,33 +64,16 @@ class PlayerSearchResults extends PureComponent {
 
     constructor(props) {
         super(props)
-        this.state = {
-            lastUpdatedInterval: null,
-            lastUpdatedString: ''
-        }
+        this.handleRefreshClick = this.handleRefreshClick.bind(this)
     }
 
     componentDidMount() {
         this.props.requestPlayerSearch()
     }
 
-    componentWillReceiveProps(nextProps) {
-        // TODO: Encapsulate updating date string into its own component
-        const { playerSearch: { lastUpdated } } = this.props
-        const { playerSearch: { lastUpdated: nextLastUpdated } } = nextProps
-        const { lastUpdatedInterval } = this.state
-        if (lastUpdated !== nextLastUpdated) {
-            clearInterval(lastUpdatedInterval)
-            const intervalId = setInterval(() => this.setState({
-                lastUpdatedString: moment(nextLastUpdated).fromNow()
-            }), 4000)
-            this.setState({lastUpdatedInterval: intervalId})
-        }
-    }
-
-    componentWillUnmount() {
-        const { lastUpdatedInterval } = this.state
-        clearInterval(lastUpdatedInterval)
+    handleRefreshClick(e) {
+        e.preventDefault()
+        this.props.submit('playerSearch')
     }
 
     render() {
@@ -102,7 +86,8 @@ class PlayerSearchResults extends PureComponent {
                         {count} players found
                     </div>
                     <div className='pull-right'>
-                        Last updated {moment(lastUpdated).fromNow()}
+                        Last updated {lastUpdated && <LastUpdated lastUpdated={lastUpdated}/>}&nbsp;
+                        (<a href='' onClick={this.handleRefreshClick}>refresh</a>)
                     </div>
                     <div style={{ clear: 'both' }} />
                 </div>
@@ -124,7 +109,7 @@ class PlayerSearchResults extends PureComponent {
                                 </div>
                             )}
                         </div>
-                    ) : (null)
+                    ) : <p>Error, please try again.</p>
                 )}
             </div>
         )
@@ -134,10 +119,9 @@ class PlayerSearchResults extends PureComponent {
 
 PlayerSearchResults = connect(
     createStructuredSelector({
-        // fixtures: fixturesSelector,
         playerSearch: playerSearchSelector,
     }),
-    { requestPlayerSearch, requestNextPageOfPlayers }
+    { requestPlayerSearch, requestNextPageOfPlayers, submit }
 )(PlayerSearchResults)
 
 export default PlayerSearchResults
