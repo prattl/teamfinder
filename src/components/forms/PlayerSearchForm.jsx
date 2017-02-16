@@ -5,7 +5,7 @@ import { requestPlayerSearch } from 'actions/playerSearch'
 
 import { fixturesSelector } from 'utils/selectors'
 
-import { Button, Col, Form, FormGroup, FormControl, HelpBlock, Row } from 'react-bootstrap'
+import { Button, Col, FormGroup, FormControl, HelpBlock, Row } from 'react-bootstrap'
 import Select from 'react-select'
 
 
@@ -41,12 +41,10 @@ const withFixtures = (WrappedComponent) => {
 
 class RegionSelect extends Component {
     handleChange(v) {
-        console.log('change', v)
         this.props.input.onChange(v ? v.map(r => r.value) : v)
     }
 
     handleBlur() {
-        console.log('handleBlur')
         this.props.input.onBlur(this.props.input.value)
     }
 
@@ -56,8 +54,9 @@ class RegionSelect extends Component {
             value: itemId, label: items[itemId].name
         }))
 
-        console.log('RegionSelect props', this.props)
-        return (!isLoading && lastUpdated) ? <Select {...input} multi={true}
+        return (!isLoading && lastUpdated) ? <Select {...input}
+                                                     multi={true}
+                                                     placeholder='Regions'
                                                      onBlurResetsInput={false}
                                                      onBlur={() => this.handleBlur()}
                                                      onChange={v => this.handleChange(v)}
@@ -97,7 +96,7 @@ PlayerSearchForm = reduxForm({
     form: 'playerSearch',
     initialValues: {
         keywords: '',
-        region: null
+        region: []
     },
     onSubmit: submit
 })(PlayerSearchForm)
