@@ -28,8 +28,8 @@
   },
   "scripts": {
     "start": "env NODE_PATH=./src react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "build": "env NODE_PATH=./src react-scripts build",
+    "test": "env NODE_PATH=./src react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
