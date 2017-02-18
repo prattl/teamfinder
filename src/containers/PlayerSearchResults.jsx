@@ -68,7 +68,7 @@ class PlayerSearchResults extends PureComponent {
     }
 
     componentDidMount() {
-        this.props.requestPlayerSearch()
+        this.props.submit('playerSearch')
     }
 
     handleRefreshClick(e) {

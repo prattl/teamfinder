@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { requestAllFixtures } from 'actions/fixtures'
+// import { requestAllFixtures } from 'actions/fixtures'
 import PlayerSearchForm from 'components/forms/PlayerSearchForm'
 import PlayerSearchResults from 'containers/PlayerSearchResults'
 
@@ -26,7 +26,7 @@ class PlayerSearch extends Component {
 
 PlayerSearch = connect(
     () => ({}),
-    { requestAllFixtures }
+    // { requestAllFixtures }
 )(PlayerSearch)
 
 export default PlayerSearch

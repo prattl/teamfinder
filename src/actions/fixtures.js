@@ -1,7 +1,6 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
-import fetch from 'isomorphic-fetch'
 
 const actions = keyMirror({
     REQUEST_FIXTURE: null,

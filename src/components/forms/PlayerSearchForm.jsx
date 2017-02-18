@@ -13,13 +13,11 @@ import Select from 'react-select'
 // TODO: Move this somewhere else
 const submit = (values, dispatch) => {
     console.log('submit', values)
-    return dispatch(requestPlayerSearch(
-        values.keywords, values.region
-    )).then(result => console.log('result', result))
+    return dispatch(requestPlayerSearch(values)).then(result => console.log('result', result))
 }
 
 const renderField = (field) => (
-    <FormGroup controlId='keywords'>
+    <FormGroup controlId={field.input.name}>
         {/*<ControlLabel>Keywords</ControlLabel>*/}
         <FormControl {...field.input} type='text' placeholder={field.placeholder} />
         {field.meta.touched && field.meta.error &&
@@ -72,6 +70,61 @@ class RegionSelect extends Component {
 
 RegionSelect = withAllFixtures(RegionSelect)
 
+class PositionSelect extends Component {
+    handleChange(v) {
+        this.props.input.onChange(v ? v.map(r => r.value) : v)
+    }
+
+    handleBlur() {
+        this.props.input.onBlur(this.props.input.value)
+    }
+
+    render() {
+        const { input, positions: { items, isLoading, lastUpdated } } = this.props
+        const options = Object.keys(items).map(itemId => ({
+            value: itemId, label: items[itemId].name
+        }))
+
+        return (!isLoading && lastUpdated) ? <Select {...input}
+                                                     multi={true}
+                                                     placeholder='Positions'
+                                                     onBlurResetsInput={false}
+                                                     onBlur={() => this.handleBlur()}
+                                                     onChange={v => this.handleChange(v)}
+                                                     options={options} /> : null
+    }
+}
+
+PositionSelect = withAllFixtures(PositionSelect)
+
+class SkillBracketSelect extends Component {
+    handleChange(v) {
+        this.props.input.onChange(v.value)
+    }
+
+    handleBlur() {
+        this.props.input.onBlur(this.props.input.value)
+    }
+
+    render() {
+        const { input, skillBrackets: { items, isLoading, lastUpdated } } = this.props
+        const options = Object.keys(items).map(itemId => ({
+            value: itemId, label: items[itemId].name
+        }))
+
+        return (!isLoading && lastUpdated) ? <Select {...input}
+                                                     multi={false}
+                                                     placeholder='Skill Bracket'
+                                                     onBlurResetsInput={false}
+                                                     onBlur={() => this.handleBlur()}
+                                                     onChange={v => this.handleChange(v)}
+                                                     options={options} /> : null
+    }
+}
+
+SkillBracketSelect = withAllFixtures(SkillBracketSelect)
+
+
 class PlayerSearchForm extends Component {
 
     render() {
@@ -89,7 +142,13 @@ class PlayerSearchForm extends Component {
                 </Row>
                 <Row>
                     <Col sm={4}>
-                        <Field name='region' component={RegionSelect} />
+                        <Field name='regions' component={RegionSelect} />
+                    </Col>
+                    <Col sm={4}>
+                        <Field name='positions' component={PositionSelect} />
+                    </Col>
+                    <Col sm={4}>
+                        <Field name='skillBracket' component={SkillBracketSelect} />
                     </Col>
                 </Row>
             </form>
@@ -102,7 +161,9 @@ PlayerSearchForm = reduxForm({
     form: 'playerSearch',
     initialValues: {
         keywords: '',
-        region: []
+        regions: [],
+        positions: [],
+        skillBracket: ''
     },
     onSubmit: submit
 })(PlayerSearchForm)

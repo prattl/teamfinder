@@ -11,10 +11,12 @@ const actions = keyMirror({
 })
 export default actions
 
-export const requestPlayerSearch = (keywords='', regions=[]) => (dispatch, getState) => {
+export const requestPlayerSearch = (values) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
-    let url = createUrl(`/api/players/?keywords=${keywords}`)
+    const { keywords, regions, positions, skillBracket } = values
+    let url = createUrl(`/api/players/?keywords=${keywords}&skill_bracket=${skillBracket}`)
     regions.forEach(region => url += `&regions[]=${region}`)
+    positions.forEach(position => url += `&positions[]=${position}`)
     return fetch(url, {
         headers: {
             'Accept': 'application/json',
