@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 
@@ -123,6 +123,27 @@ class SkillBracketSelect extends Component {
 }
 
 SkillBracketSelect = withAllFixtures(SkillBracketSelect)
+
+class SelectWrapper extends Component {
+
+    static propTypes = {
+        input: PropTypes.object.isRequired
+    }
+
+    handleChange(v) {
+        this.props.input.onChange(v.value)
+        this.props.input.onChange(v ? v.map(r => r.value) : v)
+    }
+
+    handleBlur() {
+        this.props.input.onBlur(this.props.input.value)
+    }
+
+    render() {
+        
+    }
+
+}
 
 
 class PlayerSearchForm extends Component {
