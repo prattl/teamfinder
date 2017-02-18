@@ -1,6 +1,12 @@
 import React from 'react'
 
-export const createUrl = url => `//localhost:8000${url}`
+const isProduction = process.env.NODE_ENV === 'production'
+
+export const createUrl = isProduction ? (
+    url => `//dotateamfinder.com:8000${url}`
+) : (
+    url => `//localhost:8000${url}`
+)
 
 export const metaGenerator = meta => ({receivedAt: Date.now()})
 
