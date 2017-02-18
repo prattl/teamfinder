@@ -27,3 +27,13 @@ export const requestFixture = fixtureType => (dispatch, getState) => {
 export const requestAllFixtures = () => (dispatch, getState) => (
     Object.keys(getState().fixtures).map(fixtureType => dispatch(requestFixture(fixtureType)))
 )
+
+export const requestAllFixturesIfNeeded = () => (dispatch, getState) => {
+    return Object.keys(getState().fixtures).map(fixtureType => {
+        const fixture = getState().fixtures[fixtureType]
+        if (!fixture.isLoading && !fixture.lastUpdated) {
+            return dispatch(requestFixture(fixtureType))
+        }
+        return undefined
+    })
+}

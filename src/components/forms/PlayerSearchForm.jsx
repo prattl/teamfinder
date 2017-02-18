@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { requestPlayerSearch } from 'actions/playerSearch'
 
+import { requestAllFixturesIfNeeded } from 'actions/fixtures'
+import { requestPlayerSearch } from 'actions/playerSearch'
 import { fixturesSelector } from 'utils/selectors'
 
 import { Button, Col, FormGroup, FormControl, HelpBlock, Row } from 'react-bootstrap'
@@ -26,18 +27,23 @@ const renderField = (field) => (
     </FormGroup>
 )
 
-const withFixtures = (WrappedComponent) => {
+const withFixtures = (selector) => (WrappedComponent) => {
     class WithFixtures extends Component {
-        // componentDidMount() {
-            // TODO
-        // }
+
+        componentDidMount() {
+            this.props.onLoad()
+        }
+
         render() {
             return <WrappedComponent {...this.props} />
         }
+
     }
-    WithFixtures = connect(fixturesSelector)(WithFixtures)
+    WithFixtures = connect(selector, { onLoad: requestAllFixturesIfNeeded })(WithFixtures)
     return WithFixtures
 }
+
+const withAllFixtures = withFixtures(fixturesSelector)
 
 class RegionSelect extends Component {
     handleChange(v) {
@@ -64,7 +70,7 @@ class RegionSelect extends Component {
     }
 }
 
-RegionSelect = withFixtures(RegionSelect)
+RegionSelect = withAllFixtures(RegionSelect)
 
 class PlayerSearchForm extends Component {
 

@@ -9,7 +9,7 @@ class PlayerSearch extends Component {
 
     componentDidMount() {
         // Testing only
-        this.props.requestAllFixtures()
+        // this.props.requestAllFixtures()
     }
 
     render() {
