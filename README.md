@@ -1,17 +1,29 @@
-# teamfinder-client
+# teamfinder-api
+[![Build Status](https://travis-ci.org/prattl/teamfinder-api.svg?branch=master)](https://travis-ci.org/prattl/teamfinder-api)
 
 ## Install (development)
 * Clone the repository
-* From the `create-react-app` README:
-```
-You’ll need to have Node >= 4 on your machine.
-
-We strongly recommend to use Node >= 6 and npm >= 3 for faster installation speed and better
-disk usage. You can use [nvm](https://github.com/creationix/nvm#usage) to easily
-switch Node versions between different projects.
-```
+* Install system dependencies:
+  * `sudo apt-get install build-essential python3-dev`
+* Create a virtual environment with python3
+  * `virtualenv -p python3 env`
+* Activate the virtual environment
+  * `source env/bin/activate`
 * Install project requirements
-  * `npm install`
+  * `pip install -r requirements.txt`
+* Run database migrations
+  * `python manage.py migrate`
+* For a fresh database, create a superuser
+  * `python manage.py createsuperuser`
 * Run development server
-  * `npm start`
-  * Development server runs on port 3000
+  * `python manage.py runserver_plus`
+  * Development server runs on port 8000
+  * Django admin: [127.0.0.1:8000/admin](http://127.0.0.1:8000/admin)
+    * User superuser credentials to log in
+  * Api root: [127.0.0.1:8000/api](http://127.0.0.1:8000/api)
+  * Authentication Api root: [127.0.0.1:8000/api/auth](http://127.0.0.1:8000/api/auth)
+* Run tests
+  * `python manage.py test`
+* Run tests with coverage report
+  * `coverage run manage.py test`
+  * `coverage report`

@@ -1,0 +1,7 @@
+[run]
+omit = 
+    env/*
+    */migrations/*
+    teamfinder/settings.py
+    teamfinder/settings_local.py
+
