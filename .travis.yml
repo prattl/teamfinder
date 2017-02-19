@@ -1,15 +1,15 @@
 language: python
 python:
   - '3.5'
-install: pip install -r requirements.txt
+install: pip install -r api/requirements.txt
 before_script:
-  - echo "SECRET_KEY = 'foo'" > teamfinder/settings_local.py
-  - python manage.py migrate
+  - echo "SECRET_KEY = 'foo'" > api/teamfinder/settings_local.py
+  - python api/manage.py migrate
 script:
-  - python manage.py test -v 2
+  - python api/manage.py test -v 2
 deploy:
   - provider: script
-    script: scripts/start_deploy.sh
+    script: api/scripts/start_deploy.sh
     on:
       branch: master
 
