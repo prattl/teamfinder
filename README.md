@@ -1,5 +1,5 @@
 # teamfinder-api
-[![Build Status](https://travis-ci.org/prattl/teamfinder-api.svg?branch=master)](https://travis-ci.org/prattl/teamfinder-api)
+[![Build Status](https://travis-ci.org/prattl/teamfinder.svg?branch=master)](https://travis-ci.org/prattl/teamfinder)
 
 ## Install (development)
 * Clone the repository
