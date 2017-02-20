@@ -97,53 +97,62 @@ class PositionSelect extends Component {
 
 PositionSelect = withAllFixtures(PositionSelect)
 
-class SkillBracketSelect extends Component {
-    handleChange(v) {
-        this.props.input.onChange(v.value)
-    }
-
-    handleBlur() {
-        this.props.input.onBlur(this.props.input.value)
-    }
-
-    render() {
-        const { input, skillBrackets: { items, isLoading, lastUpdated } } = this.props
-        const options = Object.keys(items).map(itemId => ({
-            value: itemId, label: items[itemId].name
-        }))
-
-        return (!isLoading && lastUpdated) ? <Select {...input}
-                                                     multi={false}
-                                                     placeholder='Skill Bracket'
-                                                     onBlurResetsInput={false}
-                                                     onBlur={() => this.handleBlur()}
-                                                     onChange={v => this.handleChange(v)}
-                                                     options={options} /> : null
-    }
-}
-
-SkillBracketSelect = withAllFixtures(SkillBracketSelect)
-
 class SelectWrapper extends Component {
 
     static propTypes = {
-        input: PropTypes.object.isRequired
+        input: PropTypes.object.isRequired,
+        multi: PropTypes.bool,
+        placeholder: PropTypes.string
+    }
+
+    static defaultProps = {
+        multi: false,
+        placeholder: ''
+    }
+
+    constructor(props) {
+        super(props)
+        this.handleBlur = this.handleBlur.bind(this)
     }
 
     handleChange(v) {
-        this.props.input.onChange(v.value)
-        this.props.input.onChange(v ? v.map(r => r.value) : v)
+        const { input, multi } = this.props
+        input.onChange(multi ? v.map(r => r.value) : v ? v.value : '')
+        // this.props.input.onChange(v ? v.map(r => r.value) : v)
     }
 
     handleBlur() {
-        this.props.input.onBlur(this.props.input.value)
+        const { input } = this.props
+        console.log('blur', this.props)
+        input.onBlur(input.value)
     }
 
     render() {
-        
+        const { input, multi, options, placeholder } = this.props
+        return <Select {...input}
+                       multi={multi}
+                       placeholder={placeholder}
+                       onBlurResetsInput={false}
+                       onBlur={this.handleBlur}
+                       onChange={v => this.handleChange(v)}
+                       options={options} />
     }
 
 }
+
+let SkillBracketSelect = props => {
+    const { input, positions: { items, isLoading, lastUpdated } } = props
+    const options = Object.keys(items).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    return (!isLoading && lastUpdated) ? <SelectWrapper input={input}
+                           multi={false}
+                           placeholder={'Skill Bracket'}
+
+                           options={options} /> : null
+}
+
+SkillBracketSelect = withAllFixtures(SkillBracketSelect)
 
 
 class PlayerSearchForm extends Component {
