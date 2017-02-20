@@ -48,60 +48,6 @@ export const withAllFixtures = withFixtures(
     }),
 )
 
-class RegionSelect extends Component {
-    handleChange(v) {
-        this.props.input.onChange(v ? v.map(r => r.value) : v)
-    }
-
-    handleBlur() {
-        this.props.input.onBlur(this.props.input.value)
-    }
-
-    render() {
-        const { input, fixtures: { regions: { items, isLoading, lastUpdated } } } = this.props
-        const options = Object.keys(items).map(itemId => ({
-            value: itemId, label: items[itemId].name
-        }))
-
-        return (!isLoading && lastUpdated) ? <Select {...input}
-                                                     multi={true}
-                                                     placeholder='Regions'
-                                                     onBlurResetsInput={false}
-                                                     onBlur={() => this.handleBlur()}
-                                                     onChange={v => this.handleChange(v)}
-                                                     options={options} /> : null
-    }
-}
-
-RegionSelect = withAllFixtures(RegionSelect)
-
-class PositionSelect extends Component {
-    handleChange(v) {
-        this.props.input.onChange(v ? v.map(r => r.value) : v)
-    }
-
-    handleBlur() {
-        this.props.input.onBlur(this.props.input.value)
-    }
-
-    render() {
-        const { input, fixtures: { positions: { items, isLoading, lastUpdated } } } = this.props
-        const options = Object.keys(items).map(itemId => ({
-            value: itemId, label: items[itemId].name
-        }))
-
-        return (!isLoading && lastUpdated) ? <Select {...input}
-                                                     multi={true}
-                                                     placeholder='Positions'
-                                                     onBlurResetsInput={false}
-                                                     onBlur={() => this.handleBlur()}
-                                                     onChange={v => this.handleChange(v)}
-                                                     options={options} /> : null
-    }
-}
-
-PositionSelect = withAllFixtures(PositionSelect)
-
 class SelectWrapper extends Component {
 
     static propTypes = {
@@ -123,7 +69,6 @@ class SelectWrapper extends Component {
     handleChange(v) {
         const { input, multi } = this.props
         input.onChange(multi ? v.map(r => r.value) : v ? v.value : '')
-        // this.props.input.onChange(v ? v.map(r => r.value) : v)
     }
 
     handleBlur() {
@@ -133,31 +78,71 @@ class SelectWrapper extends Component {
     }
 
     render() {
-        const { input, multi, options, placeholder } = this.props
+        const { input, ...otherProps } = this.props
         return <Select {...input}
-                       multi={multi}
-                       placeholder={placeholder}
                        onBlurResetsInput={false}
                        onBlur={this.handleBlur}
                        onChange={v => this.handleChange(v)}
-                       options={options} />
+                       {...otherProps} />
     }
 
 }
+
+let RegionSelect = props => {
+    const { input, fixtures: { regions: { items, isLoading, lastUpdated } } } = props
+    const options = Object.keys(items).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    return (!isLoading && lastUpdated) ? (
+        <SelectWrapper input={input}
+                       multi={true}
+                       matchProp='label'
+                       placeholder='Regions'
+                       options={options} />
+        ) : null
+}
+
+RegionSelect = withAllFixtures(RegionSelect)
 
 let SkillBracketSelect = props => {
     const { input, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
     const options = Object.keys(items).map(itemId => ({
         value: itemId, label: items[itemId].name
     }))
-    return (!isLoading && lastUpdated) ? <SelectWrapper input={input}
-                           multi={false}
-                           placeholder={'Skill Bracket'}
-
-                           options={options} /> : null
+    return (!isLoading && lastUpdated) ? (
+        <SelectWrapper input={input}
+                       multi={false}
+                       matchProp='label'
+                       placeholder='Skill Bracket'
+                       options={options} />
+        ): null
 }
 
 SkillBracketSelect = withAllFixtures(SkillBracketSelect)
+
+let PositionSelect = props => {
+    const { input, fixtures: { positions: { items, isLoading, lastUpdated } } } = props
+    const primaryOptions = Object.keys(items).filter(itemId => !items[itemId].secondary).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    const secondaryOptions = Object.keys(items).filter(itemId => items[itemId].secondary).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    const options = [
+        ...primaryOptions,
+        { value: null, label: '', disabled: true },
+        ...secondaryOptions
+    ]
+    return (!isLoading && lastUpdated) ? (
+        <SelectWrapper input={input}
+                       multi={true}
+                       matchProp='label'
+                       placeholder='Positions'
+                       options={options} />
+        ) : null
+}
+
+PositionSelect = withAllFixtures(PositionSelect)
 
 
 class PlayerSearchForm extends Component {
