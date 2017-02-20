@@ -43,11 +43,11 @@ class PlayerSearchResult extends Component {
                                 <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                             </div>
                             <div>
-                                <PositionIcon fixedWidth={true}/>&nbsp;
+                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={skill_bracket} fixture={fixtures.skillBrackets}/>
                             </div>
                             <div>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
+                                <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={positions} fixture={fixtures.positions}/>
                             </div>
                         </div>
