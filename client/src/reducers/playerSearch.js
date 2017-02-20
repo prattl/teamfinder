@@ -8,7 +8,12 @@ const initialState = {
     previous: null,
     isLoading: false,
     nextPageLoading: false,
-    lastUpdated: null
+    lastUpdated: null,
+
+    // TODO: This part should probably be moved into its own reducer
+    player: {},
+    playerIsLoading: false,
+    playerLastUpdated: null
 }
 
 const playerSearch = handleActions({
@@ -30,6 +35,15 @@ const playerSearch = handleActions({
         next: action.payload.next,
         previous: action.payload.previous,
         count: action.payload.count
+    }),
+
+
+    [actions.REQUEST_PLAYER]: (state, action) => ({
+        ...state, playerIsLoading: true
+    }),
+    [actions.RECEIVE_PLAYER]: (state, action) => ({
+        ...state, playerIsLoading: false, playerLastUpdated: action.meta.receivedAt,
+        player: action.payload
     })
 }, initialState)
 

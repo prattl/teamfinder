@@ -4,12 +4,14 @@ import { IndexRoute, Route } from 'react-router'
 import Base from 'containers/Base'
 import Index from 'components/Index'
 import PlayerSearch from 'components/PlayerSearch'
+import PlayerProfile from 'containers/PlayerProfile'
 
 export default (
     <Route path='/' component={Base}>
         <IndexRoute component={Index} />
 
         <Route path='players' component={PlayerSearch} />
+        <Route path='players/:id' component={PlayerProfile} />
 
     </Route>
 )

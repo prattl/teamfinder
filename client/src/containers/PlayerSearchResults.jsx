@@ -1,13 +1,16 @@
 import React, { Component, PropTypes, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { submit } from 'redux-form'
+import { Link } from 'react-router'
 import { createStructuredSelector } from 'reselect'
 
+import { withAllFixtures } from 'components/forms/PlayerSearchForm'
 import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
-import { fixturesSelector, playerSearchSelector } from 'utils/selectors'
+import { playerSearchSelector } from 'utils/selectors'
 
 import { Button, Col, Row } from 'react-bootstrap'
-import { Loading } from 'utils'
+import { FixtureDisplay, Loading } from 'utils'
+import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import LastUpdated from 'utils/components/LastUpdated'
 
 // TODO: Connect this component to the fixtures store (or connect each line item to its own slice of the
@@ -22,7 +25,7 @@ class PlayerSearchResult extends Component {
     }
 
     render() {
-        const { fixtures, username, regions, positions, skill_bracket } = this.props
+        const { id, fixtures, username, regions, positions, skill_bracket } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
         return (
@@ -31,19 +34,21 @@ class PlayerSearchResult extends Component {
                     lastUpdated ? (
                         <div>
                             <div style={{ marginBottom: '1rem' }}>
-                                <strong>{username}</strong>
+                                <Link to={`players/${id}`}>
+                                    <strong>{username}</strong>
+                                </Link>
                             </div>
                             <div>
-                                <i className='fa fa-map-marker fa-fw'/>&nbsp;
-                                {regions.map(regionId => fixtures.regions.items[regionId].name).join(', ')}
+                                <RegionIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                             </div>
                             <div>
-                                <i className='fa fa-line-chart fa-fw'/>&nbsp;
-                                {skill_bracket && fixtures.skillBrackets.items[skill_bracket].name}
+                                <PositionIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={skill_bracket} fixture={fixtures.skillBrackets}/>
                             </div>
                             <div>
-                                <i className='fa fa-briefcase fa-fw'/>&nbsp;
-                                {positions.map(positionId => fixtures.positions.items[positionId].name).join(', ')}
+                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={positions} fixture={fixtures.positions}/>
                             </div>
                         </div>
                     ) : <p>Error, please try again.</p>
@@ -53,12 +58,7 @@ class PlayerSearchResult extends Component {
     }
 }
 
-PlayerSearchResult = connect(
-    createStructuredSelector({
-        fixtures: fixturesSelector
-    }),
-)(PlayerSearchResult)
-
+PlayerSearchResult = withAllFixtures(PlayerSearchResult)
 
 class PlayerSearchResults extends PureComponent {
 

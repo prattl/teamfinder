@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
+import { createStructuredSelector } from 'reselect'
 
 import { requestAllFixturesIfNeeded } from 'actions/fixtures'
 import { requestPlayerSearch } from 'actions/playerSearch'
@@ -41,7 +42,11 @@ const withFixtures = (selector) => (WrappedComponent) => {
     return WithFixtures
 }
 
-const withAllFixtures = withFixtures(fixturesSelector)
+export const withAllFixtures = withFixtures(
+    createStructuredSelector({
+        fixtures: fixturesSelector,
+    }),
+)
 
 class RegionSelect extends Component {
     handleChange(v) {
@@ -53,7 +58,7 @@ class RegionSelect extends Component {
     }
 
     render() {
-        const { input, regions: { items, isLoading, lastUpdated } } = this.props
+        const { input, fixtures: { regions: { items, isLoading, lastUpdated } } } = this.props
         const options = Object.keys(items).map(itemId => ({
             value: itemId, label: items[itemId].name
         }))
@@ -80,7 +85,7 @@ class PositionSelect extends Component {
     }
 
     render() {
-        const { input, positions: { items, isLoading, lastUpdated } } = this.props
+        const { input, fixtures: { positions: { items, isLoading, lastUpdated } } } = this.props
         const options = Object.keys(items).map(itemId => ({
             value: itemId, label: items[itemId].name
         }))
@@ -141,7 +146,7 @@ class SelectWrapper extends Component {
 }
 
 let SkillBracketSelect = props => {
-    const { input, positions: { items, isLoading, lastUpdated } } = props
+    const { input, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
     const options = Object.keys(items).map(itemId => ({
         value: itemId, label: items[itemId].name
     }))

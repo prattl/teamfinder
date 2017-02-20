@@ -6,10 +6,19 @@ import fetch from 'isomorphic-fetch'
 const actions = keyMirror({
     REQUEST_PLAYER_SEARCH: null,
     RECEIVE_PLAYER_SEARCH: null,
+    REQUEST_PLAYER: null,
+    RECEIVE_PLAYER: null,
     REQUEST_NEXT_PAGE_OF_PLAYERS: null,
     RECEIVE_NEXT_PAGE_OF_PLAYERS: null
 })
 export default actions
+
+const fetchGET = url => fetch(url, {
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+})
 
 export const requestPlayerSearch = (values) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
@@ -30,6 +39,21 @@ export const requestPlayerSearch = (values) => (dispatch, getState) => {
         }
         return json
     }))
+}
+
+export const requestPlayer = id => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_PLAYER)())
+    const { results } = getState().playerSearch
+    const player = results.find(result => result.id === id)
+    if (player) {
+        return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
+    } else {
+        const url = createUrl(`/api/players/${id}/`)
+        return fetchGET(url).then(response => response.json().then(json => {
+            const payload = response.ok ? json : new Error('Error retrieving player results.')
+            return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(payload))
+        }))
+    }
 }
 
 export const requestNextPageOfPlayers = () => (dispatch, getState) => {
