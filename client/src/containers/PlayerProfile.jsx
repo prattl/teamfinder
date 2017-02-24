@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Col, Row } from 'react-bootstrap'
 
+import { Col, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/forms/PlayerSearchForm'
 import { requestPlayer } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
 import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import TeamSnippet from 'containers/TeamSnippet'
 
 const FixtureRow = ({ label, children }) => (
     <Row>
@@ -48,6 +49,13 @@ class PlayerProfile extends Component {
                                 <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.positions} fixture={positions}/>
                             </FixtureRow>
+                            {player.teams.map(team => (
+                                <Row key={`row-team-${team.id}`}>
+                                    <Col md={8}>
+                                        <TeamSnippet teamId={team.id} />
+                                    </Col>
+                                </Row>
+                            ))}
                         </div>
                     ) : <div>Error loading player</div>
                 )}

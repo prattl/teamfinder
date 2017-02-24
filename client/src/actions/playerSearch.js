@@ -13,7 +13,7 @@ const actions = keyMirror({
 })
 export default actions
 
-const fetchGET = url => fetch(url, {
+export const fetchGET = url => fetch(url, {
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
