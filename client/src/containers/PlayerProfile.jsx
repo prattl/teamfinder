@@ -57,7 +57,7 @@ class PlayerProfile extends Component {
                             </FixtureRow>
                             <h3>Teams</h3>
                             {player.teams.map(team => (
-                                <Row key={`row-team-${team.id}`}>
+                                <Row key={`row-player-${player.id}-team-${team.id}`}>
                                     <Col md={8}>
                                         <TeamSnippet teamId={team.id} />
                                     </Col>
