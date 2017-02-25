@@ -55,6 +55,7 @@ class PlayerProfile extends Component {
                                 <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.positions} fixture={positions}/>
                             </FixtureRow>
+                            <h3>Teams</h3>
                             {player.teams.map(team => (
                                 <Row key={`row-team-${team.id}`}>
                                     <Col md={8}>
