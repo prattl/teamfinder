@@ -1,11 +1,10 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/teams'
-import { arrayToObject } from 'utils'
 
 const initialTeamState = {
     team: {},
     isLoading: false,
-    lastUpdated: true
+    lastUpdated: null
 }
 
 const initialState = {
@@ -17,7 +16,9 @@ const teams = handleActions({
         ...state,
         teams: {
             ...state.teams,
-            [action.payload]: { ...initialTeamState }
+            [action.payload]: (Object.keys(state.teams).includes(action.payload)) ? state.teams[action.payload] : ({
+                ...initialTeamState, isLoading: true
+            })
         }
     }),
     [actions.RECEIVE_TEAM]: (state, action) => ({

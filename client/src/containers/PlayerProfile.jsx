@@ -27,6 +27,12 @@ class PlayerProfile extends Component {
         this.props.onLoad()
     }
 
+    componentDidUpdate(oldProps) {
+        if (this.props.params.id !== oldProps.params.id) {
+            this.props.onLoad()
+        }
+    }
+
     render() {
         const { playerSearch: { player, playerIsLoading, playerLastUpdated } } = this.props
         const { fixtures: { regions, positions, skillBrackets } } = this.props
