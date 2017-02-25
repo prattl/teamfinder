@@ -10,6 +10,8 @@ import { FixtureDisplay, Loading } from 'utils'
 import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
 
+import requireAuthentication from 'components/auth/AuthenticationRequired'
+
 const FixtureRow = ({ label, children }) => (
     <Row>
         <Col sm={2} md={2} lg={2} className='hidden-xs'>
@@ -82,5 +84,7 @@ PlayerProfile = connect(
 )(PlayerProfile)
 
 PlayerProfile = withAllFixtures(PlayerProfile)
+
+PlayerProfile = requireAuthentication(PlayerProfile)
 
 export default PlayerProfile
