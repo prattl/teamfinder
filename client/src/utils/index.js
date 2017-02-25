@@ -28,7 +28,7 @@ export const FixtureDisplay = ({ value, fixture }) => (
             {Array.isArray(value) ? (
                 value.map(fixtureId => fixture.items[fixtureId].name).join(', ')
             ) : (
-                fixture.items[value].name
+                value ? fixture.items[value].name : null
             )}
         </span>
     ) : null

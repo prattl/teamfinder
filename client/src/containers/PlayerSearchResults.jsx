@@ -8,9 +8,9 @@ import { withAllFixtures } from 'components/forms/PlayerSearchForm'
 import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
 
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Label, Row } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
-import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon, RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import LastUpdated from 'utils/components/LastUpdated'
 
 // TODO: Connect this component to the fixtures store (or connect each line item to its own slice of the
@@ -21,11 +21,12 @@ class PlayerSearchResult extends Component {
         username: PropTypes.string.isRequired,
         regions: PropTypes.array,
         positions: PropTypes.array,
-        skill_bracket: PropTypes.string
+        skill_bracket: PropTypes.string,
+        teams: PropTypes.array
     }
 
     render() {
-        const { id, fixtures, username, regions, positions, skill_bracket } = this.props
+        const { id, fixtures, username, regions, positions, skill_bracket, teams } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
         return (
@@ -49,6 +50,20 @@ class PlayerSearchResult extends Component {
                             <div>
                                 <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={positions} fixture={fixtures.positions}/>
+                            </div>
+                            <div style={{ marginTop: '1rem' }}>
+                                {teams.map(team => (
+                                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
+                                         key={`player-${id}-team-${team.id}`}>
+                                        <Link to='/' style={{ color: '#FFF' }}>
+                                            <Label>
+                                                {team.captain === id && (<span><CaptainIcon />&nbsp;</span>)}
+                                                {team.name}
+                                            </Label>
+                                        </Link>
+                                    </div>
+
+                                ))}
                             </div>
                         </div>
                     ) : <p>Error, please try again.</p>
