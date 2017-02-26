@@ -6,6 +6,8 @@ import Index from 'components/Index'
 import PlayerSearch from 'components/PlayerSearch'
 import PlayerProfile from 'containers/PlayerProfile'
 
+// Testing:
+import requireAuthentication from 'components/auth/AuthenticationRequired'
 export default (
     <Route path='/' component={Base}>
         <IndexRoute component={Index} />

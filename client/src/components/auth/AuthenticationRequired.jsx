@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router-redux'
+import { requestAuthStatus } from 'actions/auth'
+import { authSelector } from 'utils/selectors'
 
-const requireAuthentication = (Component) => {
+const requireAuthentication = (WrappedComponent) => {
 
-    class AuthenticatedComponent extends React.Component {
+    class AuthenticatedComponent extends Component {
 
         componentDidMount() {
             this.props.onLoad()
@@ -17,19 +19,14 @@ const requireAuthentication = (Component) => {
         }
 
         render() {
-            return (
-                <div>
-                    {this.props.lastUpdated && this.props.tokenVerified &&
-                        <Component {...this.props} />
-                    }
-                </div>
-            )
+            // this.props.lastUpdated && this.props.tokenVerified
+            return <WrappedComponent {...this.props} />
         }
 
     }
 
     AuthenticatedComponent = connect(
-        state => state.auth,
+        authSelector,
         { onLoad: requestAuthStatus }
     )(AuthenticatedComponent)
     return AuthenticatedComponent
