@@ -4,6 +4,7 @@ import { IndexRoute, Route } from 'react-router'
 import Base from 'containers/Base'
 import Index from 'components/Index'
 import LogIn from 'components/auth/LogIn'
+import LogOut from 'containers/auth/LogOut'
 import PlayerSearch from 'components/PlayerSearch'
 import PlayerProfile from 'containers/PlayerProfile'
 
@@ -11,6 +12,7 @@ export default (
     <Route path='/' component={Base}>
         <IndexRoute component={Index} />
         <Route path='login' component={LogIn}/>
+        <Route path='logout' component={LogOut}/>
         <Route path='players' component={PlayerSearch} />
         <Route path='players/:id' component={PlayerProfile} />
     </Route>

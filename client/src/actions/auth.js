@@ -9,7 +9,9 @@ const actions = keyMirror({
     RECEIVE_AUTH_STATUS: null,
     RECEIVE_AUTH_TOKEN: null,
     REQUEST_LOGIN: null,
-    RECEIVE_LOGIN: null
+    RECEIVE_LOGIN: null,
+    REQUEST_LOGOUT: null,
+    RECEIVE_LOGOUT: null
 })
 export default actions
 
@@ -42,5 +44,18 @@ export const login = credentials => (dispatch, getState) => {
             dispatch(requestAuthStatus())
             return ({ response, json })
         })
+    )
+}
+
+export const logout = () => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_LOGOUT)())
+    return POST(createUrl('/api/auth/logout/'), getState().auth.authToken).then(
+        response => {
+            const payload = response.ok ? null : new Error('Error submitting logout.')
+            if (response.ok) {
+                localStorage.setItem('authtoken', null)
+            }
+            return dispatch(createAction(actions.RECEIVE_LOGOUT, null, metaGenerator)(payload))
+        }
     )
 }

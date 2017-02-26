@@ -30,7 +30,14 @@ const auth = handleActions({
     [actions.RECEIVE_LOGIN]: (state, action) => ({
         ...state, authToken: action.payload.auth_token, tokenVerified: !action.error,
         isLoading: false, lastUpdated: action.meta.receivedAt
-    })
+    }),
+    [actions.REQUEST_LOGOUT]: (state, action) => ({
+        ...state, isLoading: true
+    }),
+    [actions.RECEIVE_LOGOUT]: (state, action) => ({
+        ...state, authToken: null, userId: null, userEmail: null, tokenVerified: false,
+        isLoading: false, lastUpdated: action.receivedAt
+    }),
 }, initialState)
 
 export default auth
