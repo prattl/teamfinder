@@ -1,19 +1,46 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
+import { browserHistory } from 'react-router'
 import { createUrl, metaGenerator } from 'utils'
-import { fetchGET } from 'actions/playerSearch'
+import { GET, POST } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_AUTH_STATUS: null,
-    RECEIVE_AUTH_STATUS: null
+    RECEIVE_AUTH_STATUS: null,
+    RECEIVE_AUTH_TOKEN: null,
+    REQUEST_LOGIN: null,
+    RECEIVE_LOGIN: null
 })
 export default actions
 
+const fetchAuthTokenFromStorage = () => (
+    createAction(actions.RECEIVE_AUTH_TOKEN)(localStorage.getItem('authtoken'))
+)
+
 export const requestAuthStatus = () => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_AUTH_STATUS)())
-    return fetchGET(createUrl('/api/auth/me/')).then(response => response.json().then(json => {
-        console.log('Got json', json)
-        const payload = response.ok ? json : new Error('Error retrieving auth status')
-        return dispatch(createAction(actions.RECEIVE_AUTH_STATUS, null, metaGenerator)(payload))
-    }))
+    dispatch(fetchAuthTokenFromStorage())
+    return GET(createUrl('/api/auth/me/'), getState().auth.authToken).then(
+        response => response.json().then(json => {
+            const payload = response.ok ? json : new Error('Error retrieving auth status')
+            return dispatch(createAction(actions.RECEIVE_AUTH_STATUS, null, metaGenerator)(payload))
+        })
+    )
+}
+
+export const login = credentials => (dispatch, getState) => {
+    localStorage.setItem('authtoken', null)
+    dispatch(createAction(actions.REQUEST_LOGIN)())
+    return POST(createUrl('/api/auth/login/'), getState().auth.authToken, credentials).then(
+        response => response.json().then(json => {
+            const payload = response.ok ? json : new Error('Error submitting login.')
+            if (response.ok) {
+                localStorage.setItem('authtoken', json.auth_token)
+                browserHistory.push('/')
+            }
+            dispatch(createAction(actions.RECEIVE_LOGIN, null, metaGenerator)(payload))
+            dispatch(requestAuthStatus())
+            return ({ response, json })
+        })
+    )
 }

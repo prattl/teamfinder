@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router-redux'
+import { browserHistory } from 'react-router'
 import { requestAuthStatus } from 'actions/auth'
 import { authSelector } from 'utils/selectors'
 
