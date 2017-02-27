@@ -7,24 +7,15 @@ import { requestAllFixturesIfNeeded } from 'actions/fixtures'
 import { requestPlayerSearch } from 'actions/playerSearch'
 import { fixturesSelector } from 'utils/selectors'
 
-import { Button, Col, FormGroup, FormControl, HelpBlock, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
+import { createInput } from 'components/forms'
 import Select from 'react-select'
 
 
 // TODO: Move this somewhere else
 const submit = (values, dispatch) => {
-    console.log('submit', values)
-    return dispatch(requestPlayerSearch(values)).then(result => console.log('result', result))
+    return dispatch(requestPlayerSearch(values))
 }
-
-const renderField = (field) => (
-    <FormGroup controlId={field.input.name}>
-        {/*<ControlLabel>Keywords</ControlLabel>*/}
-        <FormControl {...field.input} type='text' placeholder={field.placeholder} />
-        {field.meta.touched && field.meta.error &&
-        <HelpBlock>{field.meta.error}</HelpBlock>}
-    </FormGroup>
-)
 
 const withFixtures = (selector) => (WrappedComponent) => {
     class WithFixtures extends Component {
@@ -73,7 +64,6 @@ class SelectWrapper extends Component {
 
     handleBlur() {
         const { input } = this.props
-        console.log('blur', this.props)
         input.onBlur(input.value)
     }
 
@@ -145,6 +135,8 @@ let PositionSelect = props => {
 PositionSelect = withAllFixtures(PositionSelect)
 
 
+const KeywordsInput = createInput()
+
 class PlayerSearchForm extends Component {
 
     render() {
@@ -153,7 +145,7 @@ class PlayerSearchForm extends Component {
             <form onSubmit={handleSubmit}>
                 <Row>
                     <Col sm={4}>
-                        <Field name='keywords' component={renderField} placeholder='Keywords' />
+                        <Field name='keywords' component={KeywordsInput} placeholder='Keywords' />
                     </Col>
                     <Col sm={2}>
                         <Button type='submit' disabled={submitting}>

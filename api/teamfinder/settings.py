@@ -23,7 +23,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'dotateamfinder.com',
-    'ec2-52-14-15-248.us-east-2.compute.amazonaws.com',
 ]
 
 INSTALLED_APPS = [
@@ -161,6 +160,5 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     '127.0.0.1:3000',
     '127.0.0.1:9000',
-    'ec2-52-14-15-248.us-east-2.compute.amazonaws.com',
     'dotateamfinder.com',
 )
