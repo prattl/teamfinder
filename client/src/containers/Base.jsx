@@ -13,7 +13,7 @@ class Base extends Component {
         // const { pathname } = this.props.location
         return (
             <div id='page-wrapper'>
-                <TopNav loggedIn={false}/>
+                <TopNav loggedIn={false} location={this.props.location.pathname}/>
 
                 <div id='page-content'>
                     <Grid>

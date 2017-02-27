@@ -39,9 +39,9 @@ export const login = credentials => (dispatch, getState) => {
             if (response.ok) {
                 localStorage.setItem('authtoken', json.auth_token)
                 browserHistory.push('/')
+                dispatch(requestAuthStatus())
             }
             dispatch(createAction(actions.RECEIVE_LOGIN, null, metaGenerator)(payload))
-            dispatch(requestAuthStatus())
             return ({ response, json })
         })
     )
