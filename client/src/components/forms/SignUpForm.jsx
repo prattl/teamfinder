@@ -18,6 +18,22 @@ const submit = (values, dispatch) => {
     })
 }
 
+const validate = values => {
+    const errors = {}
+    const fields = ['email', 'password', 'password2']
+    fields.map(fieldName => {
+        if ([undefined, ''].includes(values[fieldName])) {
+            errors[fieldName] = 'Required'
+        }
+    })
+
+    if (values.password !== values.password2) {
+        errors.password = 'Passwords must match.'
+    }
+
+    return errors
+}
+
 const EmailInput = createInput('Email', 'email')
 const PasswordInput = createInput('Password', 'password')
 const Password2Input = createInput('Repeat Password', 'password')
@@ -51,6 +67,7 @@ class SignUpForm extends Component {
 
 SignUpForm = reduxForm({
     form: 'signUp',
+    validate,
     onSubmit: submit
 })(SignUpForm)
 
