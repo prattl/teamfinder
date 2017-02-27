@@ -2,7 +2,8 @@ import React from 'react'
 import { ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
 
 export const createInput = (label, type='text') => (field) => (
-    <FormGroup controlId={field.input.name}>
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
         <FormControl {...field.input} type={type} placeholder={field.placeholder} />
         {field.meta.touched && field.meta.error &&

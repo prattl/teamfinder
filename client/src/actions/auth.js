@@ -11,7 +11,9 @@ const actions = keyMirror({
     REQUEST_LOGIN: null,
     RECEIVE_LOGIN: null,
     REQUEST_LOGOUT: null,
-    RECEIVE_LOGOUT: null
+    RECEIVE_LOGOUT: null,
+    REQUEST_SIGNUP: null,
+    RECEIVE_SIGNUP: null
 })
 export default actions
 
@@ -60,16 +62,16 @@ export const logout = () => (dispatch, getState) => {
     )
 }
 
-export const register = credentials => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_REGISTER)())
-    return POST(createUrl('/api/auth/register/'), getState().auth.authToken, credentials).then(
+export const signUp = credentials => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_SIGNUP)())
+    return POST(createUrl('/api/auth/register/'), null, credentials).then(
         response => response.json().then(json => {
             const payload = response.ok ? json : new Error('Error submitting register.')
-            dispatch(createAction(actions.RECEIVE_REGISTER, p => p, metaGenerator)(payload))
+            dispatch(createAction(actions.RECEIVE_SIGNUP, null, metaGenerator)(payload))
             if (response.ok) {
                 dispatch(login(credentials))
             }
-            return ({json, response})
+            return ({ response, json })
         })
     )
 }

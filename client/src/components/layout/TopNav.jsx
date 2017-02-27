@@ -25,7 +25,8 @@ const loggedInMenuLinks = [
 ]
 
 const loggedOutMenuLinks = [
-    { route: '/login', label: 'Log In' }
+    { route: '/login', label: 'Log In' },
+    { route: '/signup', label: 'Sign Up' }
 ]
 
 class TopNav extends Component {
