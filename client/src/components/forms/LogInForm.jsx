@@ -7,7 +7,6 @@ import { Alert, Button } from 'react-bootstrap'
 import { createInput } from 'components/forms'
 
 const submit = (values, dispatch) => {
-    console.log('submit', values)
     return dispatch(login(values)).then(({ response, json }) => {
         if (!response.ok) {
             const errors = {}

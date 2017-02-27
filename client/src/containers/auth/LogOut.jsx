@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { logout } from 'actions/auth'
 
 class LogOut extends Component {
+
     componentDidMount() {
         this.props.onLoad()
     }
@@ -17,6 +18,7 @@ class LogOut extends Component {
             </div>
         )
     }
+
 }
 
 LogOut = connect(null, { onLoad: logout })(LogOut)

@@ -24,7 +24,7 @@ export const requestAuthStatus = () => (dispatch, getState) => {
     dispatch(fetchAuthTokenFromStorage())
     return GET(createUrl('/api/auth/me/'), getState().auth.authToken).then(
         response => response.json().then(json => {
-            const payload = response.ok ? json : new Error('Error retrieving auth status')
+            const payload = response.ok ? json : new Error('Error retrieving auth status.')
             return dispatch(createAction(actions.RECEIVE_AUTH_STATUS, null, metaGenerator)(payload))
         })
     )
@@ -57,5 +57,19 @@ export const logout = () => (dispatch, getState) => {
             }
             return dispatch(createAction(actions.RECEIVE_LOGOUT, null, metaGenerator)(payload))
         }
+    )
+}
+
+export const register = credentials => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_REGISTER)())
+    return POST(createUrl('/api/auth/register/'), getState().auth.authToken, credentials).then(
+        response => response.json().then(json => {
+            const payload = response.ok ? json : new Error('Error submitting register.')
+            dispatch(createAction(actions.RECEIVE_REGISTER, p => p, metaGenerator)(payload))
+            if (response.ok) {
+                dispatch(login(credentials))
+            }
+            return ({json, response})
+        })
     )
 }
