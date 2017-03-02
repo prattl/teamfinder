@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import { requestAuthStatus } from 'actions/auth'
+import { requestAuthStatusIfNeeded } from 'actions/auth'
 import { authSelector } from 'utils/selectors'
 
 const requireAuthentication = (WrappedComponent) => {
@@ -14,20 +14,20 @@ const requireAuthentication = (WrappedComponent) => {
 
         componentWillReceiveProps(nextProps) {
             if (nextProps.lastUpdated && !nextProps.tokenVerified) {
-                browserHistory.push('/login')
+                browserHistory.push('/login-required')
             }
         }
 
         render() {
-            // this.props.lastUpdated && this.props.tokenVerified
-            return <WrappedComponent {...this.props} />
+            const { tokenVerified } = this.props
+            return tokenVerified ? <WrappedComponent {...this.props} /> : null
         }
 
     }
 
     AuthenticatedComponent = connect(
         authSelector,
-        { onLoad: requestAuthStatus }
+        { onLoad: requestAuthStatusIfNeeded }
     )(AuthenticatedComponent)
     return AuthenticatedComponent
 

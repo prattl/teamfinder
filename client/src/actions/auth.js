@@ -32,6 +32,13 @@ export const requestAuthStatus = () => (dispatch, getState) => {
     )
 }
 
+export const requestAuthStatusIfNeeded = () => (dispatch, getState) => {
+    const { isLoading, lastUpdated } = getState().auth
+    if (!isLoading && !lastUpdated) {
+        return dispatch(requestAuthStatus())
+    }
+}
+
 export const login = credentials => (dispatch, getState) => {
     localStorage.setItem('authtoken', null)
     dispatch(createAction(actions.REQUEST_LOGIN)())

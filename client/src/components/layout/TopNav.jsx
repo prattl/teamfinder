@@ -1,25 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { authSelector } from 'utils/selectors'
-import { requestAuthStatus } from 'actions/auth'
+import { requestAuthStatusIfNeeded } from 'actions/auth'
 
 import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 
-// const MenuLink = (props) => (
-//     <li className='pure-menu-item'>
-//         <Link to={props.to} className='pure-menu-link' activeClassName='pure-menu-selected'>
-//             {props.children}
-//         </Link>
-//     </li>
-// )
-//
-// const menuLinks = {
-//     '/teams': 'Find Teams',
-//     '/players': 'Find Players'
-// }
-//
+const baseMenuLinks = [
+    { route: '/teams', label: 'Find Teams' },
+    { route: '/players', label: 'Find Players' },
+    { route: '/profile', label: 'Edit Profile' }
+]
+
 const loggedInMenuLinks = [
     { route: '/logout', label: 'Log Out' }
 ]
@@ -39,20 +32,7 @@ class TopNav extends Component {
         const { authToken, tokenVerified } = this.props
         const loggedIn = authToken && tokenVerified
 
-        const menuLinks = loggedIn ? loggedInMenuLinks : loggedOutMenuLinks
-        //
-        // {/*const menuItems = Object.keys(menuLinks).map(key => (*/}
-        //     <MenuLink to={key} key={key}>{menuLinks[key]}</MenuLink>
-        // ))
-        // if (loggedIn) {
-        //     Object.keys(loggedInMenuLinks).forEach(key => {
-        //         menuItems.push(<MenuLink to={key} key={key}>{loggedInMenuLinks[key]}</MenuLink>)
-        //     })
-        // } else {
-        //     Object.keys(loggedOutMenuLinks).forEach(key => {
-        //         menuItems.push(<MenuLink to={key} key={key}>{loggedOutMenuLinks[key]}</MenuLink>)
-        //     })
-        // }
+        const menuLinks = baseMenuLinks.concat(loggedIn ? loggedInMenuLinks : loggedOutMenuLinks)
 
         return (
             <Navbar staticTop={true}>
@@ -64,15 +44,9 @@ class TopNav extends Component {
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav pullRight>
-                        <LinkContainer to='/teams'>
-                            <NavItem eventKey={1}>Find Teams</NavItem>
-                        </LinkContainer>
-                        <LinkContainer to='/players'>
-                            <NavItem eventKey={2}>Find Players</NavItem>
-                        </LinkContainer>
                         {menuLinks.map((menuLink, i) => (
                             <LinkContainer to={menuLink.route} key={`menu-link-${i}`}>
-                                <NavItem eventKey={i + 2}>{menuLink.label}</NavItem>
+                                <NavItem eventKey={i}>{menuLink.label}</NavItem>
                             </LinkContainer>
                         ))}
                     </Nav>
@@ -84,7 +58,7 @@ class TopNav extends Component {
 
 TopNav = connect(
     authSelector,
-    { onLoad: requestAuthStatus }
+    { onLoad: requestAuthStatusIfNeeded }
 )(TopNav)
 
 export default TopNav

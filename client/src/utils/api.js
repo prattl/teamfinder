@@ -21,3 +21,11 @@ export const POST = (url, authToken=null, data={}, extraHeaders={}) => fetch(
         method: 'POST'
     }
 )
+
+export const PATCH = (url, authToken=null, data={}, extraHeaders={}) => fetch(
+    url, {
+        headers: createHeaders(extraHeaders, authToken),
+        body: JSON.stringify(data),
+        method: 'PATCH'
+    }
+)

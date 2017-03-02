@@ -10,6 +10,11 @@ export const fixturesSelector = createSelector(
     fixtures => (fixtures)
 )
 
+export const playerSelector = createSelector(
+    state => state.player,
+    player => (player)
+)
+
 export const playerSearchSelector = createSelector(
     state => state.playerSearch,
     playerSearch => (playerSearch)
