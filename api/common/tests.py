@@ -45,7 +45,7 @@ class ModelTests(TestCase):
         self.assertTrue(region.name in str(region))
 
     def test_Position(self):
-        self.assertEqual(Position.objects.count(), 9)
+        self.assertEqual(Position.objects.count(), 8)
         self.assertEqual(Position.objects.primary().count(), 6)
         self.assertEqual(Position.objects.secondary().count(), 3)
         self.assertTrue(Position.objects.first().name < Position.objects.last().name)
