@@ -21,14 +21,14 @@ const submit = (values, dispatch) => {
 const validate = values => {
     const errors = {}
     const fields = ['email', 'password', 'password2']
-    fields.map(fieldName => {
+    fields.forEach(fieldName => {
         if ([undefined, ''].includes(values[fieldName])) {
             errors[fieldName] = 'Required'
         }
     })
 
     if (values.password !== values.password2) {
-        errors.password = 'Passwords must match.'
+        errors.password2 = 'Passwords must match.'
     }
 
     return errors
