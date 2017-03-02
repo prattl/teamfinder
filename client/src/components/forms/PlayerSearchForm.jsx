@@ -17,6 +17,8 @@ const submit = (values, dispatch) => {
     return dispatch(requestPlayerSearch(values))
 }
 
+
+// TODO: Move these fixture components somewhere else
 const withFixtures = (selector) => (WrappedComponent) => {
     class WithFixtures extends Component {
 
