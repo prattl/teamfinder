@@ -8,7 +8,7 @@ from .serializers import FlatPlayerSerializer, PlayerSerializer
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
-    queryset = Player.objects.all()
+    queryset = Player.objects.exclude(username='')
     serializer_class = PlayerSerializer
     model = Player
     permission_classes = (IsStaffOrTargetPlayer, )
