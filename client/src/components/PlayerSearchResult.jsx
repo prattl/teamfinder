@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'

@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import { teamsSelector } from 'utils/selectors'
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 
 class TeamSnippet extends Component {
 

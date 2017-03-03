@@ -47,7 +47,7 @@ export const login = credentials => (dispatch, getState) => {
             const payload = response.ok ? json : new Error('Error submitting login.')
             if (response.ok) {
                 localStorage.setItem('authtoken', json.auth_token)
-                browserHistory.push('/')
+                browserHistory.push('/profile')
                 dispatch(requestAuthStatus())
             }
             dispatch(createAction(actions.RECEIVE_LOGIN, null, metaGenerator)(payload))

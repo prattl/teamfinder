@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { Col, Row } from 'react-bootstrap'
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { requestPlayer } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
