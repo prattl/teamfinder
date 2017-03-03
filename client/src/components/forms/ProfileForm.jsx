@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput } from 'components/forms'
+import { createInput, SkillBracketSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(submitProfile(values)).then(({ response, json }) => {
@@ -29,6 +29,9 @@ class ProfileForm extends Component {
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
                     <Field name='username' component={UsernameInput} />
+                </div>
+                <div>
+                    <Field name='skill_bracket' component={SkillBracketSelect} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>

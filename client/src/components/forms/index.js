@@ -49,6 +49,7 @@ class SelectWrapper extends Component {
                        onBlurResetsInput={false}
                        onBlur={this.handleBlur}
                        onChange={v => this.handleChange(v)}
+                       className='form-group'
                        {...otherProps} />
     }
 

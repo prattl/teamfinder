@@ -41,7 +41,7 @@ class PlayerSearchForm extends Component {
                         <Field name='positions' component={PositionSelect} />
                     </Col>
                     <Col sm={4}>
-                        <Field name='skillBracket' component={SkillBracketSelect} />
+                        <Field name='skill_bracket' component={SkillBracketSelect} />
                     </Col>
                 </Row>
             </form>

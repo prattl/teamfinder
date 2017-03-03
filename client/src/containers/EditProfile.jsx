@@ -16,9 +16,10 @@ class EditProfile extends Component {
 
     render() {
         const { player } = this.props
-        const initialValues = player ? {
-            username: player.username
-        } : {}
+        const initialValues = player ? ({
+            username: player.username,
+            skill_bracket: player.skill_bracket
+        }) : {}
         return (
             <div>
                 <h1>Profile</h1>
