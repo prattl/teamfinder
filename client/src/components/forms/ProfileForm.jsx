@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, SkillBracketSelect } from 'components/forms'
+import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(submitProfile(values)).then(({ response, json }) => {
@@ -18,7 +18,27 @@ const submit = (values, dispatch) => {
     })
 }
 
+const validate = values => {
+    const errors = {}
+    const fields = ['username', 'regions', 'skill_bracket', 'positions']
+    const multiSelectFields = ['regions', 'positions']
+    fields.forEach(fieldName => {
+        if ([undefined, ''].includes(values[fieldName])) {
+            errors[fieldName] = 'Required'
+        }
+    })
+    multiSelectFields.forEach(fieldName => {
+        if (values[fieldName].length < 1) {
+            errors[fieldName] = 'Required'
+        }
+    })
+    return errors
+}
+
 const UsernameInput = createInput('Username')
+const RegionInput = createSelectInput('Region', RegionSelect)
+const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
+const PositionInput = createSelectInput('Positions', PositionSelect)
 
 class ProfileForm extends Component {
 
@@ -31,7 +51,13 @@ class ProfileForm extends Component {
                     <Field name='username' component={UsernameInput} />
                 </div>
                 <div>
-                    <Field name='skill_bracket' component={SkillBracketSelect} />
+                    <Field name='regions' component={RegionInput} />
+                </div>
+                <div>
+                    <Field name='skill_bracket' component={SkillBracketInput} />
+                </div>
+                <div>
+                    <Field name='positions' component={PositionInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>
@@ -46,6 +72,7 @@ class ProfileForm extends Component {
 
 ProfileForm = reduxForm({
     form: 'profile',
+    validate,
     onSubmit: submit
 })(ProfileForm)
 

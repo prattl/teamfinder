@@ -18,14 +18,18 @@ class EditProfile extends Component {
         const { player } = this.props
         const initialValues = player ? ({
             username: player.username,
-            skill_bracket: player.skill_bracket
+            skill_bracket: player.skill_bracket,
+            positions: player.positions,
+            regions: player.regions
         }) : {}
         return (
             <div>
                 <h1>Profile</h1>
                 <Row>
                     <Col lg={4} md={3} sm={2}>
-
+                        <div className='text-right'>
+                            <Image src='http://placehold.it/150x150' thumbnail />
+                        </div>
                     </Col>
                     <Col lg={4} md={6} sm={8}>
                         {player && <ProfileForm initialValues={initialValues} />}

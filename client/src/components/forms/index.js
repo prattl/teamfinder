@@ -14,6 +14,16 @@ export const createInput = (label, type='text') => (field) => (
     </FormGroup>
 )
 
+export const createSelectInput = (label, SelectComponent) => field => (
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
+        {label && <ControlLabel>{label}</ControlLabel>}
+        <SelectComponent {...field} />
+        {field.meta.touched && field.meta.error &&
+        <HelpBlock>{field.meta.error}</HelpBlock>}
+    </FormGroup>
+)
+
 
 class SelectWrapper extends Component {
 
@@ -49,7 +59,6 @@ class SelectWrapper extends Component {
                        onBlurResetsInput={false}
                        onBlur={this.handleBlur}
                        onChange={v => this.handleChange(v)}
-                       className='form-group'
                        {...otherProps} />
     }
 
