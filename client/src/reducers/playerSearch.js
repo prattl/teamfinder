@@ -37,7 +37,6 @@ const playerSearch = handleActions({
         count: action.payload.count
     }),
 
-
     [actions.REQUEST_PLAYER]: (state, action) => ({
         ...state, playerIsLoading: true
     }),

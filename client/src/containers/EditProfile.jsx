@@ -1,21 +1,30 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { requestOwnPlayerIfNeeded } from 'actions/player'
+import { dismissChangesSaved, requestOwnPlayerIfNeeded } from 'actions/player'
 import { playerSelector } from 'utils/selectors'
 
-import { Col, Image, Row } from 'react-bootstrap'
+import { Alert, Col, Image, Row } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import ProfileForm from 'components/forms/ProfileForm'
 
 class EditProfile extends Component {
+
+    constructor(props) {
+        super(props)
+        this.handleChangesSavedDismiss = this.handleChangesSavedDismiss.bind(this)
+    }
+
+    handleChangesSavedDismiss() {
+        this.props.onDismissChangesSaved()
+    }
 
     componentDidMount() {
         this.props.onLoad()
     }
 
     render() {
-        const { player } = this.props
+        const { changesSaved, player } = this.props
         const initialValues = player ? ({
             username: player.username,
             skill_bracket: player.skill_bracket,
@@ -32,6 +41,9 @@ class EditProfile extends Component {
                         </div>
                     </Col>
                     <Col lg={4} md={6} sm={8}>
+                        {changesSaved && (
+                            <Alert bsStyle='success' onDismiss={this.handleChangesSavedDismiss}>Changes saved!</Alert>
+                        )}
                         {player && <ProfileForm initialValues={initialValues} />}
                     </Col>
                 </Row>
@@ -44,7 +56,7 @@ class EditProfile extends Component {
 
 EditProfile = connect(
     playerSelector,
-    { onLoad: requestOwnPlayerIfNeeded }
+    { onLoad: requestOwnPlayerIfNeeded, onDismissChangesSaved: dismissChangesSaved }
 )(EditProfile)
 
 EditProfile = requireAuthentication(EditProfile)
