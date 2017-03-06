@@ -12,7 +12,7 @@ const initialState = {
 
 const auth = handleActions({
     [actions.REQUEST_AUTH_STATUS]: (state, action) => ({
-        ...state, isLoading: true
+        ...state, isLoading: true, lastUpdated: null
     }),
     [actions.RECEIVE_AUTH_STATUS]: (state, action) => ({
         ...state,

@@ -9,11 +9,11 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const baseMenuLinks = [
     { route: '/teams', label: 'Find Teams' },
-    { route: '/players', label: 'Find Players' },
-    { route: '/profile', label: 'Edit Profile' }
+    { route: '/players', label: 'Find Players' }
 ]
 
 const loggedInMenuLinks = [
+    { route: '/profile', label: 'Edit Profile' },
     { route: '/logout', label: 'Log Out' }
 ]
 

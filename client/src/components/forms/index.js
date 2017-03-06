@@ -79,7 +79,6 @@ let RegionSelect = props => {
 }
 
 RegionSelect = withAllFixtures(RegionSelect)
-// export withAllFixtures(RegionSelect)
 
 let SkillBracketSelect = props => {
     const { input, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
@@ -96,7 +95,6 @@ let SkillBracketSelect = props => {
 }
 
 SkillBracketSelect = withAllFixtures(SkillBracketSelect)
-// export SkillBracketSelect
 
 let PositionSelect = props => {
     const { input, fixtures: { positions: { items, isLoading, lastUpdated } } } = props
