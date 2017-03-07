@@ -30,7 +30,9 @@ class TeamSnippet extends Component {
                     lastUpdated ? (
                         <div>
                             <div>
-                                <h4 className='pull-left'>{team.name}</h4>
+                                <h4 className='pull-left'>
+                                    <Link to={`/teams/${team.id}`}>{team.name}</Link>
+                                </h4>
                                 <span className='pull-right'>
                                     <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
                                     &nbsp;Recruiting
@@ -56,7 +58,7 @@ class TeamSnippet extends Component {
                                 <PlayersIcon fixedWidth={true}/>&nbsp;
                                 {team.team_members.map(teamMember => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
-                                         key={`teamm-member-${teamMember.id}`}>
+                                         key={`team-member-${teamMember.id}`}>
                                         <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
                                             <Label>
                                                 {team.captain === teamMember.player.id && (

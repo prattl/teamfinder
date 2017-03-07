@@ -9,6 +9,7 @@ const actions = keyMirror({
 })
 export default actions
 
+// async : need for api requests
 export const requestTeam = id => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_TEAM)(id))
     const { teams } = getState().teams
@@ -21,6 +22,7 @@ export const requestTeam = id => (dispatch, getState) => {
         }
     }
     const url = createUrl(`/api/teams/${id}/`)
+    // then : how you finish a promise (start and finish later (async))
     return GET(url).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving team.')
         return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
