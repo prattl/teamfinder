@@ -23,7 +23,7 @@ const validate = values => {
     const fields = ['username', 'regions', 'skill_bracket', 'positions']
     const multiSelectFields = ['regions', 'positions']
     fields.forEach(fieldName => {
-        if ([undefined, ''].includes(values[fieldName])) {
+        if ([null, undefined, ''].includes(values[fieldName])) {
             errors[fieldName] = 'Required'
         }
     })
