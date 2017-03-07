@@ -40,6 +40,7 @@ class PlayerProfile extends Component {
             <div>
                 <h1>Player Profile</h1>
                 {playerIsLoading ? <Loading /> : (
+                    // makes sure something was actually returned from the server
                     playerLastUpdated ? (
                         <div>
                             <h2>{player.username}</h2>
