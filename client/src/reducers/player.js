@@ -3,7 +3,9 @@ import actions from 'actions/player'
 import { actionTypes as reduxFormActions } from 'redux-form'
 
 const initialState = {
-    player: null,
+    player: {
+        teams: []
+    },
     changesSaved: false,
     isLoading: false,
     lastUpdated: null

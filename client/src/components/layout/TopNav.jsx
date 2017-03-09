@@ -14,6 +14,7 @@ const baseMenuLinks = [
 
 const loggedInMenuLinks = [
     { route: '/profile', label: 'Edit Profile' },
+    { route: '/teams/manage', label: 'My Teams' },
     { route: '/logout', label: 'Log Out' }
 ]
 
