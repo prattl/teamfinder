@@ -1,11 +1,14 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
+import { browserHistory } from 'react-router'
 import { createUrl, metaGenerator } from 'utils'
-import { GET } from 'utils/api'
+import { GET, POST } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
-    RECEIVE_TEAM: null
+    RECEIVE_TEAM: null,
+    REQUEST_SUBMIT_CREATE_TEAM: null,
+    RECEIVE_SUBMIT_CREATE_TEAM: null
 })
 export default actions
 
@@ -29,4 +32,21 @@ export const requestTeam = id => (dispatch, getState) => {
             { result: payload, id }
         ))
     }))
+}
+
+export const submitCreateTeam = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_SUBMIT_CREATE_TEAM))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return POST(createUrl(`/api/teams/`), authToken, data).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating team.')
+                dispatch(createAction(actions.RECEIVE_SUBMIT_CREATE_TEAM, null, metaGenerator)(payload))
+                if (response.ok) {
+                    browserHistory.push(`/teams/manage/${json.id}`)
+                }
+                return ({ response, json })
+            })
+        )
+    }
 }

@@ -5,7 +5,7 @@ import { requestAuthStatusIfNeeded } from 'actions/auth'
 
 import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import { Link } from 'react-router'
-import { LinkContainer } from 'react-router-bootstrap'
+import { IndexLinkContainer } from 'react-router-bootstrap'
 
 const baseMenuLinks = [
     { route: '/teams', label: 'Find Teams' },
@@ -46,9 +46,9 @@ class TopNav extends Component {
                 <Navbar.Collapse>
                     <Nav pullRight>
                         {menuLinks.map((menuLink, i) => (
-                            <LinkContainer to={menuLink.route} key={`menu-link-${i}`}>
+                            <IndexLinkContainer to={menuLink.route} key={`menu-link-${i}`}>
                                 <NavItem eventKey={i}>{menuLink.label}</NavItem>
-                            </LinkContainer>
+                            </IndexLinkContainer>
                         ))}
                     </Nav>
                 </Navbar.Collapse>

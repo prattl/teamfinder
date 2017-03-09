@@ -7,6 +7,7 @@ import EditProfile from 'containers/EditProfile'
 import Index from 'components/Index'
 import LogIn from 'components/auth/LogIn'
 import LogOut from 'containers/auth/LogOut'
+import ManageTeam from 'containers/teams/ManageTeam'
 import ManageTeams from 'containers/teams/ManageTeams'
 import PlayerProfile from 'containers/PlayerProfile'
 import PlayerSearch from 'components/PlayerSearch'
@@ -28,7 +29,10 @@ export default (
         <Route path='teams'>
             <IndexRoute component={TeamSearch} />
             <Route path='create' component={CreateTeam} />
-            <Route path='manage' component={ManageTeams} />
+            <Route path='manage'>
+                <IndexRoute component={ManageTeams} />
+                <Route path=':id' component={ManageTeam} />
+            </Route>
             <Route path=':id' component={TeamProfile} />
         </Route>
         {/*<Route path='teams' component={TeamSearch} />*/}
