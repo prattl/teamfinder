@@ -32,7 +32,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset()).exclude(username='')
+        queryset = self.filter_queryset(self.get_queryset()).have_complete_profile()
 
         page = self.paginate_queryset(queryset)
         if page is not None:

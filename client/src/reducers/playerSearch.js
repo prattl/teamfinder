@@ -13,7 +13,8 @@ const initialState = {
     // TODO: This part should probably be moved into its own reducer
     player: {},
     playerIsLoading: false,
-    playerLastUpdated: null
+    playerLastUpdated: null,
+    error: null
 }
 
 const playerSearch = handleActions({
@@ -42,7 +43,8 @@ const playerSearch = handleActions({
     }),
     [actions.RECEIVE_PLAYER]: (state, action) => ({
         ...state, playerIsLoading: false, playerLastUpdated: action.meta.receivedAt,
-        player: action.payload
+        player: action.error ? state.player : action.payload,
+        error: action.error ? action.payload : null
     })
 }, initialState)
 

@@ -20,8 +20,10 @@ class TeamProfile extends Component {
     }
 
     render() {
-        const id = this.props.params.id
-        const { teams } = this.props.teams
+        const { params: { id }, teams: { teams } } = this.props
+
+        // const id = this.props.params.id
+        // const { teams } = this.props.teams
         // if teams[id] is undefined or empty
         const team = teams[id] || {}
         const isLoading = team.isLoading
