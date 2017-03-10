@@ -38,6 +38,6 @@ class ManageTeam extends Component {
     }
 }
 
-ManageTeam = withTeamFromParams(ManageTeam)
+ManageTeam = withTeam(props => props.params.id)(ManageTeam)
 
 export default ManageTeam

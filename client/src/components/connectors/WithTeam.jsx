@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import { requestTeam } from 'actions/teams'
 import { teamsSelector } from 'utils/selectors'
 
-export const withTeam = teamId => (WrappedComponent) => {
+export const _withTeam = teamId => (WrappedComponent) => {
 
     class WithTeam extends Component {
 
@@ -28,7 +28,7 @@ export const withTeam = teamId => (WrappedComponent) => {
     return WithTeam
 }
 
-export const withTeamFromParams = WrappedComponent => props => {
-    const ConnectedComponent = withTeam(props.params.id)(WrappedComponent)
-    return <ConnectedComponent />
+export const withTeam = mapPropsToId => WrappedComponent => props => {
+    const ConnectedComponent = _withTeam(mapPropsToId(props))(WrappedComponent)
+    return <ConnectedComponent {...props} />
 }

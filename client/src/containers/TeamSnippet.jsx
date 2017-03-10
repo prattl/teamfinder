@@ -8,22 +8,13 @@ import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import { teamsSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withTeam } from 'components/connectors/WithTeam'
 
 class TeamSnippet extends Component {
 
-    static propTypes = {
-        teamId: PropTypes.string.isRequired
-    }
-
-    componentDidMount() {
-        this.props.onLoad()
-    }
-
     render() {
-        const { teamId, teams,
-            fixtures: { regions, positions, skillBrackets } } = this.props
-        const thisTeam = teams[teamId] || {}
-        const { team=null, isLoading=true, lastUpdated=null } = thisTeam
+        const { fixtures: { regions, positions, skillBrackets } } = this.props
+        const { team: { team, isLoading, lastUpdated } } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
                 {isLoading ? <Loading /> : (
@@ -82,13 +73,7 @@ class TeamSnippet extends Component {
 
 }
 
-TeamSnippet = connect(
-    teamsSelector,
-    (dispatch, props) => ({
-        onLoad: () => dispatch(requestTeam(props.teamId))
-    })
-)(TeamSnippet)
-
+TeamSnippet = withTeam(props => props.teamId)(TeamSnippet)
 TeamSnippet = withAllFixtures(TeamSnippet)
 
 export default TeamSnippet
