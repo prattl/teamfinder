@@ -65,7 +65,7 @@ class TeamSnippet extends Component {
                                                     <span><CaptainIcon />&nbsp;</span>
                                                 )}
                                                 {teamMember.player.username}{teamMember.position && (
-                                                    `- ${positions.items[teamMember.position].name}`
+                                                    ` - ${positions.items[teamMember.position].name}`
                                                 )}
                                             </Label>
                                         </Link>

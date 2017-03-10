@@ -47,7 +47,7 @@ class PlayerSearchResult extends Component {
                                 {teams.map(team => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
                                          key={`player-${id}-team-${team.id}`}>
-                                        <Link to='/' style={{ color: '#FFF' }}>
+                                        <Link to={`/teams/${team.id}/`} style={{ color: '#FFF' }}>
                                             <Label>
                                                 {team.captain === id && (<span><CaptainIcon />&nbsp;</span>)}
                                                 {team.name}
