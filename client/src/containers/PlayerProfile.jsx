@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { Col, Row } from 'react-bootstrap'
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { requestPlayer } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
@@ -34,7 +34,7 @@ class PlayerProfile extends Component {
     }
 
     render() {
-        const { playerSearch: { player, playerIsLoading, playerLastUpdated } } = this.props
+        const { playerSearch: { error, player, playerIsLoading, playerLastUpdated } } = this.props
         const { fixtures: { regions, positions, skillBrackets } } = this.props
         return (
             <div>
@@ -42,29 +42,33 @@ class PlayerProfile extends Component {
                 {playerIsLoading ? <Loading /> : (
                     // makes sure something was actually returned from the server
                     playerLastUpdated ? (
-                        <div>
-                            <h2>{player.username}</h2>
-                            <FixtureRow label='Regions:'>
-                                <RegionIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.regions} fixture={regions}/>
-                            </FixtureRow>
-                            <FixtureRow label='Skill Bracket:'>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
-                            </FixtureRow>
-                            <FixtureRow label='Positions:'>
-                                <PositionIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.positions} fixture={positions}/>
-                            </FixtureRow>
-                            <h3>Teams</h3>
-                            {player.teams.map(team => (
-                                <Row key={`row-player-${player.id}-team-${team.id}`}>
-                                    <Col md={8}>
-                                        <TeamSnippet teamId={team.id} />
-                                    </Col>
-                                </Row>
-                            ))}
-                        </div>
+                        !error ? (
+                            <div>
+                                <h2>{player.username}</h2>
+                                <FixtureRow label='Regions:'>
+                                    <RegionIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={player.regions} fixture={regions}/>
+                                </FixtureRow>
+                                <FixtureRow label='Skill Bracket:'>
+                                    <SkillBracketIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
+                                </FixtureRow>
+                                <FixtureRow label='Positions:'>
+                                    <PositionIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={player.positions} fixture={positions}/>
+                                </FixtureRow>
+                                <h3>Teams</h3>
+                                {player.teams && player.teams.map(team => (
+                                    <Row key={`row-player-${player.id}-team-${team.id}`}>
+                                        <Col md={8}>
+                                            <TeamSnippet teamId={team.id} />
+                                        </Col>
+                                    </Row>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>Error: {error.message}</div>
+                        )
                     ) : <div>Error loading player</div>
                 )}
             </div>

@@ -7,7 +7,8 @@ const actions = keyMirror({
     REQUEST_OWN_PLAYER: null,
     RECEIVE_OWN_PLAYER: null,
     REQUEST_SUBMIT_PROFILE: null,
-    RECEIVE_SUBMIT_PROFILE: null
+    RECEIVE_SUBMIT_PROFILE: null,
+    DISMISS_CHANGES_SAVED: null
 })
 export default actions
 
@@ -41,3 +42,5 @@ export const submitProfile = data => (dispatch, getState) => {
         )
     }
 }
+
+export const dismissChangesSaved = createAction(actions.DISMISS_CHANGES_SAVED)

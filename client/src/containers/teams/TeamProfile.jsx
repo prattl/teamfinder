@@ -4,7 +4,10 @@ import { requestTeam } from 'actions/teams'
 
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { Col, Row } from 'react-bootstrap'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { requestPlayer } from 'actions/playerSearch'
+import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 
@@ -16,8 +19,10 @@ class TeamProfile extends Component {
     }
 
     render() {
-        const id = this.props.params.id
-        const { teams } = this.props.teams
+        const { params: { id }, teams: { teams } } = this.props
+
+        // const id = this.props.params.id
+        // const { teams } = this.props.teams
         // if teams[id] is undefined or empty
         const team = teams[id] || {}
         const isLoading = team.isLoading

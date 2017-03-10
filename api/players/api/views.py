@@ -8,7 +8,7 @@ from .serializers import FlatPlayerSerializer, PlayerSerializer
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
-    queryset = Player.objects.exclude(username='')
+    queryset = Player.objects.all()
     serializer_class = PlayerSerializer
     model = Player
     permission_classes = (IsStaffOrTargetPlayer, )
@@ -30,6 +30,17 @@ class PlayerViewSet(viewsets.ModelViewSet):
         if skill_bracket:
             queryset = queryset.filter(skill_bracket_id=skill_bracket)
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset()).have_complete_profile()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @list_route(url_path='me', permission_classes=(permissions.IsAuthenticated, ), methods=('GET', ))
     def me(self, request):

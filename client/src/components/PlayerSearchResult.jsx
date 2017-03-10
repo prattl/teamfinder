@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-import { withAllFixtures } from 'components/forms/PlayerSearchForm'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
@@ -47,7 +47,7 @@ class PlayerSearchResult extends Component {
                                 {teams.map(team => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
                                          key={`player-${id}-team-${team.id}`}>
-                                        <Link to='/' style={{ color: '#FFF' }}>
+                                        <Link to={`/teams/${team.id}/`} style={{ color: '#FFF' }}>
                                             <Label>
                                                 {team.captain === id && (<span><CaptainIcon />&nbsp;</span>)}
                                                 {team.name}

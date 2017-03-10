@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 // import { requestAllFixtures } from 'actions/fixtures'
 import TeamSearchForm from 'components/forms/TeamSearchForm'
-import TeamSearchResults from 'containers/TeamSearchResults'
+import TeamSearchResults from 'containers/teams/TeamSearchResults'
 
 class TeamSearch extends Component {
 

@@ -8,14 +8,19 @@ const requireAuthentication = (WrappedComponent) => {
 
     class AuthenticatedComponent extends Component {
 
+        checkAuthenticationAndRedirect(props) {
+            if (props.lastUpdated && !props.tokenVerified) {
+                browserHistory.push('/login-required')
+            }
+        }
+
         componentDidMount() {
             this.props.onLoad()
+            this.checkAuthenticationAndRedirect(this.props)
         }
 
         componentWillReceiveProps(nextProps) {
-            if (nextProps.lastUpdated && !nextProps.tokenVerified) {
-                browserHistory.push('/login-required')
-            }
+            this.checkAuthenticationAndRedirect(nextProps)
         }
 
         render() {

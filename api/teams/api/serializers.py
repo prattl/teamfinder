@@ -100,8 +100,6 @@ class TeamSerializer(serializers.ModelSerializer):
 # TODO: Difference between FlatTeamSerializer and EditableFlatTeamSerializer?
 
 class FlatTeamSerializer(serializers.ModelSerializer):
-    # url = serializers.HyperlinkedIdentityField(view_name='team-detail')
-
     @staticmethod
     def setup_eager_loading(queryset):
         return queryset
@@ -113,6 +111,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
             'name',
             'skill_bracket',
             'regions',
+            # 'player_position',  # TODO
             'available_positions',
             'captain',
             'creator',
@@ -120,33 +119,35 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
-            'name',
-            'skill_bracket',
-            'regions',
-            'available_positions',
             'captain',
             'creator',
             'url',
         )
 
-    def create(self, validated_data):
-        try:
-            validated_data['skill_bracket'] = SkillBracket.objects.get(pk=validated_data.pop('skill_bracket', None))
-        except SkillBracket.DoesNotExist:
-            pass
-        team = Team.objects.create(**validated_data)
-        return team
+    # def create(self, validated_data):
+    #     try:
+    #         validated_data['skill_bracket'] = SkillBracket.objects.get(pk=validated_data.pop('skill_bracket', None))
+    #     except SkillBracket.DoesNotExist:
+    #         pass
+    #     team = Team.objects.create(**validated_data)
+    #     return team
 
-    def validate(self, data):
-        return data
+    def __init__(self, *args, **kwargs):
+        super(FlatTeamSerializer, self).__init__(*args, **kwargs)
+        self.fields['regions'].required = True
+        self.fields['skill_bracket'].required = True
+
+    # def validate(self, data):
+    #     # import ipdb; ipdb.set_trace()
+    #     return data
 
 
 class EditableFlatTeamSerializer(serializers.ModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name='team-detail')
 
-    def validate_name(self, name):
-        request = self.context['request']
-        return name
+    # def validate_name(self, name):
+    #     request = self.context['request']
+    #     return name
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -172,14 +173,13 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print("EditableFlatTeamSerializer create()", validated_data)
         skill_bracket = SkillBracket.objects.get(pk=validated_data.pop('skill_bracket'))
         team = Team.objects.create(skill_bracket=skill_bracket, **validated_data)
         return team
 
-    def validate(self, data):
-        request = self.context['request']
-        return data
+    # def validate(self, data):
+    #     request = self.context['request']
+    #     return data
 
 
 class TeamMembershipSerializer(MembershipSerializer):

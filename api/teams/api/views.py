@@ -62,7 +62,6 @@ class TeamViewSet(viewsets.ModelViewSet):
                     return EditableFlatTeamSerializer
             return FlatTeamSerializer
         serializer_class = _get_serializer_class()
-        # print(self.request.method, 'get_serializer_class returning', serializer_class)
         return serializer_class
 
     def get_queryset(self):

@@ -38,7 +38,8 @@ export const requestPlayer = id => (dispatch, getState) => {
     } else {
         const url = createUrl(`/api/players/${id}/`)
         return GET(url).then(response => response.json().then(json => {
-            const payload = response.ok ? json : new Error('Error retrieving player results.')
+            // TODO: Implement NotFoundError
+            const payload = response.ok ? json : new Error('Error retrieving player.')
             return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(payload))
         }))
     }
