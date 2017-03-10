@@ -1,39 +1,15 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
 
-import { requestAllFixturesIfNeeded } from 'actions/fixtures'
-import { requestPlayerSearch } from 'actions/playerSearch'
 import { fixturesSelector } from 'utils/selectors'
 
 import { Button, Col, Row } from 'react-bootstrap'
 import { createInput } from 'components/forms'
 import Select from 'react-select'
+import { playerSubmit } from 'components/forms/SearchForm'
 
-
-// TODO: Move this somewhere else
-const submit = (values, dispatch) => {
-    return dispatch(requestPlayerSearch(values))
-}
-
-
-// TODO: Move these fixture components somewhere else
-const withFixtures = (selector) => (WrappedComponent) => {
-    class WithFixtures extends Component {
-
-        componentDidMount() {
-            this.props.onLoad()
-        }
-
-        render() {
-            return <WrappedComponent {...this.props} />
-        }
-
-    }
-    WithFixtures = connect(selector, { onLoad: requestAllFixturesIfNeeded })(WithFixtures)
-    return WithFixtures
-}
+import { withFixtures } from 'utils/components/fixtures'
 
 export const withAllFixtures = withFixtures(
     createStructuredSelector({
@@ -136,7 +112,6 @@ let PositionSelect = props => {
 
 PositionSelect = withAllFixtures(PositionSelect)
 
-
 const KeywordsInput = createInput()
 
 class PlayerSearchForm extends Component {
@@ -179,7 +154,7 @@ PlayerSearchForm = reduxForm({
         positions: [],
         skillBracket: ''
     },
-    onSubmit: submit
+    onSubmit: playerSubmit
 })(PlayerSearchForm)
 
 export default PlayerSearchForm

@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
 import { requestTeam } from 'actions/teams'
 
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
-import { Col, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/forms/PlayerSearchForm'
-import { requestPlayer } from 'actions/playerSearch'
-import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 

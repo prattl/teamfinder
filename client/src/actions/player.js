@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
-import { browserHistory } from 'react-router'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, PATCH } from 'utils/api'
 
