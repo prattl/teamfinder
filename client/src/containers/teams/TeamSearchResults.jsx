@@ -17,7 +17,6 @@ class TeamSearchResults extends PureComponent {
     constructor(props) {
         super(props)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
-        console.log('PROPS: ', this.props)
     }
 
     componentDidMount() {
@@ -31,7 +30,6 @@ class TeamSearchResults extends PureComponent {
 
     render() {
         const a = this.props
-        console.log('PROPS: ', a)
         const { requestNextPageOfTeams,
             teamSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated } } = this.props
         return (
