@@ -4,15 +4,11 @@ import { requestTeam } from 'actions/teams'
 
 import { Label } from 'react-bootstrap'
 import { Link } from 'react-router'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, playerIsCaptain } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import { playerSelector, teamsSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam } from 'components/connectors/WithTeam'
-
-const playerIsCaptain = (player, team) => (
-    player.id == team.captain
-)
 
 class TeamSnippet extends Component {
 

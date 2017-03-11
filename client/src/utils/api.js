@@ -14,6 +14,14 @@ export const GET = (url, authToken=null, extraHeaders={}) => fetch(
     }
 )
 
+const createResourceModifier = method => (url, authToken=null, data={}, extraHeaders={}) => fetch(
+    url, {
+        headers: createHeaders(extraHeaders, authToken),
+        body: JSON.stringify(data),
+        method
+    }
+)
+
 export const POST = (url, authToken=null, data={}, extraHeaders={}) => fetch(
     url, {
         headers: createHeaders(extraHeaders, authToken),
@@ -29,3 +37,5 @@ export const PATCH = (url, authToken=null, data={}, extraHeaders={}) => fetch(
         method: 'PATCH'
     }
 )
+
+export const DELETE = createResourceModifier('DELETE')

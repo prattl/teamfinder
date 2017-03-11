@@ -7,7 +7,6 @@ import { playerSelector } from 'utils/selectors'
 import { Alert, Col, Image, Row } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import ProfileForm from 'components/forms/ProfileForm'
-import { Loading } from 'utils'
 
 class EditProfile extends Component {
 
@@ -25,7 +24,7 @@ class EditProfile extends Component {
     }
 
     render() {
-        const { changesSaved, player, isLoading, lastUpdated } = this.props
+        const { changesSaved, player } = this.props
         const initialValues = player ? ({
             username: player.username,
             skill_bracket: player.skill_bracket,
@@ -35,23 +34,20 @@ class EditProfile extends Component {
         return (
             <div>
                 <h1>Profile</h1>
-                {isLoading ? <Loading /> : (
-                    lastUpdated ? (
-                        <Row>
-                            <Col lg={4} md={3} sm={2}>
-                                <div className='text-right'>
-                                    <Image src='http://placehold.it/150x150' thumbnail />
-                                </div>
-                            </Col>
-                            <Col lg={4} md={6} sm={8}>
-                                {changesSaved && (
-                                    <Alert bsStyle='success' onDismiss={this.handleChangesSavedDismiss}>Changes saved!</Alert>
-                                )}
-                                {player && <ProfileForm initialValues={initialValues} />}
-                            </Col>
-                        </Row>
-                    ) : (<div>Error</div>)
-                )}
+                <Row>
+                    <Col lg={4} md={3} sm={2}>
+                        <div className='text-right'>
+                            <Image src='http://placehold.it/150x150' thumbnail />
+                        </div>
+                    </Col>
+                    <Col lg={4} md={6} sm={8}>
+                        {changesSaved && (
+                            <Alert bsStyle='success' onDismiss={this.handleChangesSavedDismiss}>Changes saved!</Alert>
+                        )}
+                        {player && <ProfileForm initialValues={initialValues} />}
+                    </Col>
+                </Row>
+
             </div>
         )
     }

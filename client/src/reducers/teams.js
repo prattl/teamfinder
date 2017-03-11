@@ -4,7 +4,7 @@ import actions from 'actions/teams'
 // part of redux
 // function that takes a state (giant obj) and an action -> state
 const initialTeamState = {
-    team: {},
+    team: null,
     isLoading: false,
     lastUpdated: null
 }
@@ -39,7 +39,14 @@ const teams = handleActions({
                 lastUpdated: action.meta.receivedAt
             }
         }
-    })
+    }),
+    [actions.RECEIVE_DELETE_TEAM]: (state, action) => {
+        const { [action.payload]: deletedTeam, ...newTeams} = state.teams
+        return {
+            ...state,
+            teams: newTeams
+        }
+    }
 }, initialState)
 
 export default teams
