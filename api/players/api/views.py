@@ -16,6 +16,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
         positions = self.request.query_params.getlist('positions[]')

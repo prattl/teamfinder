@@ -1,20 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { createStructuredSelector } from 'reselect'
-
-import { requestAllFixturesIfNeeded } from 'actions/fixtures'
-import { requestPlayerSearch } from 'actions/playerSearch'
-import { fixturesSelector } from 'utils/selectors'
-
 import { Button, Col, Row } from 'react-bootstrap'
+import { playerSubmit } from 'components/forms/SearchForm'
 import { createInput, RegionSelect, PositionSelect, SkillBracketSelect } from 'components/forms'
-
-
-// TODO: Move this somewhere else
-const submit = (values, dispatch) => {
-    return dispatch(requestPlayerSearch(values))
-}
 
 const KeywordsInput = createInput()
 
@@ -58,7 +46,7 @@ PlayerSearchForm = reduxForm({
         positions: [],
         skill_bracket: ''
     },
-    onSubmit: submit
+    onSubmit: playerSubmit
 })(PlayerSearchForm)
 
 export default PlayerSearchForm

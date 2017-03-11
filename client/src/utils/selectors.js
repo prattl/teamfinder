@@ -24,3 +24,8 @@ export const teamsSelector = createSelector(
     state => state.teams,
     teams => (teams)
 )
+
+export const teamSearchSelector = createSelector(
+    state => state.teamSearch,
+    teamSearch => (teamSearch)
+)

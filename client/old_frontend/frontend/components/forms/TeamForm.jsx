@@ -26,7 +26,7 @@ const validate = values => {
 }
 
 const submit = (values, dispatch) => {
-    console.log('submit got values', values)
+    console.log('playerSubmit got values', values)
     const actionCreator = values.teamId ? submitUpdateTeam : submitCreateTeam
     return dispatch(actionCreator(values)).then( ({json, response}) => {
         if (!response.ok) {

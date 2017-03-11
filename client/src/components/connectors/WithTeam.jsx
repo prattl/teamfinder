@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
-
 import { requestTeam } from 'actions/teams'
 import { teamsSelector } from 'utils/selectors'
 
