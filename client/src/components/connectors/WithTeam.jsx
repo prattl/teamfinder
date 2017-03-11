@@ -26,7 +26,16 @@ export const _withTeam = teamId => (WrappedComponent) => {
     return WithTeam
 }
 
-export const withTeam = mapPropsToId => WrappedComponent => props => {
-    const ConnectedComponent = _withTeam(mapPropsToId(props))(WrappedComponent)
-    return <ConnectedComponent {...props} />
+export const withTeam = mapPropsToId => WrappedComponent => {
+
+    class WithTeam extends Component {
+
+        render() {
+            const ConnectedComponent = _withTeam(mapPropsToId(this.props))(WrappedComponent)
+            return <ConnectedComponent {...this.props} />
+        }
+    }
+
+    return WithTeam
+
 }

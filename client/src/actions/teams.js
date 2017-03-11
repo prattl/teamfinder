@@ -1,14 +1,23 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { browserHistory } from 'react-router'
+import { requestOwnPlayer } from 'actions/player'
 import { createUrl, metaGenerator } from 'utils'
-import { GET, POST } from 'utils/api'
+import { GET, POST, DELETE } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
     RECEIVE_TEAM: null,
     REQUEST_SUBMIT_CREATE_TEAM: null,
-    RECEIVE_SUBMIT_CREATE_TEAM: null
+    RECEIVE_SUBMIT_CREATE_TEAM: null,
+    CONFIRM_DELETE_TEAM: null,
+    CANCEL_DELETE_TEAM: null,
+    CONFIRM_DELETE_TEAM_MEMBER: null,
+    CANCEL_DELETE_TEAM_MEMBER: null,
+    REQUEST_DELETE_TEAM: null,
+    RECEIVE_DELETE_TEAM: null,
+    REQUEST_DELETE_TEAM_MEMBER: null,
+    RECEIVE_DELETE_TEAM_MEMBER: null
 })
 export default actions
 
@@ -18,7 +27,7 @@ export const requestTeam = id => (dispatch, getState) => {
     const { teams } = getState().teams
     if (Object.keys(teams).includes(id)) {
         const team = teams[id]
-        if (!team.isLoading && team.lastUpdated) {
+        if (team.team) {
             return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
                 { result: teams[id].team, id }
             ))
@@ -48,5 +57,38 @@ export const submitCreateTeam = data => (dispatch, getState) => {
                 return ({ response, json })
             })
         )
+    }
+}
+
+export const tryDeleteTeam = createAction(actions.CONFIRM_DELETE_TEAM)
+export const cancelDeleteTeam = createAction(actions.CANCEL_DELETE_TEAM)
+export const tryDeleteTeamMember = createAction(actions.CONFIRM_DELETE_TEAM_MEMBER)
+export const cancelDeleteTeamMember = createAction(actions.CANCEL_DELETE_TEAM_MEMBER)
+
+export const deleteTeam = teamId => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_DELETE_TEAM)(teamId))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return DELETE(createUrl(`/api/teams/${teamId}/`), authToken).then(
+            response => {
+                const payload = response.ok ? teamId : new Error('Error deleting team.')
+                if (response.ok) {
+                    browserHistory.push('/teams/manage/')
+                }
+                dispatch(requestOwnPlayer())
+                return dispatch(createAction(actions.RECEIVE_DELETE_TEAM, null, metaGenerator)(payload))
+            }
+        )
+    }
+}
+
+export const deleteTeamMember = (teamMemberId, teamId) => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_DELETE_TEAM_MEMBER)(teamMemberId))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return DELETE(createUrl(`/api/memberships/${teamMemberId}/`), authToken).then(response => {
+            const payload = response.ok ? teamMemberId : new Error('Error removing team member.')
+            return dispatch(createAction(actions.RECEIVE_DELETE_TEAM_MEMBER, null, metaGenerator)(payload))
+        })
     }
 }

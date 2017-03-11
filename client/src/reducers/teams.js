@@ -4,14 +4,16 @@ import actions from 'actions/teams'
 // part of redux
 // function that takes a state (giant obj) and an action -> state
 const initialTeamState = {
-    team: {},
+    team: null,
     isLoading: false,
-    lastUpdated: null
+    lastUpdated: null,
+    confirmDelete: false,
+    confirmDeleteTeamMember: null
 }
 
 // no need for error checking (teams will never be undefined)
 const initialState = {
-    teams: {}
+    teams: {},
 }
 
 // TODO : reduxjs guide
@@ -37,6 +39,53 @@ const teams = handleActions({
                 team: action.payload.result,
                 isLoading: false,
                 lastUpdated: action.meta.receivedAt
+            }
+        }
+    }),
+    [actions.RECEIVE_DELETE_TEAM]: (state, action) => {
+        const { [action.payload]: deletedTeam, ...newTeams} = state.teams
+        return {
+            ...state,
+            teams: newTeams
+        }
+    },
+    [actions.CONFIRM_DELETE_TEAM]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload]: {
+                ...state.teams[action.payload],
+                confirmDelete: true
+            }
+        }
+    }),
+    [actions.CANCEL_DELETE_TEAM]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload]: {
+                ...state.teams[action.payload],
+                confirmDelete: false
+            }
+        }
+    }),
+    [actions.CONFIRM_DELETE_TEAM_MEMBER]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmDeleteTeamMember: action.payload.teamMemberId
+            }
+        }
+    }),
+    [actions.CANCEL_DELETE_TEAM_MEMBER]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmDeleteTeamMember: null
             }
         }
     })

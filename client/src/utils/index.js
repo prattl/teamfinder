@@ -34,3 +34,6 @@ export const FixtureDisplay = ({ value, fixture }) => (
     ) : null
 )
 
+export const playerIsCaptain = (player, team) => (
+    player.id == team.captain
+)

@@ -44,6 +44,7 @@ class PlayerSearchResult extends Component {
                                 <FixtureDisplay value={positions} fixture={fixtures.positions}/>
                             </div>
                             <div style={{ marginTop: '1rem' }}>
+                                {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}
                                 {teams.map(team => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
                                          key={`player-${id}-team-${team.id}`}>

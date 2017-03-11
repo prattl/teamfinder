@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
 import { Label } from 'react-bootstrap'
 import { Link } from 'react-router'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, playerIsCaptain } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+
+import { playerSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam } from 'components/connectors/WithTeam'
 
@@ -10,7 +14,7 @@ class TeamSnippet extends Component {
 
     render() {
         const { fixtures: { regions, positions, skillBrackets } } = this.props
-        const { team: { team, isLoading, lastUpdated } } = this.props
+        const { team: { team, isLoading, lastUpdated }, player } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
                 {isLoading ? <Loading /> : (
@@ -19,6 +23,10 @@ class TeamSnippet extends Component {
                             <div>
                                 <h4 className='pull-left'>
                                     <Link to={`/teams/${team.id}`}>{team.name}</Link>
+                                    {playerIsCaptain(player, team) && (
+                                        <small>&nbsp;(<Link to={`/teams/manage/${team.id}/`}>manage</Link>)</small>
+                                    )}
+
                                 </h4>
                                 <span className='pull-right'>
                                     <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
@@ -68,6 +76,8 @@ class TeamSnippet extends Component {
     }
 
 }
+
+TeamSnippet = connect(playerSelector, null)(TeamSnippet)
 
 TeamSnippet = withTeam(props => props.teamId)(TeamSnippet)
 TeamSnippet = withAllFixtures(TeamSnippet)

@@ -44,7 +44,7 @@ PlayerSearchForm = reduxForm({
         keywords: '',
         regions: [],
         positions: [],
-        skillBracket: ''
+        skill_bracket: ''
     },
     onSubmit: playerSubmit
 })(PlayerSearchForm)
