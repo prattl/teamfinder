@@ -10,7 +10,8 @@ import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam, withTeamFromParams } from 'components/connectors/WithTeam'
 import { requestPlayer } from 'actions/playerSearch'
-import { cancelDeleteTeam, tryDeleteTeam, deleteTeam } from 'actions/teams'
+import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tryDeleteTeamMember,
+    deleteTeamMember } from 'actions/teams'
 import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading, playerIsCaptain } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
@@ -26,6 +27,10 @@ class ManageTeam extends Component {
         this.handleDeleteTeamClick = this.handleDeleteTeamClick.bind(this)
         this.handleDeleteTeamConfirmClick = this.handleDeleteTeamConfirmClick.bind(this)
         this.handleDeleteTeamCancelClick = this.handleDeleteTeamCancelClick.bind(this)
+        this.handleDeleteTeamMemberClick = this.handleDeleteTeamMemberClick.bind(this)
+        this.handleDeleteTeamMemberConfirmClick = this.handleDeleteTeamMemberConfirmClick.bind(this)
+        this.handleDeleteTeamMemberCancelClick = this.handleDeleteTeamMemberCancelClick.bind(this)
+        
     }
 
     handleDeleteTeamClick() {
@@ -43,8 +48,19 @@ class ManageTeam extends Component {
         cancelDeleteTeam(id)
     }
 
-    handleDeleteTeamMemberClick() {
+    handleDeleteTeamMemberClick(teamMemberId) {
+        const { tryDeleteTeamMember, team: { team: { id } } } = this.props
+        tryDeleteTeamMember({ teamMemberId, teamId: id })
+    }
 
+    handleDeleteTeamMemberConfirmClick(teamMemberId) {
+        const { deleteTeamMember, team: { team: { id } } } = this.props
+        deleteTeamMember(teamMemberId, id)
+    }
+
+    handleDeleteTeamMemberCancelClick() {
+        const { cancelDeleteTeamMember, team: { team: { id } } } = this.props
+        cancelDeleteTeamMember({ teamId: id })
     }
 
     renderDeleteTeamConfirmModal() {
@@ -65,12 +81,39 @@ class ManageTeam extends Component {
         )
     }
 
+    renderDeleteTeamMemberConfirmModal(teamMemberId) {
+        const { team: { confirmDeleteTeamMember, team } } = this.props
+        const teamMember = team.team_members.find(member => member.id === teamMemberId)
+        return (
+            <Modal show={confirmDeleteTeamMember === teamMemberId}>
+                <Modal.Header>
+                    <Modal.Title>Confirm Remove Team Member</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Are you sure you want to remove <strong>
+                        {teamMember.player.username}
+                        </strong> from <strong>{team.name}</strong>? This
+                        cannot be undone.
+                    </p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link'
+                            onClick={() => this.handleDeleteTeamMemberCancelClick(teamMemberId)}>Cancel</Button>
+                    <Button bsStyle='danger'
+                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMemberId)}>Remove</Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
     renderTeamMemberRow(teamMember) {
         const { team: { team },
             fixtures: { positions }
         } = this.props
         return (
             <tr key={teamMember.id}>
+                {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
                 <td>
                     {teamMember.player.username}&nbsp;
                     (<Link to={`/players/${teamMember.player.id}/`}>
@@ -79,8 +122,10 @@ class ManageTeam extends Component {
                 </td>
                 <td>{teamMember.position && positions.items[teamMember.position].name}</td>
                 <td>
+                    {/* TODO: Hide remove button if player is the captain */}
                     <ButtonToolbar>
-                        <Button bsSize='xs' bsStyle='danger'>Remove</Button>
+                        <Button bsSize='xs' bsStyle='danger'
+                                onClick={() => this.handleDeleteTeamMemberClick(teamMember.id)}>Remove</Button>
                         {!playerIsCaptain(teamMember.player, team) && <Button bsSize='sm'>Make Captain</Button>}
                     </ButtonToolbar>
                 </td>
@@ -139,7 +184,10 @@ ManageTeam = connect(
     {
         cancelDeleteTeam,
         deleteTeam,
-        tryDeleteTeam
+        tryDeleteTeam,
+        cancelDeleteTeamMember,
+        deleteTeamMember,
+        tryDeleteTeamMember
     }
 )(ManageTeam)
 

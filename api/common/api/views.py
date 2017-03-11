@@ -140,5 +140,14 @@ class MembershipViewSet(mixins.RetrieveModelMixin,
 
         return queryset
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.player == self.request.user.player.id and instance.team.captain == self.request.user.player:
+            return Response({'error': 'You cannot remove yourself from the team if you are the captain.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
     def perform_destroy(self, instance):
+        # TODO: Don't allow delete of own player
+
         instance.delete(player_id=self.request.user.player.id)

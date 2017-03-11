@@ -7,14 +7,13 @@ const initialTeamState = {
     team: null,
     isLoading: false,
     lastUpdated: null,
-    confirmDelete: false
+    confirmDelete: false,
+    confirmDeleteTeamMember: null
 }
 
 // no need for error checking (teams will never be undefined)
 const initialState = {
     teams: {},
-    confirmDeleteTeam: null,
-    confirmDeleteTeamMember: null
 }
 
 // TODO : reduxjs guide
@@ -67,6 +66,26 @@ const teams = handleActions({
             [action.payload]: {
                 ...state.teams[action.payload],
                 confirmDelete: false
+            }
+        }
+    }),
+    [actions.CONFIRM_DELETE_TEAM_MEMBER]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmDeleteTeamMember: action.payload.teamMemberId
+            }
+        }
+    }),
+    [actions.CANCEL_DELETE_TEAM_MEMBER]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmDeleteTeamMember: null
             }
         }
     })

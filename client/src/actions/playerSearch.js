@@ -15,8 +15,8 @@ export default actions
 
 export const requestPlayerSearch = (values) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
-    const { keywords, regions, positions, skillBracket } = values
-    let url = createUrl(`/api/players/?keywords=${keywords}&skill_bracket=${skillBracket}`)
+    const { keywords, regions, positions, skill_bracket } = values
+    let url = createUrl(`/api/players/?keywords=${keywords}&skill_bracket=${skill_bracket}`)
     regions.forEach(region => url += `&regions[]=${region}`)
     positions.forEach(position => url += `&positions[]=${position}`)
     return GET(url).then(response => response.json().then(json => {
