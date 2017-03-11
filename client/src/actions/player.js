@@ -37,6 +37,9 @@ export const submitProfile = data => (dispatch, getState) => {
         return PATCH(createUrl(`/api/players/${id}/`), authToken, data).then(
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error('Error submitting profile.')
+                if (response.ok) {
+                    dispatch(requestOwnPlayer())
+                }
                 dispatch(createAction(actions.RECEIVE_SUBMIT_PROFILE, null, metaGenerator)(payload))
                 return ({ response, json })
             })
