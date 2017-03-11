@@ -20,7 +20,7 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
+    // const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
     const multiSelectFields = ['regions', 'available_positions']
     // fields.forEach(fieldName => {
     //     if ([null, undefined, ''].includes(values[fieldName])) {

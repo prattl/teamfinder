@@ -1,12 +1,8 @@
-import React, {Component, PropTypes} from 'react'
-import { connect } from 'react-redux'
-import { requestTeam } from 'actions/teams'
-
+import React, { Component } from 'react'
 import { Label } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
-import { teamsSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam } from 'components/connectors/WithTeam'
 

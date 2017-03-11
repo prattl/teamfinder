@@ -1,6 +1,6 @@
 from common.api.permissions import IsStaffOrTeamCaptain
 # from common.api.serializers import PlayerMembershipSerializer
-from common.models import Position, SkillBracket, TeamMember
+from common.models import Position, SkillBracket, TeamMember, Region
 # from teamfinder.api.serializers import PlayerMembershipSerializer, TeamSerializer
 from teams.api.serializers import EditableFlatTeamSerializer, TeamSerializer, PlayerMembershipSerializer
 from teams.models import Team
@@ -67,6 +67,21 @@ class TeamViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = self.setup_eager_loading(queryset)
+
+        keywords = self.request.query_params.get('keywords')
+        regions = self.request.query_params.getlist('regions[]')
+        positions = self.request.query_params.getlist('positions[]')
+        skill_bracket = self.request.query_params.get('skill_bracket')
+
+        if keywords:
+            queryset = queryset.filter(name__icontains=keywords)
+        if regions:
+            queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
+        if positions:
+            queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
+        if skill_bracket:
+            queryset = queryset.filter(skill_bracket_id=skill_bracket)
+
         return queryset
 
     @detail_route(permission_classes=(permissions.IsAuthenticated, ), methods=('GET', ))

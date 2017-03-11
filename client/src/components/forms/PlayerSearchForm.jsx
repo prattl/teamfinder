@@ -1,19 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { createStructuredSelector } from 'reselect'
-
-import { fixturesSelector } from 'utils/selectors'
-
 import { Button, Col, Row } from 'react-bootstrap'
 import { playerSubmit } from 'components/forms/SearchForm'
-import { requestPlayerSearch } from 'actions/playerSearch'
-
 import { createInput, RegionSelect, PositionSelect, SkillBracketSelect } from 'components/forms'
-
-// TODO: Move this somewhere else
-const submit = (values, dispatch) => {
-    return dispatch(requestPlayerSearch(values))
-}
 
 const KeywordsInput = createInput()
 

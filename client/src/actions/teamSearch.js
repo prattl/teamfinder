@@ -28,3 +28,32 @@ export const requestTeamSearch = (values) => (dispatch, getStates) => {
         return json
     }))
 }
+
+export const requestTeam = id => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_TEAM)())
+    const { results } = getState().teamSearch
+    const team = results.find(result => result.id === id)
+    if (team) {
+        return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(team))
+    } else {
+        const url = createUrl(`/api/teams/${id}/`)
+        return GET(url).then(response => response.json().then(json => {
+            // TODO: Implement NotFoundError
+            const payload = response.ok ? json : new Error('Error retrieving team.')
+            return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(payload))
+        }))
+    }
+}
+
+export const requestNextPageOfTeams = () => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_NEXT_PAGE_OF_TEAMS)())
+    const nextPage = getState().teamSearch.next
+    return GET(nextPage).then(response => response.json().then(json => {
+        const payload = response.ok ? json : new Error('Error retrieving next page of team search results.')
+        dispatch(createAction(actions.RECEIVE_NEXT_PAGE_OF_TEAMS, null, metaGenerator)(payload))
+        if (!response.ok) {
+            return Promise.reject(json)
+        }
+        return json
+    }))
+}
