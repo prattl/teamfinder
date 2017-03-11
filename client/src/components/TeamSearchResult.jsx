@@ -21,7 +21,6 @@ class TeamSearchResult extends Component {
     //
 
     render() {
-        // console.log('TeamSearchResultPROPS: ', this.props)
         const { available_positions, captain, creator, id, name, regions, skill_bracket, team_members, fixtures } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
@@ -51,19 +50,6 @@ class TeamSearchResult extends Component {
                             <div>
                                 <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                 <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
-                            </div>
-                            <div style={{ marginTop: '1rem' }}>
-                                {available_positions.map(pos => (
-                                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
-                                         key={`team-${id}-position-${pos}`}>
-                                        <Link to={`/positions/${pos.id}/`} style={{ color: '#FFF' }}>
-                                            <Label>
-                                                {pos.name}
-                                            </Label>
-                                        </Link>
-                                    </div>
-
-                                ))}
                             </div>
                             <div>
                                 <PlayersIcon fixedWidth={true}/>&nbsp;

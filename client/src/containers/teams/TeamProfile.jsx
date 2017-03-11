@@ -76,7 +76,8 @@ class TeamProfile extends Component {
                                                 {team.captain === teamMember.player.id && (
                                                     <span><CaptainIcon />&nbsp;</span>
                                                 )}
-                                                {teamMember.player.username} - {positions.items[teamMember.position].name}
+                                                {teamMember.player.username}
+                                                {teamMember.position && `- ${positions.items[teamMember.position].name}`}
                                             </Label>
                                         </Link>
                                     </div>
