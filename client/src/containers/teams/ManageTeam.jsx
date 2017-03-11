@@ -5,12 +5,12 @@ import { requestTeam } from 'actions/teams'
 
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
-import { Button, ButtonToolbar, Col, Row, Table } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Modal, Row, Table } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam, withTeamFromParams } from 'components/connectors/WithTeam'
 import { requestPlayer } from 'actions/playerSearch'
-import { deleteTeam } from 'actions/teams'
+import { cancelDeleteTeam, tryDeleteTeam, deleteTeam } from 'actions/teams'
 import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading, playerIsCaptain } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
@@ -24,12 +24,45 @@ class ManageTeam extends Component {
     constructor(props) {
         super(props)
         this.handleDeleteTeamClick = this.handleDeleteTeamClick.bind(this)
+        this.handleDeleteTeamConfirmClick = this.handleDeleteTeamConfirmClick.bind(this)
+        this.handleDeleteTeamCancelClick = this.handleDeleteTeamCancelClick.bind(this)
     }
 
     handleDeleteTeamClick() {
+        const { tryDeleteTeam, team: { team: { id } } } = this.props
+        tryDeleteTeam(id)
+    }
+
+    handleDeleteTeamConfirmClick() {
         const { deleteTeam, team: { team: { id } } } = this.props
-        console.log('Deleting', id)
         deleteTeam(id)
+    }
+
+    handleDeleteTeamCancelClick() {
+        const { cancelDeleteTeam, team: { team: { id } } } = this.props
+        cancelDeleteTeam(id)
+    }
+
+    handleDeleteTeamMemberClick() {
+
+    }
+
+    renderDeleteTeamConfirmModal() {
+        const { team: { confirmDelete, team } } = this.props
+        return (
+            <Modal show={confirmDelete}>
+                <Modal.Header>
+                    <Modal.Title>Confirm Delete Team</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Are you sure you want to delete <strong>{team.name}</strong>? This cannot be undone.</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link' onClick={this.handleDeleteTeamCancelClick}>Cancel</Button>
+                    <Button bsStyle='danger' onClick={this.handleDeleteTeamConfirmClick}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
+        )
     }
 
     renderTeamMemberRow(teamMember) {
@@ -62,6 +95,7 @@ class ManageTeam extends Component {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
+                            {this.renderDeleteTeamConfirmModal()}
                             <h1>
                                 Manage Team: {team.name}&nbsp;
                                 <span className='pull-right'>
@@ -100,6 +134,13 @@ class ManageTeam extends Component {
 ManageTeam = withAllFixtures(ManageTeam)
 ManageTeam = withTeam(props => props.params.id)(ManageTeam)
 ManageTeam = requireAuthentication(ManageTeam)
-ManageTeam = connect(null, { deleteTeam })(ManageTeam)
+ManageTeam = connect(
+    null,
+    {
+        cancelDeleteTeam,
+        deleteTeam,
+        tryDeleteTeam
+    }
+)(ManageTeam)
 
 export default ManageTeam

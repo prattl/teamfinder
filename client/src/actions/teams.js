@@ -10,8 +10,12 @@ const actions = keyMirror({
     RECEIVE_TEAM: null,
     REQUEST_SUBMIT_CREATE_TEAM: null,
     RECEIVE_SUBMIT_CREATE_TEAM: null,
+    CONFIRM_DELETE_TEAM: null,
+    CANCEL_DELETE_TEAM: null,
     REQUEST_DELETE_TEAM: null,
-    RECEIVE_DELETE_TEAM: null
+    RECEIVE_DELETE_TEAM: null,
+    REQUEST_DELETE_TEAM_MEMBER: null,
+    RECEIVE_DELETE_TEAM_MEMBER: null
 })
 export default actions
 
@@ -54,6 +58,9 @@ export const submitCreateTeam = data => (dispatch, getState) => {
     }
 }
 
+export const tryDeleteTeam = createAction(actions.CONFIRM_DELETE_TEAM)
+export const cancelDeleteTeam = createAction(actions.CANCEL_DELETE_TEAM)
+
 export const deleteTeam = teamId => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_DELETE_TEAM)(teamId))
     const { auth: { authToken } } = getState()
@@ -68,5 +75,16 @@ export const deleteTeam = teamId => (dispatch, getState) => {
                 return dispatch(createAction(actions.RECEIVE_DELETE_TEAM, null, metaGenerator)(payload))
             }
         )
+    }
+}
+
+export const deleteTeamMember = teamMemberId => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_DELETE_TEAM_MEMBER)(teamMemberId))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return DELETE(createUrl(`/memberships/${teamMemberId}/`), authToken).then(response => {
+            const payload = response.ok ? teamMemberId : new Error('Error removing team member.')
+            return dispatch(createAction(actions.RECEIVE_DELETE_TEAM_MEMBER, null, metaGenerator)(payload))
+        })
     }
 }

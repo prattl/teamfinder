@@ -6,12 +6,15 @@ import actions from 'actions/teams'
 const initialTeamState = {
     team: null,
     isLoading: false,
-    lastUpdated: null
+    lastUpdated: null,
+    confirmDelete: false
 }
 
 // no need for error checking (teams will never be undefined)
 const initialState = {
-    teams: {}
+    teams: {},
+    confirmDeleteTeam: null,
+    confirmDeleteTeamMember: null
 }
 
 // TODO : reduxjs guide
@@ -46,7 +49,27 @@ const teams = handleActions({
             ...state,
             teams: newTeams
         }
-    }
+    },
+    [actions.CONFIRM_DELETE_TEAM]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload]: {
+                ...state.teams[action.payload],
+                confirmDelete: true
+            }
+        }
+    }),
+    [actions.CANCEL_DELETE_TEAM]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload]: {
+                ...state.teams[action.payload],
+                confirmDelete: false
+            }
+        }
+    })
 }, initialState)
 
 export default teams
