@@ -87,8 +87,13 @@ export const deleteTeamMember = (teamMemberId, teamId) => (dispatch, getState) =
     const { auth: { authToken } } = getState()
     if (authToken) {
         return DELETE(createUrl(`/api/memberships/${teamMemberId}/`), authToken).then(response => {
-            const payload = response.ok ? teamMemberId : new Error('Error removing team member.')
-            return dispatch(createAction(actions.RECEIVE_DELETE_TEAM_MEMBER, null, metaGenerator)(payload))
+            return response[response.status === 204 ? 'text' : 'json']().then(json => {
+                const payload = response.ok ? teamMemberId : new Error(json.error)
+                    return dispatch(createAction(actions.RECEIVE_DELETE_TEAM_MEMBER, null, p => ({
+                    ...metaGenerator(p),
+                    teamMemberId, teamId  // TODO: Putting this information in meta isn't ideal
+                }))(payload))
+            })
         })
     }
 }

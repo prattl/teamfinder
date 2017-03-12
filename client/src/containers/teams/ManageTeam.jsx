@@ -5,7 +5,7 @@ import { requestTeam } from 'actions/teams'
 
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
-import { Button, ButtonToolbar, Col, Modal, Row, Table } from 'react-bootstrap'
+import { Alert, Button, ButtonToolbar, Col, Modal, Row, Table } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withTeam, withTeamFromParams } from 'components/connectors/WithTeam'
@@ -82,7 +82,7 @@ class ManageTeam extends Component {
     }
 
     renderDeleteTeamMemberConfirmModal(teamMemberId) {
-        const { team: { confirmDeleteTeamMember, team } } = this.props
+        const { team: { confirmDeleteTeamMember, deleteTeamMemberError, team } } = this.props
         const teamMember = team.team_members.find(member => member.id === teamMemberId)
         return (
             <Modal show={confirmDeleteTeamMember === teamMemberId}>
@@ -90,6 +90,11 @@ class ManageTeam extends Component {
                     <Modal.Title>Confirm Remove Team Member</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {deleteTeamMemberError && (
+                        <Alert bsStyle='danger'>
+                            {deleteTeamMemberError}
+                        </Alert>
+                    )}
                     <p>
                         Are you sure you want to remove <strong>
                         {teamMember.player.username}

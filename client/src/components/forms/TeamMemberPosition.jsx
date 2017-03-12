@@ -77,7 +77,7 @@ class TeamForm extends Component {
 
 
 TeamForm = reduxForm({
-    form: 'team',
+    form: 'teamMemberPositions',
     validate,
     onSubmit: submit
 })(TeamForm)

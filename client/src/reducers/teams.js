@@ -8,7 +8,8 @@ const initialTeamState = {
     isLoading: false,
     lastUpdated: null,
     confirmDelete: false,
-    confirmDeleteTeamMember: null
+    confirmDeleteTeamMember: null,
+    deleteTeamMemberError: null
 }
 
 // no need for error checking (teams will never be undefined)
@@ -88,7 +89,29 @@ const teams = handleActions({
                 confirmDeleteTeamMember: null
             }
         }
-    })
+    }),
+    [actions.RECEIVE_DELETE_TEAM_MEMBER]: (state, action) => {
+        // const {
+        //     [action.meta.teamMemberId]: deletedTeamMember, ...updatedTeamMembers
+        // } = state.teams[action.meta.teamId].team.team_members
+        const updatedTeamMembers = state.teams[action.meta.teamId].team.team_members.filter(teamMember => (
+            teamMember.id !== action.meta.teamMemberId
+        ))
+        return {
+            ...state,
+            teams: {
+                ...state.teams,
+                [action.meta.teamId]: {
+                    ...state.teams[action.meta.teamId],
+                    deleteTeamMemberError: action.error ? action.payload.message : null,
+                    team: action.error ? state.teams[action.meta.teamId].team : {
+                        ...state.teams[action.meta.teamId].team,
+                        team_members: updatedTeamMembers
+                    }
+                }
+            }
+        }
+    }
 }, initialState)
 
 export default teams
