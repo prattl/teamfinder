@@ -9,7 +9,9 @@ const initialTeamState = {
     lastUpdated: null,
     confirmDelete: false,
     confirmDeleteTeamMember: null,
-    deleteTeamMemberError: null
+    deleteTeamMemberError: null,
+    confirmPromoteToCaptain: null,
+    confirmPromoteToCaptainError: null
 }
 
 // no need for error checking (teams will never be undefined)
@@ -91,9 +93,6 @@ const teams = handleActions({
         }
     }),
     [actions.RECEIVE_DELETE_TEAM_MEMBER]: (state, action) => {
-        // const {
-        //     [action.meta.teamMemberId]: deletedTeamMember, ...updatedTeamMembers
-        // } = state.teams[action.meta.teamId].team.team_members
         const updatedTeamMembers = state.teams[action.meta.teamId].team.team_members.filter(teamMember => (
             teamMember.id !== action.meta.teamMemberId
         ))
@@ -108,6 +107,40 @@ const teams = handleActions({
                         ...state.teams[action.meta.teamId].team,
                         team_members: updatedTeamMembers
                     }
+                }
+            }
+        }
+    },
+    [actions.CONFIRM_PROMOTE_TO_CAPTAIN]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmPromoteToCaptain: action.payload.teamMemberId
+            }
+        }
+    }),
+    [actions.CANCEL_PROMOTE_TO_CAPTAIN]: (state, action) => ({
+        ...state,
+        teams: {
+            ...state.teams,
+            [action.payload.teamId]: {
+                ...state.teams[action.payload.teamId],
+                confirmPromoteToCaptain: null
+            }
+        }
+    }),
+    [actions.RECEIVE_PROMOTE_TO_CAPTAIN]: (state, action) => {
+        return {
+            ...state,
+            teams: {
+                ...state.teams,
+                [action.meta.teamId]: {
+                    ...state.teams[action.meta.teamId],
+                    team: action.error ? state.teams[action.meta.teamId].team : action.payload,
+                    confirmPromoteToCaptain: action.error ? state.teams[action.meta.teamId].confirmPromoteToCaptain : null,
+                    confirmPromoteToCaptainError: action.error ? action.payload.message : null
                 }
             }
         }

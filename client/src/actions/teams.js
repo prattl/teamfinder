@@ -3,7 +3,7 @@ import keyMirror from 'keymirror'
 import { browserHistory } from 'react-router'
 import { requestOwnPlayer } from 'actions/player'
 import { createUrl, metaGenerator } from 'utils'
-import { GET, POST, DELETE } from 'utils/api'
+import { GET, PATCH, POST, DELETE } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
@@ -17,7 +17,11 @@ const actions = keyMirror({
     REQUEST_DELETE_TEAM: null,
     RECEIVE_DELETE_TEAM: null,
     REQUEST_DELETE_TEAM_MEMBER: null,
-    RECEIVE_DELETE_TEAM_MEMBER: null
+    RECEIVE_DELETE_TEAM_MEMBER: null,
+    CONFIRM_PROMOTE_TO_CAPTAIN: null,
+    CANCEL_PROMOTE_TO_CAPTAIN: null,
+    REQUEST_PROMOTE_TO_CAPTAIN: null,
+    RECEIVE_PROMOTE_TO_CAPTAIN: null
 })
 export default actions
 
@@ -65,6 +69,9 @@ export const cancelDeleteTeam = createAction(actions.CANCEL_DELETE_TEAM)
 export const tryDeleteTeamMember = createAction(actions.CONFIRM_DELETE_TEAM_MEMBER)
 export const cancelDeleteTeamMember = createAction(actions.CANCEL_DELETE_TEAM_MEMBER)
 
+export const tryPromoteToCaptain = createAction(actions.CONFIRM_PROMOTE_TO_CAPTAIN)
+export const cancelPromoteToCaptain = createAction(actions.CANCEL_PROMOTE_TO_CAPTAIN)
+
 export const deleteTeam = teamId => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_DELETE_TEAM)(teamId))
     const { auth: { authToken } } = getState()
@@ -95,5 +102,22 @@ export const deleteTeamMember = (teamMemberId, teamId) => (dispatch, getState) =
                 }))(payload))
             })
         })
+    }
+}
+
+export const promoteToCaptain = (teamMemberId, teamId) => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_PROMOTE_TO_CAPTAIN)({ teamMemberId, teamId }))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        const { player } = getState().teams.teams[teamId].team.team_members.find(teamMember => teamMember.id === teamMemberId)
+        return PATCH(createUrl(`/api/teams/${teamId}/`), authToken, { captain: player.id }).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error(json.detail)
+                return dispatch(createAction(actions.RECEIVE_PROMOTE_TO_CAPTAIN, null, p => ({
+                    ...metaGenerator(p),
+                    teamMemberId, teamId
+                }))(payload))
+            })
+        )
     }
 }

@@ -3,8 +3,8 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { submitCreateTeam } from 'actions/teams'
 
-import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
+import { Form, FormControl, FormGroup, Button } from 'react-bootstrap'
+// import { createSelectInput, PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
@@ -20,66 +20,52 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
-    const multiSelectFields = ['regions', 'available_positions']
-    fields.forEach(fieldName => {
-        if ([null, undefined, ''].includes(values[fieldName])) {
-            errors[fieldName] = 'Required'
-        }
-    })
-    multiSelectFields.forEach(fieldName => {
-        const value = values[fieldName]
-        if (value && value.length < 1) {
-            errors[fieldName] = 'Required'
-        }
-    })
+    // const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
+    // const multiSelectFields = ['regions', 'available_positions']
+    // fields.forEach(fieldName => {
+    //     if ([null, undefined, ''].includes(values[fieldName])) {
+    //         errors[fieldName] = 'Required'
+    //     }
+    // })
+    // multiSelectFields.forEach(fieldName => {
+    //     const value = values[fieldName]
+    //     if (value && value.length < 1) {
+    //         errors[fieldName] = 'Required'
+    //     }
+    // })
     return errors
 }
 
-const NameInput = createInput('Name')
-const RegionInput = createSelectInput('Regions', RegionSelect)
-const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
-const PlayerPositionInput = createSelectInput('My Position', PositionSelect, false)
-const AvailablePositionInput = createSelectInput('Available Positions', PositionSelect)
+// const PositionInput = createSelectInput(null, PositionSelect, false)
+const PositionSelect = ({ input, children, ...rest }) => (
+    <FormGroup bsSize='small'>
+        <FormControl componentClass='select'
+                     placeholder='Position' {...input} {...rest}>
+            {children}
+        </FormControl>
+    </FormGroup>
+)
 
-class TeamForm extends Component {
+class TeamMemberPosition extends Component {
 
     render() {
-        const { error, handleSubmit, submitting } = this.props
+        const { handleSubmit } = this.props
         return (
-            <form onSubmit={handleSubmit}>
-                {error && <Alert bsStyle='danger'>{error}</Alert>}
-                <div>
-                    <Field name='name' component={NameInput} />
-                </div>
-                <div>
-                    <Field name='regions' component={RegionInput} />
-                </div>
-                <div>
-                    <Field name='skill_bracket' component={SkillBracketInput} />
-                </div>
-                <div>
-                    <Field name='player_position' component={PlayerPositionInput} />
-                </div>
-                {/* TODO: Add checkbox for "Currently recruiting?" and conditionally display available positions */}
-                <div>
-                    <Field name='available_positions' component={AvailablePositionInput} />
-                </div>
-                <div>
-                    <Button type='submit' disabled={submitting}>
-                        Submit
-                    </Button>
-                </div>
-            </form>
+            <Form inline onSubmit={handleSubmit}>
+                <Field name='position' component={PositionSelect}>
+                    <option>---</option>
+                </Field>&nbsp;
+                <Button bsStyle='success' bsSize='sm'>Save</Button>
+            </Form>
         )
     }
 }
 
 
-TeamForm = reduxForm({
-    form: 'teamMemberPositions',
+TeamMemberPosition = reduxForm({
+    form: 'teamMemberPosition',
     validate,
     onSubmit: submit
-})(TeamForm)
+})(TeamMemberPosition)
 
-export default TeamForm
+export default TeamMemberPosition

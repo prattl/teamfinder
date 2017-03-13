@@ -24,6 +24,7 @@ export const requestOwnPlayer = () => (dispatch, getState) => {
 
 export const requestOwnPlayerIfNeeded = () => (dispatch, getState) => {
     const { isLoading, lastUpdated } = getState().player
+    console.log('requestOwnPlayerIfNeeded', isLoading, lastUpdated)
     if (!isLoading && !lastUpdated) {
         return dispatch(requestOwnPlayer())
     }
