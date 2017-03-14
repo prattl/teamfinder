@@ -1,22 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-// import { createStructuredSelector } from 'reselect'
-// import { requestTeam } from 'actions/teams'
 
 import { Link } from 'react-router'
-// import { Label } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import { Alert, Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withTeam } from 'components/connectors/WithTeam'
 import TeamMemberPosition from 'components/forms/TeamMemberPosition'
-// import { requestPlayer } from 'actions/playerSearch'
 import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tryDeleteTeamMember,
     deleteTeamMember, tryPromoteToCaptain, cancelPromoteToCaptain, promoteToCaptain } from 'actions/teams'
-// import { playerSearchSelector } from 'utils/selectors'
 import { Loading, playerIsCaptain } from 'utils'
-// import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon } from 'utils/components/icons'
 
 const canEditTeam = (player, team) => (
     playerIsCaptain(player, team)
@@ -28,6 +24,10 @@ const canRemoveTeamMember = (player, team, member) => (
 
 const canBePromotedToCaptain = (player, team, member) => (
     playerIsCaptain(player, team) && team.captain !== member.player.id
+)
+
+const canEditTeamMembrPosition = (player, team) => (
+    playerIsCaptain(player, team)
 )
 
 class ManageTeam extends Component {
@@ -177,22 +177,24 @@ class ManageTeam extends Component {
     }
 
     renderTeamMemberRow(teamMember) {
-        const { team: { team }, player,
-            fixtures: { positions }
-        } = this.props
+        const { team: { team }, player, fixtures: { positions } } = this.props
         return (
             <tr key={teamMember.id}>
                 {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
                 {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
                 <td>
+                    {playerIsCaptain(teamMember.player, team) && <span><CaptainIcon/>&nbsp;</span>}
                     <Link to={`/players/${teamMember.player.id}/`}>
                         {teamMember.player.username}
                     </Link>
                 </td>
                 <td>
-                    <TeamMemberPosition form={`position-${teamMember.id}`}
-                                        teamMemberId={teamMember.id}
-                                        initialValues={{ position: teamMember.position }} />
+                    {canEditTeamMembrPosition(player, team) ? (
+                        <TeamMemberPosition form={`position-${teamMember.id}`}
+                                            teamMemberId={teamMember.id}
+                                            initialValues={{ position: teamMember.position }} />
+                        ) : (<span>{teamMember.position && positions.items[teamMember.position].name}</span>)}
+
                 </td>
                 <td>
                     <ButtonToolbar>
@@ -223,9 +225,16 @@ class ManageTeam extends Component {
                                 Manage Team: {team.name}&nbsp;
                                 <span className='pull-right'>
                                     {canEditTeam(player, team) && (
-                                        <Button bsStyle='danger' bsSize='sm' onClick={this.handleDeleteTeamClick}>
-                                            <i className='fa fa-trash'/>&nbsp;Delete
-                                        </Button>
+                                        <ButtonToolbar>
+                                            <LinkContainer to={`/teams/${team.id}/`}>
+                                                <Button bsSize='sm'>
+                                                    <i className='fa fa-eye'/>&nbsp;View
+                                                </Button>
+                                            </LinkContainer>
+                                            <Button bsStyle='danger' bsSize='sm' onClick={this.handleDeleteTeamClick}>
+                                                <i className='fa fa-trash'/>&nbsp;Delete
+                                            </Button>
+                                        </ButtonToolbar>
                                     )}
                                 </span>
                             </h1>
