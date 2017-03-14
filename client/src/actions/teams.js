@@ -21,7 +21,9 @@ const actions = keyMirror({
     CONFIRM_PROMOTE_TO_CAPTAIN: null,
     CANCEL_PROMOTE_TO_CAPTAIN: null,
     REQUEST_PROMOTE_TO_CAPTAIN: null,
-    RECEIVE_PROMOTE_TO_CAPTAIN: null
+    RECEIVE_PROMOTE_TO_CAPTAIN: null,
+    REQUEST_EDIT_TEAM_MEMBER: null,
+    RECEIVE_EDIT_TEAM_MEMBER: null
 })
 export default actions
 
@@ -116,6 +118,22 @@ export const promoteToCaptain = (teamMemberId, teamId) => (dispatch, getState) =
                 return dispatch(createAction(actions.RECEIVE_PROMOTE_TO_CAPTAIN, null, p => ({
                     ...metaGenerator(p),
                     teamMemberId, teamId
+                }))(payload))
+            })
+        )
+    }
+}
+
+export const submitEditTeamMember = (teamMemberId, data) => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_EDIT_TEAM_MEMBER)())
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return PATCH(createUrl(`/api/memberships/${teamMemberId}/`), authToken, data).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error(json)
+                return dispatch(createAction(actions.RECEIVE_EDIT_TEAM_MEMBER, null, p => ({
+                    ...metaGenerator(p),
+                    teamMemberId
                 }))(payload))
             })
         )

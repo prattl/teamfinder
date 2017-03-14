@@ -1,22 +1,12 @@
 import React, { Component } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { submitCreateTeam } from 'actions/teams'
+import { submitEditTeamMember } from 'actions/teams'
 
 import { Form, FormControl, FormGroup, Button } from 'react-bootstrap'
-// import { createSelectInput, PositionSelect } from 'components/forms'
+import { withPositions } from 'components/connectors/WithFixtures'
 
-const submit = (values, dispatch) => {
-    return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
-        if (!response.ok) {
-            const errors = json
-            if (json.hasOwnProperty('non_field_errors')) {
-                errors._error = json.non_field_errors[0]
-            }
-            throw new SubmissionError(errors)
-        }
-    })
-}
+
 
 const validate = values => {
     const errors = {}
@@ -37,35 +27,63 @@ const validate = values => {
 }
 
 // const PositionInput = createSelectInput(null, PositionSelect, false)
-const PositionSelect = ({ input, children, ...rest }) => (
+let PositionSelect = ({ positions, input, meta, children, ...rest }) => (
     <FormGroup bsSize='small'>
         <FormControl componentClass='select'
                      placeholder='Position' {...input} {...rest}>
-            {children}
+            <option>---</option>
+            {Object.keys(positions.items).map(positionId => (
+                <option key={`position-${positionId}-${meta.form}`}
+                        value={positionId}>
+                    {positions.items[positionId].name}
+                </option>
+            ))}
         </FormControl>
     </FormGroup>
 )
+PositionSelect = withPositions(PositionSelect)
 
 class TeamMemberPosition extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            changesSaved: false
+        }
+        this.submit = this.submit.bind(this)
+    }
+
+    submit(values, dispatch) {
+        const { teamMemberId } = this.props
+        return dispatch(submitEditTeamMember(teamMemberId, values)).then(({ response, json }) => {
+            if (!response.ok) {
+                const errors = json
+                if (json.hasOwnProperty('non_field_errors')) {
+                    errors._error = json.non_field_errors[0]
+                }
+                throw new SubmissionError(errors)
+            }
+        })
+    }
+
     render() {
-        const { handleSubmit } = this.props
+        const { handleSubmit, submitting, teamMemberId } = this.props
+        const { changesSaved } = this.props
         return (
-            <Form inline onSubmit={handleSubmit}>
-                <Field name='position' component={PositionSelect}>
-                    <option>---</option>
-                </Field>&nbsp;
-                <Button bsStyle='success' bsSize='sm'>Save</Button>
+            <Form inline onSubmit={handleSubmit(this.submit)}>
+                <Field name='position' component={PositionSelect} />&nbsp;
+                <Button type='submit'
+                        bsStyle='success' bsSize='sm' disabled={submitting || changesSaved}>
+                    {changesSaved ? 'Changes Saved!' : 'Save'}
+                </Button>
             </Form>
         )
     }
 }
 
-
 TeamMemberPosition = reduxForm({
     form: 'teamMemberPosition',
-    validate,
-    onSubmit: submit
+    validate
 })(TeamMemberPosition)
 
 export default TeamMemberPosition

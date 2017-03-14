@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import { requestAllFixturesIfNeeded } from 'actions/fixtures'
-import { fixturesSelector } from 'utils/selectors'
+import { fixturesSelector, positionsSelector } from 'utils/selectors'
 
 const withFixtures = (selector) => (WrappedComponent) => {
     class WithFixtures extends Component {
@@ -24,5 +24,11 @@ const withFixtures = (selector) => (WrappedComponent) => {
 export const withAllFixtures = withFixtures(
     createStructuredSelector({
         fixtures: fixturesSelector,
-    }),
+    })
+)
+
+export const withPositions = withFixtures(
+    createStructuredSelector({
+        positions: positionsSelector,
+    })
 )

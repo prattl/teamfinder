@@ -192,22 +192,21 @@ class ManageTeam extends Component {
                     </Link>)
                 </td>
                 <td>
-                    <TeamMemberPosition form={`position-${teamMember.id}`} initialValues={{ position: teamMember.position }} />
+                    <TeamMemberPosition form={`position-${teamMember.id}`}
+                                        teamMemberId={teamMember.id}
+                                        initialValues={{ position: teamMember.position }} />
                 </td>
                 <td>
                     <ButtonToolbar>
-                        {canRemoveTeamMember(player, team, teamMember) && (
-                            <Button bsSize='xs' bsStyle='danger'
-                                    onClick={() => this.handleDeleteTeamMemberClick(teamMember.id)}>
-                                Remove
-                            </Button>
-                        )}
-                        {canBePromotedToCaptain(player, team, teamMember) && (
-                            <Button bsSize='xs'
-                                    onClick={() => this.handlePromoteToCaptainClick(teamMember.id)}>
-                                Promote to Captain
-                            </Button>
-                        )}
+                        <Button bsSize='sm' bsStyle='danger'
+                                disabled={!canRemoveTeamMember(player, team, teamMember)}
+                                onClick={() => this.handleDeleteTeamMemberClick(teamMember.id)}>
+                            Remove
+                        </Button>
+                        <Button bsSize='sm' disabled={!canBePromotedToCaptain(player, team, teamMember)}
+                                onClick={() => this.handlePromoteToCaptainClick(teamMember.id)}>
+                            Promote to Captain
+                        </Button>
                     </ButtonToolbar>
                 </td>
             </tr>
@@ -234,7 +233,7 @@ class ManageTeam extends Component {
                             </h1>
                             <h2>Players</h2>
                             <div>
-                                <Table>
+                                <Table responsive>
                                     <thead>
                                         <tr>
                                             <th>Player</th>
