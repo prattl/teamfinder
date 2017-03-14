@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 
 import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
+import { withPlayer } from 'components/connectors/WithPlayer'
 
 import { Button, Col, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
@@ -30,7 +31,7 @@ class PlayerSearchResults extends PureComponent {
 
     render() {
         const { requestNextPageOfPlayers,
-            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated } } = this.props
+            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated }, player } = this.props
         return (
             <div>
                 <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
@@ -49,7 +50,7 @@ class PlayerSearchResults extends PureComponent {
                             <Row>
                                 {results.map(result => (
                                     <Col sm={6} key={result.id}>
-                                        <PlayerSearchResult {...result} />
+                                        <PlayerSearchResult {...result} player={player} />
                                     </Col>
                                 ))}
                             </Row>
@@ -68,6 +69,8 @@ class PlayerSearchResults extends PureComponent {
     }
 
 }
+
+PlayerSearchResults = withPlayer(PlayerSearchResults)
 
 PlayerSearchResults = connect(
     createStructuredSelector({

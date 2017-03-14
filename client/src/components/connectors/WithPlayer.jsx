@@ -8,7 +8,6 @@ export const withPlayer = (WrappedComponent) => {
     class WithPlayer extends Component {
 
         componentDidMount() {
-            console.log('WithPlayer onload')
             this.props.onLoad()
         }
 

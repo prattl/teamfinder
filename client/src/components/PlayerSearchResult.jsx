@@ -3,6 +3,8 @@ import { Link } from 'react-router'
 
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 
+import { playerIsCaptain } from 'utils'
+
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 
 import { Label } from 'react-bootstrap'
@@ -20,7 +22,11 @@ class PlayerSearchResult extends Component {
     }
 
     render() {
-        const { id, fixtures, username, regions, positions, skill_bracket, teams } = this.props
+
+        // captain of team, current user's teams don't match player's teams
+
+        const { id, fixtures, username, regions, positions, skill_bracket, teams, player} = this.props
+        // console.log(player)
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
         return (
@@ -29,11 +35,11 @@ class PlayerSearchResult extends Component {
                     lastUpdated ? (
                         <div>
                             <span className='pull-right'>
-                                <DropdownButton bsSize="small" title="Button">
+                                <DropdownButton id="Invite to team" bsSize="small" title="Invite to team">
                                     <MenuItem eventKey="1">Team1</MenuItem>
                                     <MenuItem eventKey="2">Team2</MenuItem>
                                     <MenuItem divider />
-                                    <MenuItem eventKey="3"><Link to="/teams/create">Create team</Link></MenuItem>
+                                    <MenuItem eventKey="3" href="/teams/create">Create team</MenuItem>
                                 </DropdownButton>
                             </span>
                             <div style={{ marginBottom: '1rem' }}>
