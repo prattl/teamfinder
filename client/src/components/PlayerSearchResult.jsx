@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
+import { DropdownButton, MenuItem } from 'react-bootstrap'
+
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 
 import { Label } from 'react-bootstrap'
@@ -26,6 +28,14 @@ class PlayerSearchResult extends Component {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
+                            <span className='pull-right'>
+                                <DropdownButton bsSize="small" title="Button">
+                                    <MenuItem eventKey="1">Team1</MenuItem>
+                                    <MenuItem eventKey="2">Team2</MenuItem>
+                                    <MenuItem divider />
+                                    <MenuItem eventKey="3"><Link to="/teams/create">Create team</Link></MenuItem>
+                                </DropdownButton>
+                            </span>
                             <div style={{ marginBottom: '1rem' }}>
                                 <Link to={`players/${id}`}>
                                     <strong>{username}</strong>
