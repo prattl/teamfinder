@@ -23,7 +23,6 @@ const canEditTeam = (player, team) => (
 )
 
 const canRemoveTeamMember = (player, team, member) => (
-    // TODO: playerIsCaptain(player, team)
     playerIsCaptain(player, team) && team.captain !== member.player.id && team.team_members.length > 1
 )
 
@@ -186,10 +185,9 @@ class ManageTeam extends Component {
                 {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
                 {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
                 <td>
-                    {teamMember.player.username}&nbsp;
-                    (<Link to={`/players/${teamMember.player.id}/`}>
-                        profile
-                    </Link>)
+                    <Link to={`/players/${teamMember.player.id}/`}>
+                        {teamMember.player.username}
+                    </Link>
                 </td>
                 <td>
                     <TeamMemberPosition form={`position-${teamMember.id}`}

@@ -3,9 +3,8 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { submitEditTeamMember } from 'actions/teams'
 
-import { Form, FormControl, FormGroup, Button } from 'react-bootstrap'
+import { Form, FormControl, FormGroup, Button, Label } from 'react-bootstrap'
 import { withPositions } from 'components/connectors/WithFixtures'
-
 
 
 const validate = values => {
@@ -53,6 +52,13 @@ class TeamMemberPosition extends Component {
         this.submit = this.submit.bind(this)
     }
 
+    setChangesSaved(value) {
+        this.setState({ changesSaved: value })
+        if (value) {
+            setTimeout(() => this.setChangesSaved(false), 3000)
+        }
+    }
+
     submit(values, dispatch) {
         const { teamMemberId } = this.props
         return dispatch(submitEditTeamMember(teamMemberId, values)).then(({ response, json }) => {
@@ -62,20 +68,25 @@ class TeamMemberPosition extends Component {
                     errors._error = json.non_field_errors[0]
                 }
                 throw new SubmissionError(errors)
+            } else {
+                this.setChangesSaved(true)
             }
         })
     }
 
     render() {
-        const { handleSubmit, submitting, teamMemberId } = this.props
-        const { changesSaved } = this.props
+        const { handleSubmit, submitting } = this.props
+        const { changesSaved } = this.state
         return (
             <Form inline onSubmit={handleSubmit(this.submit)}>
                 <Field name='position' component={PositionSelect} />&nbsp;
                 <Button type='submit'
-                        bsStyle='success' bsSize='sm' disabled={submitting || changesSaved}>
-                    {changesSaved ? 'Changes Saved!' : 'Save'}
-                </Button>
+                        bsStyle='success' bsSize='sm' disabled={submitting}>
+                    Save
+                </Button>{' '}
+                <span className={`text-success ${!changesSaved && 'invisible'}`}>
+                    <i className='fa fa-check' />&nbsp;Changes Saved!
+                </span>
             </Form>
         )
     }
