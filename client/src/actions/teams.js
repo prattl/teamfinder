@@ -131,10 +131,11 @@ export const submitEditTeamMember = (teamMemberId, data) => (dispatch, getState)
         return PATCH(createUrl(`/api/memberships/${teamMemberId}/`), authToken, data).then(
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error(json)
-                return dispatch(createAction(actions.RECEIVE_EDIT_TEAM_MEMBER, null, p => ({
+                dispatch(createAction(actions.RECEIVE_EDIT_TEAM_MEMBER, null, p => ({
                     ...metaGenerator(p),
                     teamMemberId
                 }))(payload))
+                return ({ response, json })
             })
         )
     }
