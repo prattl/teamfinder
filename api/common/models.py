@@ -189,7 +189,7 @@ class Invitation(JoinableAction):
         return self.invitationstatushistory_set.first()
 
     def _create_status_history(self):
-        InvitationStatusHistory.objects.create_from_application(self)
+        InvitationStatusHistory.objects.create_from_invitation(self)
 
 
 class TeamMemberHistoryManager(models.Manager):

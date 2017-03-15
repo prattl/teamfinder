@@ -7,7 +7,7 @@ import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSea
 import { playerSearchSelector } from 'utils/selectors'
 import { withPlayer } from 'components/connectors/WithPlayer'
 
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Modal, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import PlayerSearchResult from 'components/PlayerSearchResult'
@@ -18,6 +18,7 @@ class PlayerSearchResults extends PureComponent {
     constructor(props) {
         super(props)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
+        this.renderInviteToTeamModal = this.renderInviteToTeamModal.bind(this)
     }
 
     componentDidMount() {
@@ -29,11 +30,34 @@ class PlayerSearchResults extends PureComponent {
         this.props.submit('playerSearch')
     }
 
+    renderInviteToTeamModal(playerId, teamId) {
+        const { player, playerSearch: { results } } = this.props
+        const teamInvitedTo = player.teams.find(team => team.id === teamId)
+        const playerBeingInvited = results.find(player => player.id === playerId)
+        return (
+            <Modal show={true}>
+                <Modal.Header>
+                    <Modal.Title>Confirm Invite to Team</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Are you sure you want to invite <strong>{playerBeingInvited.username}</strong> to
+                        join <strong>{teamInvitedTo.name}</strong>?
+                    </p>
+                </Modal.Body>
+            </Modal>
+        )
+    }
+
     render() {
         const { requestNextPageOfPlayers,
-            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated }, player } = this.props
+            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated, confirmInvitation
+        }, player } = this.props
         return (
             <div>
+                {confirmInvitation.playerId && confirmInvitation.teamId && (
+                    this.renderInviteToTeamModal(confirmInvitation.playerId, confirmInvitation.teamId)
+                )}
                 <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
                     <div className='pull-left'>
                         {count} players found

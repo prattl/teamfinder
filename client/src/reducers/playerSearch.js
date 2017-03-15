@@ -14,7 +14,12 @@ const initialState = {
     player: {},
     playerIsLoading: false,
     playerLastUpdated: null,
-    error: null
+    error: null,
+
+    confirmInvitation: {
+        playerId: null,
+        teamId: null
+    }
 }
 
 const playerSearch = handleActions({
@@ -45,6 +50,18 @@ const playerSearch = handleActions({
         ...state, playerIsLoading: false, playerLastUpdated: action.meta.receivedAt,
         player: action.error ? state.player : action.payload,
         error: action.error ? action.payload : null
+    }),
+    [actions.CONFIRM_INVITE_TO_TEAM]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            ...state.confirmInvitation, ...action.payload
+        }
+    }),
+    [actions.CANCEL_INVITE_TO_TEAM]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            ...state.confirmInvitation, playerId: null, teamId: null
+        }
     })
 }, initialState)
 
