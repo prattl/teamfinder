@@ -1,14 +1,16 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
-import { GET, PATCH } from 'utils/api'
+import { GET, PATCH, POST } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_OWN_PLAYER: null,
     RECEIVE_OWN_PLAYER: null,
     REQUEST_SUBMIT_PROFILE: null,
     RECEIVE_SUBMIT_PROFILE: null,
-    DISMISS_CHANGES_SAVED: null
+    DISMISS_CHANGES_SAVED: null,
+    REQUEST_SUBMIT_APPLICATION: null,
+    RECEIVE_SUBMIT_APPLICATION: null
 })
 export default actions
 
@@ -24,7 +26,6 @@ export const requestOwnPlayer = () => (dispatch, getState) => {
 
 export const requestOwnPlayerIfNeeded = () => (dispatch, getState) => {
     const { isLoading, lastUpdated } = getState().player
-    console.log('requestOwnPlayerIfNeeded', isLoading, lastUpdated)
     if (!isLoading && !lastUpdated) {
         return dispatch(requestOwnPlayer())
     }
@@ -48,3 +49,21 @@ export const submitProfile = data => (dispatch, getState) => {
 }
 
 export const dismissChangesSaved = createAction(actions.DISMISS_CHANGES_SAVED)
+
+export const submitApplication = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_SUBMIT_APPLICATION)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (id && authToken) {
+        return POST(createUrl('/api/applications/'), authToken, {...data, player : id}).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating application.')
+                dispatch(createAction(actions.RECEIVE_SUBMIT_APPLICATION, null, metaGenerator)(payload))
+                return ({ response, json })
+            })
+        )
+    }
+}
+
+export const teamApplyingTo = data => () => {
+
+}

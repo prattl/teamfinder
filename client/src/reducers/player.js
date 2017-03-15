@@ -9,7 +9,8 @@ const initialState = {
     },
     changesSaved: false,
     isLoading: false,
-    lastUpdated: null
+    lastUpdated: null,
+    teamApplyingTo : null
 }
 
 const player = handleActions({

@@ -41,6 +41,7 @@ let PositionSelect = ({ positions, input, meta, children, ...rest }) => (
     </FormGroup>
 )
 PositionSelect = withPositions(PositionSelect)
+export { PositionSelect }
 
 class TeamMemberPosition extends Component {
 
