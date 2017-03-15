@@ -3,8 +3,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { inviteToTeam } from 'actions/playerSearch'
 import { Alert } from 'react-bootstrap'
-import { PositionSelect } from 'components/forms/TeamMemberPosition'
-import { createGenericInput } from 'components/forms'
+import { SinglePositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(inviteToTeam(values)).then(({ response, json }) => {
@@ -24,8 +23,6 @@ const validate = values => {
     return errors
 }
 
-const PositionInput = createGenericInput(PositionSelect, 'Position')
-
 class InvitationForm extends Component {
 
     render() {
@@ -40,7 +37,7 @@ class InvitationForm extends Component {
                     <Field name='team' component='input' type='hidden' />
                 </div>
                 <div>
-                    <Field name='position' component={PositionSelect} />
+                    <Field name='position' component={SinglePositionSelect} />
                 </div>
             </form>
         )

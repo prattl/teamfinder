@@ -44,6 +44,7 @@ class ManageTeam extends Component {
         this.handleDeleteTeamMemberClick = this.handleDeleteTeamMemberClick.bind(this)
         this.handleDeleteTeamMemberConfirmClick = this.handleDeleteTeamMemberConfirmClick.bind(this)
         this.handleDeleteTeamMemberCancelClick = this.handleDeleteTeamMemberCancelClick.bind(this)
+        this.handleLeaveTeamClick = this.handleLeaveTeamClick.bind(this)
         
     }
 
@@ -67,9 +68,9 @@ class ManageTeam extends Component {
         tryDeleteTeamMember({ teamMemberId, teamId: id })
     }
 
-    handleDeleteTeamMemberConfirmClick(teamMemberId) {
+    handleDeleteTeamMemberConfirmClick(teamMemberId, leavingTeam=false) {
         const { deleteTeamMember, team: { team: { id } } } = this.props
-        deleteTeamMember(teamMemberId, id)
+        deleteTeamMember(teamMemberId, id, leavingTeam)
     }
 
     handleDeleteTeamMemberCancelClick() {
@@ -92,6 +93,12 @@ class ManageTeam extends Component {
         cancelPromoteToCaptain({ teamId: id })
     }
 
+    handleLeaveTeamClick() {
+        const { tryDeleteTeamMember, team: { team }, player } = this.props
+        const teamMember = team.team_members.find(teamMember => teamMember.player.id === player.id)
+        tryDeleteTeamMember({ teamMemberId: teamMember.id, teamId: team.id })
+    }
+
     renderDeleteTeamConfirmModal() {
         const { team: { confirmDelete, team } } = this.props
         return (
@@ -111,12 +118,15 @@ class ManageTeam extends Component {
     }
 
     renderDeleteTeamMemberConfirmModal(teamMemberId) {
-        const { team: { confirmDeleteTeamMember, deleteTeamMemberError, team } } = this.props
+        const { team: { confirmDeleteTeamMember, deleteTeamMemberError, team }, player } = this.props
         const teamMember = team.team_members.find(member => member.id === teamMemberId)
+        const playerIsLeavingTeam = teamMember.player.id === player.id
         return (
             <Modal show={confirmDeleteTeamMember === teamMemberId}>
                 <Modal.Header>
-                    <Modal.Title>Confirm Remove Team Member</Modal.Title>
+                    <Modal.Title>
+                        {playerIsLeavingTeam ? 'Confirm Leave Team' : 'Confirm Remove Team Member'}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {deleteTeamMemberError && (
@@ -124,19 +134,26 @@ class ManageTeam extends Component {
                             {deleteTeamMemberError}
                         </Alert>
                     )}
-                    <p>
-                        Are you sure you want to remove <strong>
-                        {teamMember.player.username}
-                        </strong> from <strong>{team.name}</strong>? This
-                        cannot be undone.
-                    </p>
+                    {playerIsLeavingTeam ? (
+                        <p>
+                            Are you sure you want to leave <strong>{team.name}</strong>? This cannot be undone.
+                        </p>
+                        ) : (
+                        <p>
+                            Are you sure you want to remove <strong>
+                            {teamMember.player.username}
+                            </strong> from <strong>{team.name}</strong>? This
+                            cannot be undone.
+                        </p>
+                    )}
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle='link'
                             onClick={() => this.handleDeleteTeamMemberCancelClick(teamMemberId)}>Cancel</Button>
                     <Button bsStyle='danger'
-                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMemberId)}>
-                        Remove
+                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMemberId, true)}>
+                        {playerIsLeavingTeam ? 'Leave Team' : 'Remove'}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -215,6 +232,7 @@ class ManageTeam extends Component {
 
     render() {
         const { team: { team, isLoading, lastUpdated }, player } = this.props
+
         return (
             <div>
                 {isLoading ? <Loading /> : (
@@ -224,18 +242,21 @@ class ManageTeam extends Component {
                             <h1>
                                 Manage Team: {team.name}&nbsp;
                                 <span className='pull-right'>
-                                    {canEditTeam(player, team) && (
-                                        <ButtonToolbar>
-                                            <LinkContainer to={`/teams/${team.id}/`}>
-                                                <Button bsSize='sm'>
-                                                    <i className='fa fa-eye'/>&nbsp;View
-                                                </Button>
-                                            </LinkContainer>
+                                    <ButtonToolbar>
+                                        <LinkContainer to={`/teams/${team.id}/`}>
+                                            <Button bsSize='sm'>
+                                                <i className='fa fa-eye'/>&nbsp;View
+                                            </Button>
+                                        </LinkContainer>
+                                        <Button bsStyle='warning' bsSize='sm' onClick={this.handleLeaveTeamClick}>
+                                            Leave Team
+                                        </Button>
+                                        {canEditTeam(player, team) && (
                                             <Button bsStyle='danger' bsSize='sm' onClick={this.handleDeleteTeamClick}>
                                                 <i className='fa fa-trash'/>&nbsp;Delete
                                             </Button>
-                                        </ButtonToolbar>
-                                    )}
+                                        )}
+                                    </ButtonToolbar>
                                 </span>
                             </h1>
                             <h2>Players</h2>

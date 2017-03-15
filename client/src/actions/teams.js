@@ -91,13 +91,16 @@ export const deleteTeam = teamId => (dispatch, getState) => {
     }
 }
 
-export const deleteTeamMember = (teamMemberId, teamId) => (dispatch, getState) => {
+export const deleteTeamMember = (teamMemberId, teamId, leavingTeam=false) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_DELETE_TEAM_MEMBER)(teamMemberId))
     const { auth: { authToken } } = getState()
     if (authToken) {
         return DELETE(createUrl(`/api/memberships/${teamMemberId}/`), authToken).then(response => {
             return response[response.status === 204 ? 'text' : 'json']().then(json => {
                 const payload = response.ok ? teamMemberId : new Error(json.error)
+                    if (leavingTeam && response.ok) {
+                        browserHistory.push('/teams/manage/')
+                    }
                     return dispatch(createAction(actions.RECEIVE_DELETE_TEAM_MEMBER, null, p => ({
                     ...metaGenerator(p),
                     teamMemberId, teamId  // TODO: Putting this information in meta isn't ideal
