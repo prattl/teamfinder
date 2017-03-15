@@ -3,20 +3,24 @@ import { connect } from 'react-redux'
 import { submit } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
 
-import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
+import { requestPlayerSearch, requestNextPageOfPlayers, cancelInviteToTeam } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
+import { withPlayer } from 'components/connectors/WithPlayer'
 
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Modal, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import PlayerSearchResult from 'components/PlayerSearchResult'
-
+import InvitationForm from 'components/forms/InvitationForm'
 
 class PlayerSearchResults extends PureComponent {
 
     constructor(props) {
         super(props)
+        this.handleCancelInviteToTeamClick = this.handleCancelInviteToTeamClick.bind(this)
+        this.handleInviteToTeamClick = this.handleInviteToTeamClick.bind(this)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
+        this.renderInviteToTeamModal = this.renderInviteToTeamModal.bind(this)
     }
 
     componentDidMount() {
@@ -28,11 +32,51 @@ class PlayerSearchResults extends PureComponent {
         this.props.submit('playerSearch')
     }
 
+    handleInviteToTeamClick() {
+        this.props.submit('invitation')
+    }
+
+    handleCancelInviteToTeamClick() {
+        this.props.cancelInviteToTeam()
+    }
+
+    renderInviteToTeamModal(playerId, teamId) {
+        const { player, playerSearch: { results } } = this.props
+        const teamInvitedTo = player.teams.find(team => team.id === teamId)
+        const playerBeingInvited = results.find(player => player.id === playerId)
+        return (
+            <Modal show={true}>
+                <Modal.Header>
+                    <Modal.Title>Confirm Invite to Team</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Are you sure you want to invite <strong>{playerBeingInvited.username}</strong> to
+                        join <strong>{teamInvitedTo.name}</strong>? Enter their position below:
+                    </p>
+                    <InvitationForm initialValues={{ team: teamId, player: playerId }} />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link'
+                        onClick={() => this.handleCancelInviteToTeamClick()}>Cancel</Button>
+                    <Button bsStyle='warning'
+                        onClick={() => this.handleInviteToTeamClick()}>
+                        Invite
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
     render() {
         const { requestNextPageOfPlayers,
-            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated } } = this.props
+            playerSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated, confirmInvitation
+        }, player } = this.props
         return (
             <div>
+                {confirmInvitation.playerId && confirmInvitation.teamId && (
+                    this.renderInviteToTeamModal(confirmInvitation.playerId, confirmInvitation.teamId)
+                )}
                 <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
                     <div className='pull-left'>
                         {count} players found
@@ -49,7 +93,7 @@ class PlayerSearchResults extends PureComponent {
                             <Row>
                                 {results.map(result => (
                                     <Col sm={6} key={result.id}>
-                                        <PlayerSearchResult {...result} />
+                                        <PlayerSearchResult {...result} player={player} />
                                     </Col>
                                 ))}
                             </Row>
@@ -69,11 +113,13 @@ class PlayerSearchResults extends PureComponent {
 
 }
 
+PlayerSearchResults = withPlayer(PlayerSearchResults)
+
 PlayerSearchResults = connect(
     createStructuredSelector({
         playerSearch: playerSearchSelector,
     }),
-    { requestPlayerSearch, requestNextPageOfPlayers, submit }
+    { requestPlayerSearch, requestNextPageOfPlayers, submit, cancelInviteToTeam }
 )(PlayerSearchResults)
 
 export default PlayerSearchResults

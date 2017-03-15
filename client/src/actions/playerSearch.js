@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
-import { GET } from 'utils/api'
+import { GET, POST } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_PLAYER_SEARCH: null,
@@ -9,7 +9,11 @@ const actions = keyMirror({
     REQUEST_PLAYER: null,
     RECEIVE_PLAYER: null,
     REQUEST_NEXT_PAGE_OF_PLAYERS: null,
-    RECEIVE_NEXT_PAGE_OF_PLAYERS: null
+    RECEIVE_NEXT_PAGE_OF_PLAYERS: null,
+    CONFIRM_INVITE_TO_TEAM: null,
+    CANCEL_INVITE_TO_TEAM: null,
+    REQUEST_INVITE_TO_TEAM: null,
+    RECEIVE_INVITE_TO_TEAM: null
 })
 export default actions
 
@@ -56,4 +60,21 @@ export const requestNextPageOfPlayers = () => (dispatch, getState) => {
         }
         return json
     }))
+}
+
+export const tryInviteToTeam = createAction(actions.CONFIRM_INVITE_TO_TEAM)
+export const cancelInviteToTeam = createAction(actions.CANCEL_INVITE_TO_TEAM)
+
+export const inviteToTeam = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_INVITE_TO_TEAM)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (authToken) {
+        return POST(createUrl('/api/invitations/'), authToken, { ...data, created_by: id }).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating invitation')
+                dispatch(createAction(actions.RECEIVE_INVITE_TO_TEAM, null, metaGenerator)(payload))
+                return ({ response, json })
+            })
+        )
+    }
 }

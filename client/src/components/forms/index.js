@@ -4,6 +4,17 @@ import Select from 'react-select'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 
+export const createGenericInput = (Component, label) => field => (
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
+        {label && <ControlLabel>{label}</ControlLabel>}
+        {Component}
+        {field.meta.touched && field.meta.error && (
+            <HelpBlock>{field.meta.error}</HelpBlock>
+        )}
+    </FormGroup>
+)
+
 export const createInput = (label, type='text') => (field) => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
