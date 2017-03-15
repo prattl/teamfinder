@@ -12,7 +12,8 @@ const actions = keyMirror({
     RECEIVE_NEXT_PAGE_OF_PLAYERS: null,
     CONFIRM_INVITE_TO_TEAM: null,
     CANCEL_INVITE_TO_TEAM: null,
-    REQUEST_INVITE_TO_TEAM: null
+    REQUEST_INVITE_TO_TEAM: null,
+    RECEIVE_INVITE_TO_TEAM: null
 })
 export default actions
 
@@ -64,19 +65,16 @@ export const requestNextPageOfPlayers = () => (dispatch, getState) => {
 export const tryInviteToTeam = createAction(actions.CONFIRM_INVITE_TO_TEAM)
 export const cancelInviteToTeam = createAction(actions.CANCEL_INVITE_TO_TEAM)
 
-// export const inviteToTeam = (teamId, playerId) => (dispatch, getState) => {
-//     dispatch(createAction(actions.REQUEST_INVITE_TO_TEAM)({ teamMemberId, teamId }))
-//     const { auth: { authToken } } = getState()
-//     if (authToken) {
-//         const { player } = getState().teams.teams[teamId].team.team_members.find(teamMember => teamMember.id === teamMemberId)
-//         return POST(createUrl('/api/applications/'), authToken, { captain: player.id }).then(
-//             response => response.json().then(json => {
-//                 const payload = response.ok ? json : new Error(json.detail)
-//                 return dispatch(createAction(actions.RECEIVE_PROMOTE_TO_CAPTAIN, null, p => ({
-//                     ...metaGenerator(p),
-//                     teamMemberId, teamId
-//                 }))(payload))
-//             })
-//         )
-//     }
-// }
+export const inviteToTeam = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_INVITE_TO_TEAM)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (authToken) {
+        return POST(createUrl('/api/invitations/'), authToken, { ...data, created_by: id }).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating invitation')
+                dispatch(createAction(actions.RECEIVE_INVITE_TO_TEAM, null, metaGenerator)(payload))
+                return ({ response, json })
+            })
+        )
+    }
+}

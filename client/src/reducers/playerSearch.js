@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/playerSearch'
+import { actionTypes as reduxFormActions } from 'redux-form'
 
 const initialState = {
     results: [],
@@ -61,6 +62,13 @@ const playerSearch = handleActions({
         ...state,
         confirmInvitation: {
             ...state.confirmInvitation, playerId: null, teamId: null
+        }
+    }),
+    [reduxFormActions.SET_SUBMIT_SUCCEEDED]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            playerId: action.meta.form === 'invitation' ? null : state.confirmInvitation.playerId,
+            teamId: action.meta.form === 'invitation' ? null : state.confirmInvitation.teamId
         }
     })
 }, initialState)

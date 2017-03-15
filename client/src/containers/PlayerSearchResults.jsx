@@ -3,20 +3,22 @@ import { connect } from 'react-redux'
 import { submit } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
 
-import { requestPlayerSearch, requestNextPageOfPlayers } from 'actions/playerSearch'
+import { requestPlayerSearch, requestNextPageOfPlayers, cancelInviteToTeam } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
 import { withPlayer } from 'components/connectors/WithPlayer'
 
-import { Button, Col, Modal, Row } from 'react-bootstrap'
+import { Button, ButtonToolbar, Col, Modal, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import PlayerSearchResult from 'components/PlayerSearchResult'
-
+import InvitationForm from 'components/forms/InvitationForm'
 
 class PlayerSearchResults extends PureComponent {
 
     constructor(props) {
         super(props)
+        this.handleCancelInviteToTeamClick = this.handleCancelInviteToTeamClick.bind(this)
+        this.handleInviteToTeamClick = this.handleInviteToTeamClick.bind(this)
         this.handleRefreshClick = this.handleRefreshClick.bind(this)
         this.renderInviteToTeamModal = this.renderInviteToTeamModal.bind(this)
     }
@@ -28,6 +30,14 @@ class PlayerSearchResults extends PureComponent {
     handleRefreshClick(e) {
         e.preventDefault()
         this.props.submit('playerSearch')
+    }
+
+    handleInviteToTeamClick() {
+        this.props.submit('invitation')
+    }
+
+    handleCancelInviteToTeamClick() {
+        this.props.cancelInviteToTeam()
     }
 
     renderInviteToTeamModal(playerId, teamId) {
@@ -42,9 +52,18 @@ class PlayerSearchResults extends PureComponent {
                 <Modal.Body>
                     <p>
                         Are you sure you want to invite <strong>{playerBeingInvited.username}</strong> to
-                        join <strong>{teamInvitedTo.name}</strong>?
+                        join <strong>{teamInvitedTo.name}</strong>? Enter their position below:
                     </p>
+                    <InvitationForm initialValues={{ team: teamId, player: playerId }} />
                 </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link'
+                        onClick={() => this.handleCancelInviteToTeamClick()}>Cancel</Button>
+                    <Button bsStyle='warning'
+                        onClick={() => this.handleInviteToTeamClick()}>
+                        Invite
+                    </Button>
+                </Modal.Footer>
             </Modal>
         )
     }
@@ -100,7 +119,7 @@ PlayerSearchResults = connect(
     createStructuredSelector({
         playerSearch: playerSearchSelector,
     }),
-    { requestPlayerSearch, requestNextPageOfPlayers, submit }
+    { requestPlayerSearch, requestNextPageOfPlayers, submit, cancelInviteToTeam }
 )(PlayerSearchResults)
 
 export default PlayerSearchResults

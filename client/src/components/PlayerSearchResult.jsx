@@ -8,7 +8,7 @@ import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
-import { tryInviteToTeam, cancelInviteToTeam } from 'actions/playerSearch'
+import { tryInviteToTeam } from 'actions/playerSearch'
 
 class PlayerSearchResult extends Component {
 
@@ -92,8 +92,7 @@ class PlayerSearchResult extends Component {
 
 PlayerSearchResult = withAllFixtures(PlayerSearchResult)
 PlayerSearchResult = connect(null, {
-    tryInviteToTeam,
-    cancelInviteToTeam
+    tryInviteToTeam
 })(PlayerSearchResult)
 
 export default PlayerSearchResult
