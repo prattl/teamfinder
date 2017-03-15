@@ -11,6 +11,8 @@ import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import TeamSearchResult from 'components/TeamSearchResult'
 
+import { withPlayer } from 'components/connectors/WithPlayer'
+
 
 class TeamSearchResults extends PureComponent {
 
@@ -29,7 +31,6 @@ class TeamSearchResults extends PureComponent {
     }
 
     render() {
-        const a = this.props
         const { requestNextPageOfTeams,
             teamSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated } } = this.props
         return (
@@ -69,6 +70,8 @@ class TeamSearchResults extends PureComponent {
     }
 
 }
+
+TeamSearchResults = withPlayer(TeamSearchResults)
 
 TeamSearchResults = connect(
     createStructuredSelector({
