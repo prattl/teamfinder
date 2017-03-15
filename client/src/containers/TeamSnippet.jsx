@@ -23,10 +23,9 @@ class TeamSnippet extends Component {
                             <div>
                                 <h4 className='pull-left'>
                                     <Link to={`/teams/${team.id}`}>{team.name}</Link>
-                                    {playerIsCaptain(player, team) && (
+                                    {/*{playerIsCaptain(player, team) && (*/}
                                         <small>&nbsp;(<Link to={`/teams/manage/${team.id}/`}>manage</Link>)</small>
-                                    )}
-
+                                    {/*)}*/}
                                 </h4>
                                 <span className='pull-right'>
                                     <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>

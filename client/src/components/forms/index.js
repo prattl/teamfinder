@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
 import Select from 'react-select'
 
-import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withAllFixtures, withPositions } from 'components/connectors/WithFixtures'
 
 export const createGenericInput = (Component, label) => field => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
-        {Component}
+        <Component {...field.input} />
         {field.meta.touched && field.meta.error && (
             <HelpBlock>{field.meta.error}</HelpBlock>
         )}
@@ -34,6 +34,28 @@ export const createSelectInput = (label, SelectComponent, multi) => field => (
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
 )
+
+let SinglePositionSelect = ({ positions, input, meta, children, ...rest }) => (
+    <FormGroup controlId={input.name}
+               validationState={meta.touched && meta.error ? 'error' : null}>
+        <ControlLabel>Position</ControlLabel>
+        <FormControl componentClass='select'
+                     placeholder='Position' {...input} {...rest}>
+            <option>---</option>
+            {Object.keys(positions.items).map(positionId => (
+                <option key={`position-${positionId}-${meta.form}`}
+                        value={positionId}>
+                    {positions.items[positionId].name}
+                </option>
+            ))}
+        </FormControl>
+        {meta.touched && meta.error && (
+            <HelpBlock>{meta.error}</HelpBlock>
+        )}
+    </FormGroup>
+
+)
+SinglePositionSelect = withPositions(SinglePositionSelect)
 
 
 class SelectWrapper extends Component {
@@ -134,5 +156,6 @@ PositionSelect = withAllFixtures(PositionSelect)
 export {
     RegionSelect,
     SkillBracketSelect,
-    PositionSelect
+    PositionSelect,
+    SinglePositionSelect
 }

@@ -63,7 +63,3 @@ export const submitApplication = data => (dispatch, getState) => {
         )
     }
 }
-
-export const teamApplyingTo = data => () => {
-
-}
