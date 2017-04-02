@@ -7,28 +7,9 @@ import { Alert, Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withPlayer } from 'components/connectors/WithPlayer'
-import { withTeam } from 'components/connectors/WithTeam'
-import TeamMemberPosition from 'components/forms/TeamMemberPosition'
-import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tryDeleteTeamMember,
-    deleteTeamMember, tryPromoteToCaptain, cancelPromoteToCaptain, promoteToCaptain } from 'actions/teams'
+import { requestTeamApplications } from 'actions/teamEvents'
 import { Loading, playerIsCaptain } from 'utils'
-import { CaptainIcon } from 'utils/components/icons'
 
-const canEditTeam = (player, team) => (
-    playerIsCaptain(player, team)
-)
-
-const canRemoveTeamMember = (player, team, member) => (
-    playerIsCaptain(player, team) && team.captain !== member.player.id && team.team_members.length > 1
-)
-
-const canBePromotedToCaptain = (player, team, member) => (
-    playerIsCaptain(player, team) && team.captain !== member.player.id
-)
-
-const canEditTeamMembrPosition = (player, team) => (
-    playerIsCaptain(player, team)
-)
 
 class ManageTeam extends Component {
 

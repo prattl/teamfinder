@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Label } from 'react-bootstrap'
 import { Link } from 'react-router'
-import { FixtureDisplay, Loading, playerIsCaptain } from 'utils'
+import { FixtureDisplay, Loading, playerIsOnTeam } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 
 import { playerSelector } from 'utils/selectors'
@@ -23,9 +23,9 @@ class TeamSnippet extends Component {
                             <div>
                                 <h4 className='pull-left'>
                                     <Link to={`/teams/${team.id}`}>{team.name}</Link>
-                                    {/*{playerIsCaptain(player, team) && (*/}
+                                    {playerIsOnTeam(player, team) && (
                                         <small>&nbsp;(<Link to={`/teams/manage/${team.id}/`}>manage</Link>)</small>
-                                    {/*)}*/}
+                                    )}
                                 </h4>
                                 <span className='pull-right'>
                                     <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
