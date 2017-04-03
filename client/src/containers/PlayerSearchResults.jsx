@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect'
 
 import { requestPlayerSearch, requestNextPageOfPlayers, cancelInviteToTeam } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
-import { withPlayer } from 'components/connectors/WithPlayer'
+import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 
 import { Button, ButtonToolbar, Col, Modal, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
@@ -113,7 +113,7 @@ class PlayerSearchResults extends PureComponent {
 
 }
 
-PlayerSearchResults = withPlayer(PlayerSearchResults)
+PlayerSearchResults = withOwnPlayer(PlayerSearchResults)
 
 PlayerSearchResults = connect(
     createStructuredSelector({

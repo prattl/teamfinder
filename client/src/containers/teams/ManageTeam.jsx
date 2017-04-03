@@ -6,9 +6,10 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { Alert, Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { withPlayer } from 'components/connectors/WithPlayer'
+import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { withTeam } from 'components/connectors/WithTeam'
 import TeamMemberPosition from 'components/forms/TeamMemberPosition'
+import ManageApplications from 'containers/teams/ManageApplications'
 import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tryDeleteTeamMember,
     deleteTeamMember, tryPromoteToCaptain, cancelPromoteToCaptain, promoteToCaptain } from 'actions/teams'
 import { Loading, playerIsCaptain } from 'utils'
@@ -259,7 +260,7 @@ class ManageTeam extends Component {
                                     </ButtonToolbar>
                                 </span>
                             </h1>
-                            <h2>Players</h2>
+                            <h2>Roster</h2>
                             <div>
                                 <Table responsive>
                                     <thead>
@@ -277,7 +278,7 @@ class ManageTeam extends Component {
                                 </Table>
                             </div>
                             <h2>Applications</h2>
-                            <ManageApplications />
+                            <ManageApplications team={team} player={player} />
                         </div>
                     ) : (
                         <div>Error retrieving team.</div>
@@ -289,7 +290,7 @@ class ManageTeam extends Component {
 }
 
 ManageTeam = withAllFixtures(ManageTeam)
-ManageTeam = withPlayer(ManageTeam)
+ManageTeam = withOwnPlayer(ManageTeam)
 ManageTeam = withTeam(props => props.params.id)(ManageTeam)
 ManageTeam = requireAuthentication(ManageTeam)
 ManageTeam = connect(

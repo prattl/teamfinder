@@ -4,288 +4,174 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Alert, Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
-import requireAuthentication from 'components/auth/AuthenticationRequired'
-import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { withPlayer } from 'components/connectors/WithPlayer'
-import { requestTeamApplications } from 'actions/teamEvents'
+
+import PlayerName from 'containers/players/PlayerName'
+import { withPositions } from 'components/connectors/WithFixtures'
+import { requestTeamApplications, tryAcceptApplication, cancelAcceptApplication,
+    acceptApplication } from 'actions/teamEvents'
 import { Loading, playerIsCaptain } from 'utils'
 
 
-class ManageTeam extends Component {
+class ManageApplications extends Component {
 
     static propTypes = {
-        team: PropTypes.object.isRequired
+        team: PropTypes.object.isRequired,
+        player: PropTypes.object.isRequired
     }
 
     constructor(props) {
         super(props)
-        this.handleDeleteTeamClick = this.handleDeleteTeamClick.bind(this)
-        this.handleDeleteTeamConfirmClick = this.handleDeleteTeamConfirmClick.bind(this)
-        this.handleDeleteTeamCancelClick = this.handleDeleteTeamCancelClick.bind(this)
-        this.handleDeleteTeamMemberClick = this.handleDeleteTeamMemberClick.bind(this)
-        this.handleDeleteTeamMemberConfirmClick = this.handleDeleteTeamMemberConfirmClick.bind(this)
-        this.handleDeleteTeamMemberCancelClick = this.handleDeleteTeamMemberCancelClick.bind(this)
-        this.handleLeaveTeamClick = this.handleLeaveTeamClick.bind(this)
-        
+        this.handleAcceptApplicationClick = this.handleAcceptApplicationClick.bind(this)
+        this.handleAcceptCancelClick = this.handleAcceptCancelClick.bind(this)
+        this.handleAcceptConfirmClick = this.handleAcceptConfirmClick.bind(this)
+        this.handleRejectApplicationClick = this.handleRejectApplicationClick.bind(this)
     }
 
-    handleDeleteTeamClick() {
-        const { tryDeleteTeam, team: { team: { id } } } = this.props
-        tryDeleteTeam(id)
+    componentDidMount() {
+        const { requestTeamApplications, team: { id } } = this.props
+        requestTeamApplications(id)
     }
 
-    handleDeleteTeamConfirmClick() {
-        const { deleteTeam, team: { team: { id } } } = this.props
-        deleteTeam(id)
+    handleAcceptApplicationClick(applicationId) {
+        const { tryAcceptApplication } = this.props
+        tryAcceptApplication(applicationId)
     }
 
-    handleDeleteTeamCancelClick() {
-        const { cancelDeleteTeam, team: { team: { id } } } = this.props
-        cancelDeleteTeam(id)
+    handleAcceptCancelClick() {
+
     }
 
-    handleDeleteTeamMemberClick(teamMemberId) {
-        const { tryDeleteTeamMember, team: { team: { id } } } = this.props
-        tryDeleteTeamMember({ teamMemberId, teamId: id })
+    handleAcceptConfirmClick() {
+
     }
 
-    handleDeleteTeamMemberConfirmClick(teamMemberId, leavingTeam=false) {
-        const { deleteTeamMember, team: { team: { id } } } = this.props
-        deleteTeamMember(teamMemberId, id, leavingTeam)
+    handleRejectApplicationClick() {
+        // const { deleteTeam, team: { team: { id } } } = this.props
+        // deleteTeam(id)
     }
 
-    handleDeleteTeamMemberCancelClick() {
-        const { cancelDeleteTeamMember, team: { team: { id } } } = this.props
-        cancelDeleteTeamMember({ teamId: id })
-    }
-
-    handlePromoteToCaptainClick(teamMemberId) {
-        const { tryPromoteToCaptain, team: { team: { id } } } = this.props
-        tryPromoteToCaptain({ teamMemberId, teamId: id })
-    }
-
-    handlePromoteToCaptainConfirmClick(teamMemberId) {
-        const { promoteToCaptain, team: { team: { id } } } = this.props
-        promoteToCaptain(teamMemberId, id)
-    }
-
-    handlePromoteToCaptainCancelClick() {
-        const { cancelPromoteToCaptain, team: { team: { id } } } = this.props
-        cancelPromoteToCaptain({ teamId: id })
-    }
-
-    handleLeaveTeamClick() {
-        const { tryDeleteTeamMember, team: { team }, player } = this.props
-        const teamMember = team.team_members.find(teamMember => teamMember.player.id === player.id)
-        tryDeleteTeamMember({ teamMemberId: teamMember.id, teamId: team.id })
-    }
-
-    renderDeleteTeamConfirmModal() {
-        const { team: { confirmDelete, team } } = this.props
+    renderAcceptConfirmModal() {
+        const { confirmAccept, applications: { items } } = this.props
+        const application = confirmAccept ? items[confirmAccept] : null
         return (
-            <Modal show={confirmDelete}>
-                <Modal.Header>
-                    <Modal.Title>Confirm Delete Team</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <p>Are you sure you want to delete <strong>{team.name}</strong>? This cannot be undone.</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button bsStyle='link' onClick={this.handleDeleteTeamCancelClick}>Cancel</Button>
-                    <Button bsStyle='danger' onClick={this.handleDeleteTeamConfirmClick}>Delete</Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
-
-    renderDeleteTeamMemberConfirmModal(teamMemberId) {
-        const { team: { confirmDeleteTeamMember, deleteTeamMemberError, team }, player } = this.props
-        const teamMember = team.team_members.find(member => member.id === teamMemberId)
-        const playerIsLeavingTeam = teamMember.player.id === player.id
-        return (
-            <Modal show={confirmDeleteTeamMember === teamMemberId}>
+            <Modal show={Boolean(confirmAccept)}>
                 <Modal.Header>
                     <Modal.Title>
-                        {playerIsLeavingTeam ? 'Confirm Leave Team' : 'Confirm Remove Team Member'}
+                        Confirm Accept Application
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {deleteTeamMemberError && (
-                        <Alert bsStyle='danger'>
-                            {deleteTeamMemberError}
-                        </Alert>
-                    )}
-                    {playerIsLeavingTeam ? (
-                        <p>
-                            Are you sure you want to leave <strong>{team.name}</strong>? This cannot be undone.
-                        </p>
-                        ) : (
-                        <p>
-                            Are you sure you want to remove <strong>
-                            {teamMember.player.username}
-                            </strong> from <strong>{team.name}</strong>? This
-                            cannot be undone.
-                        </p>
-                    )}
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button bsStyle='link'
-                            onClick={() => this.handleDeleteTeamMemberCancelClick(teamMemberId)}>Cancel</Button>
-                    <Button bsStyle='danger'
-                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMemberId, true)}>
-                        {playerIsLeavingTeam ? 'Leave Team' : 'Remove'}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
-
-    renderPromoteToCaptainConfirmModal(teamMemberId) {
-        const { team: { confirmPromoteToCaptain, confirmPromoteToCaptainError, team } } = this.props
-        const teamMember = team.team_members.find(member => member.id === teamMemberId)
-        return (
-            <Modal show={confirmPromoteToCaptain === teamMemberId}>
-                <Modal.Header>
-                    <Modal.Title>Confirm Promote to Captain</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {confirmPromoteToCaptainError && (
-                        <Alert bsStyle='danger'>
-                            {confirmPromoteToCaptainError}
-                        </Alert>
-                    )}
                     <p>
-                        Are you sure you want to promote <strong>
-                        {teamMember.player.username}
-                        </strong> to be the captain of <strong>{team.name}</strong>? You will no longer be able to
-                        make changes to this team. This cannot be undone.
+                        Are you sure you want to
+                        accept <strong><PlayerName playerId={application.player} />'s</strong> application? This
+                        cannot be undone.
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle='link'
-                            onClick={() => this.handlePromoteToCaptainCancelClick(teamMemberId)}>Cancel</Button>
-                    <Button bsStyle='warning'
-                            onClick={() => this.handlePromoteToCaptainConfirmClick(teamMemberId)}>
-                        Promote to Captain
-                    </Button>
+                    <Button bsStyle='link' onClick={this.handleAcceptCancelClick}>Cancel</Button>
+                    <Button bsStyle='success' onClick={this.handleAcceptConfirmClick}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 
-    renderTeamMemberRow(teamMember) {
-        const { team: { team }, player, fixtures: { positions } } = this.props
-        return (
-            <tr key={teamMember.id}>
-                {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
-                {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
-                <td>
-                    {playerIsCaptain(teamMember.player, team) && <span><CaptainIcon/>&nbsp;</span>}
-                    <Link to={`/players/${teamMember.player.id}/`}>
-                        {teamMember.player.username}
-                    </Link>
-                </td>
-                <td>
-                    {canEditTeamMembrPosition(player, team) ? (
-                        <TeamMemberPosition form={`position-${teamMember.id}`}
-                                            teamMemberId={teamMember.id}
-                                            initialValues={{ position: teamMember.position }} />
-                        ) : (<span>{teamMember.position && positions.items[teamMember.position].name}</span>)}
-
-                </td>
-                <td>
-                    <ButtonToolbar>
-                        <Button bsSize='sm' bsStyle='danger'
-                                disabled={!canRemoveTeamMember(player, team, teamMember)}
-                                onClick={() => this.handleDeleteTeamMemberClick(teamMember.id)}>
-                            Remove
-                        </Button>
-                        <Button bsSize='sm' disabled={!canBePromotedToCaptain(player, team, teamMember)}
-                                onClick={() => this.handlePromoteToCaptainClick(teamMember.id)}>
-                            Promote to Captain
-                        </Button>
-                    </ButtonToolbar>
-                </td>
-            </tr>
-        )
-    }
+    // renderTeamMemberRow(teamMember) {
+    //     const { team: { team }, player, fixtures: { positions } } = this.props
+    //     return (
+    //         <tr key={teamMember.id}>
+    //             {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
+    //             {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
+    //             <td>
+    //                 {playerIsCaptain(teamMember.player, team) && <span><CaptainIcon/>&nbsp;</span>}
+    //                 <Link to={`/players/${teamMember.player.id}/`}>
+    //                     {teamMember.player.username}
+    //                 </Link>
+    //             </td>
+    //             <td>
+    //                 {canEditTeamMembrPosition(player, team) ? (
+    //                     <TeamMemberPosition form={`position-${teamMember.id}`}
+    //                                         teamMemberId={teamMember.id}
+    //                                         initialValues={{ position: teamMember.position }} />
+    //                     ) : (<span>{teamMember.position && positions.items[teamMember.position].name}</span>)}
+    //
+    //             </td>
+    //             <td>
+    //
+    //             </td>
+    //         </tr>
+    //     )
+    // }
 
     render() {
-        const { team: { team, isLoading, lastUpdated }, player } = this.props
-
+        const { team, player,
+            teamEvents: { applications: { items, isLoading, lastUpdated } },
+            positions
+        } = this.props
+        console.log('ManageApplications', this.props)
+        const applications = Object.keys(items).map(
+            applicationId => items[applicationId]
+        ).filter(application => application.team === team.id)
         return (
             <div>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
-                        <div>
-                            {this.renderDeleteTeamConfirmModal()}
-                            <h1>
-                                Manage Team: {team.name}&nbsp;
-                                <span className='pull-right'>
-                                    <ButtonToolbar>
-                                        <LinkContainer to={`/teams/${team.id}/`}>
-                                            <Button bsSize='sm'>
-                                                <i className='fa fa-eye'/>&nbsp;View
-                                            </Button>
-                                        </LinkContainer>
-                                        <Button bsStyle='warning' bsSize='sm' onClick={this.handleLeaveTeamClick}>
-                                            Leave Team
-                                        </Button>
-                                        {canEditTeam(player, team) && (
-                                            <Button bsStyle='danger' bsSize='sm' onClick={this.handleDeleteTeamClick}>
-                                                <i className='fa fa-trash'/>&nbsp;Delete
-                                            </Button>
-                                        )}
-                                    </ButtonToolbar>
-                                </span>
-                            </h1>
-                            <h2>Players</h2>
-                            <div>
-                                <Table responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>Player</th>
-                                            <th>Position</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {team.team_members.map(teamMember => (
-                                            this.renderTeamMemberRow(teamMember)
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </div>
-                            <h2>Applications</h2>
-                            <ManageApplications />
-                        </div>
-                    ) : (
-                        <div>Error retrieving team.</div>
-                    )
+                        <Table responsive>
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Position applying for</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {applications.map(application => (
+                                    <tr key={application.id}>
+                                        <td>
+                                            <Link to={`/players/${application.player}/`}>
+                                                <PlayerName playerId={application.player} />
+                                            </Link>
+                                        </td>
+                                        <td>
+                                            {positions.items[application.position].name}
+                                        </td>
+                                        <td>
+                                            <ButtonToolbar>
+                                                <Button bsSize='sm' bsStyle='success'
+                                                        disabled={!playerIsCaptain(player, team)}
+                                                        onClick={() => this.handleAcceptApplicationClick(application.id)}>
+                                                    Accept
+                                                </Button>
+                                                <Button bsSize='sm' bsStyle='danger'
+                                                        disabled={!playerIsCaptain(player, team)}
+                                                        onClick={() => this.handleRejectApplicationClick(application.id)}>
+                                                    Reject
+                                                </Button>
+                                            </ButtonToolbar>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    ) : <div>Error retrieving applications.</div>
                 )}
             </div>
         )
     }
 }
 
-ManageTeam = withAllFixtures(ManageTeam)
-ManageTeam = withPlayer(ManageTeam)
-ManageTeam = withTeam(props => props.params.id)(ManageTeam)
-ManageTeam = requireAuthentication(ManageTeam)
-ManageTeam = connect(
-    null,
-    {
-        cancelDeleteTeam,
-        deleteTeam,
-        tryDeleteTeam,
-        cancelDeleteTeamMember,
-        deleteTeamMember,
-        tryDeleteTeamMember,
-        tryPromoteToCaptain,
-        cancelPromoteToCaptain,
-        promoteToCaptain
+ManageApplications = withPositions(ManageApplications)
+// ManageApplications = withPlayer(ManageApplications)
+// ManageApplications = withTeam(props => props.params.id)(ManageApplications)
+// ManageApplications = requireAuthentication(ManageApplications)
+ManageApplications = connect(
+    state => ({
+        teamEvents: state.teamEvents
+    }), {
+        requestTeamApplications,
+        tryAcceptApplication,
+        cancelAcceptApplication,
+        acceptApplication
     }
-)(ManageTeam)
+)(ManageApplications)
 
-export default ManageTeam
+export default ManageApplications

@@ -35,8 +35,8 @@ export const requestPlayerSearch = (values) => (dispatch, getState) => {
 
 export const requestPlayer = id => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER)())
-    const { results } = getState().playerSearch
-    const player = results.find(result => result.id === id)
+    const { players } = getState().players
+    const player = players[id]
     if (player) {
         return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
     } else {

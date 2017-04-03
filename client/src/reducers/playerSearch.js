@@ -11,12 +11,6 @@ const initialState = {
     nextPageLoading: false,
     lastUpdated: null,
 
-    // TODO: This part should probably be moved into its own reducer
-    player: {},
-    playerIsLoading: false,
-    playerLastUpdated: null,
-    error: null,
-
     confirmInvitation: {
         playerId: null,
         teamId: null
