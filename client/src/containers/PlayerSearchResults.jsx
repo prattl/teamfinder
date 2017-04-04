@@ -7,7 +7,7 @@ import { requestPlayerSearch, requestNextPageOfPlayers, cancelInviteToTeam } fro
 import { playerSearchSelector } from 'utils/selectors'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 
-import { Button, ButtonToolbar, Col, Modal, Row } from 'react-bootstrap'
+import { Button, Col, Modal, Row } from 'react-bootstrap'
 import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import PlayerSearchResult from 'components/PlayerSearchResult'

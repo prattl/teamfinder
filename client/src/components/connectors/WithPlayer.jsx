@@ -24,13 +24,24 @@ const _withPlayer = playerId => (WrappedComponent) => {
 
 export const withPlayer = mapPropsToId => WrappedComponent => {
 
-    class WithTeam extends Component {
+    class WithPlayer extends Component {
+
+        constructor(props) {
+            super(props)
+            this.state = {
+                ConnectedComponent: null
+            }
+        }
+
+        componentWillMount() {
+            this.setState({ ConnectedComponent: _withPlayer(mapPropsToId(this.props))(WrappedComponent)})
+        }
 
         render() {
-            const ConnectedComponent = _withPlayer(mapPropsToId(this.props))(WrappedComponent)
+            const { ConnectedComponent } = this.state
             return <ConnectedComponent {...this.props} />
         }
     }
 
-    return WithTeam
+    return WithPlayer
 }

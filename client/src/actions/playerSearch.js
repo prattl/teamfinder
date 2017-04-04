@@ -34,12 +34,13 @@ export const requestPlayerSearch = (values) => (dispatch, getState) => {
 }
 
 export const requestPlayer = id => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_PLAYER)())
+
     const { players } = getState().players
     const player = players[id]
-    if (player) {
-        return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
-    } else {
+    // if (player) {
+    //     return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
+    if (!player) {
+        dispatch(createAction(actions.REQUEST_PLAYER)())
         const url = createUrl(`/api/players/${id}/`)
         return GET(url).then(response => response.json().then(json => {
             // TODO: Implement NotFoundError

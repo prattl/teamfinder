@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import connect from 'react-redux'
 
 import { Col, Row } from 'react-bootstrap'
 import TeamForm from 'components/forms/TeamForm'

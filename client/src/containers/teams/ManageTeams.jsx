@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
 
-import { dismissChangesSaved, requestOwnPlayerIfNeeded } from 'actions/player'
-import { requestPlayer } from 'actions/playerSearch'
-import { playerSearchSelector, playerSelector } from 'utils/selectors'
+import { requestOwnPlayerIfNeeded } from 'actions/player'
+import { playerSelector } from 'utils/selectors'
 
 import { Button, Col, Row } from 'react-bootstrap'
 
 import requireAuthentication from 'components/auth/AuthenticationRequired'
-import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { LinkContainer } from 'react-router-bootstrap'
-import { FixtureDisplay, Loading } from 'utils'
-import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { Loading } from 'utils'
 import TeamSnippet from 'containers/TeamSnippet'
 
 class ManageTeams extends Component {

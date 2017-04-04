@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 
 import PlayerSearchForm from 'components/forms/PlayerSearchForm'
 import PlayerSearchResults from 'containers/PlayerSearchResults'

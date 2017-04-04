@@ -41,7 +41,7 @@ export const acceptApplication = (applicationId, teamId) => (dispatch, getState)
     const { auth: { authToken } } = getState()
     if (authToken) {
         // const { player } = getState().teams.teams[teamId].team.team_members.find(teamMember => teamMember.id === teamMemberId)
-        return PATCH(createUrl(`/api/applications/${applicationId}/`), authToken, { status: 2 }).then(
+        return PATCH(createUrl(`/api/applications/${applicationId}/?team=${teamId}`), authToken, { status: 2 }).then(
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error(json.detail)
                 return dispatch(createAction(actions.RECEIVE_ACCEPT_APPLICATION, null, metaGenerator)(payload))

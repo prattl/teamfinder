@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Alert, Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
+// import { LinkContainer } from 'react-router-bootstrap'
+import { Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
 
 import PlayerName from 'containers/players/PlayerName'
 import { withPositions } from 'components/connectors/WithFixtures'
@@ -38,11 +38,13 @@ class ManageApplications extends Component {
     }
 
     handleAcceptCancelClick() {
-
+        const { cancelAcceptApplication } = this.props
+        cancelAcceptApplication()
     }
 
     handleAcceptConfirmClick() {
-
+        const { acceptApplication, teamEvents: { applications: { items, confirmAccept } } } = this.props
+        acceptApplication(confirmAccept, items[confirmAccept].team)
     }
 
     handleRejectApplicationClick() {
@@ -51,9 +53,10 @@ class ManageApplications extends Component {
     }
 
     renderAcceptConfirmModal() {
-        const { confirmAccept, applications: { items } } = this.props
+        const { teamEvents: { applications: { items, confirmAccept } } } = this.props
         const application = confirmAccept ? items[confirmAccept] : null
-        return (
+
+        return (application &&
             <Modal show={Boolean(confirmAccept)}>
                 <Modal.Header>
                     <Modal.Title>
@@ -69,89 +72,74 @@ class ManageApplications extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle='link' onClick={this.handleAcceptCancelClick}>Cancel</Button>
-                    <Button bsStyle='success' onClick={this.handleAcceptConfirmClick}>Delete</Button>
+                    <Button bsStyle='success' onClick={this.handleAcceptConfirmClick}>Accept</Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 
-    // renderTeamMemberRow(teamMember) {
-    //     const { team: { team }, player, fixtures: { positions } } = this.props
-    //     return (
-    //         <tr key={teamMember.id}>
-    //             {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
-    //             {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
-    //             <td>
-    //                 {playerIsCaptain(teamMember.player, team) && <span><CaptainIcon/>&nbsp;</span>}
-    //                 <Link to={`/players/${teamMember.player.id}/`}>
-    //                     {teamMember.player.username}
-    //                 </Link>
-    //             </td>
-    //             <td>
-    //                 {canEditTeamMembrPosition(player, team) ? (
-    //                     <TeamMemberPosition form={`position-${teamMember.id}`}
-    //                                         teamMemberId={teamMember.id}
-    //                                         initialValues={{ position: teamMember.position }} />
-    //                     ) : (<span>{teamMember.position && positions.items[teamMember.position].name}</span>)}
-    //
-    //             </td>
-    //             <td>
-    //
-    //             </td>
-    //         </tr>
-    //     )
-    // }
+    renderApplicationsTable(applications) {
+        return (
+            <Table responsive>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Position applying for</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {applications.map(application => (
+                        <tr key={application.id}>
+                            <td>
+                                <Link to={`/players/${application.player}/`}>
+                                    <PlayerName key={application.player} playerId={application.player} />
+                                </Link>
+                            </td>
+                            <td>
+                                {positions.items[application.position].name}
+                            </td>
+                            <td>
+                                <ButtonToolbar>
+                                    <Button bsSize='sm' bsStyle='success'
+                                            disabled={!playerIsCaptain(player, team)}
+                                            onClick={() => this.handleAcceptApplicationClick(application.id)}>
+                                        Accept
+                                    </Button>
+                                    <Button bsSize='sm' bsStyle='danger'
+                                            disabled={!playerIsCaptain(player, team)}
+                                            onClick={() => this.handleRejectApplicationClick(application.id)}>
+                                        Reject
+                                    </Button>
+                                </ButtonToolbar>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+        )
+    }
 
     render() {
         const { team, player,
             teamEvents: { applications: { items, isLoading, lastUpdated } },
             positions
         } = this.props
-        console.log('ManageApplications', this.props)
+
         const applications = Object.keys(items).map(
             applicationId => items[applicationId]
         ).filter(application => application.team === team.id)
+
+        const pendingApplications = applications.filter(application => application.status === 1)
+        const acceptedApplications = applications.filter(application => application.status === 2)
         return (
             <div>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
-                        <Table responsive>
-                            <thead>
-                                <tr>
-                                    <th>Player</th>
-                                    <th>Position applying for</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {applications.map(application => (
-                                    <tr key={application.id}>
-                                        <td>
-                                            <Link to={`/players/${application.player}/`}>
-                                                <PlayerName playerId={application.player} />
-                                            </Link>
-                                        </td>
-                                        <td>
-                                            {positions.items[application.position].name}
-                                        </td>
-                                        <td>
-                                            <ButtonToolbar>
-                                                <Button bsSize='sm' bsStyle='success'
-                                                        disabled={!playerIsCaptain(player, team)}
-                                                        onClick={() => this.handleAcceptApplicationClick(application.id)}>
-                                                    Accept
-                                                </Button>
-                                                <Button bsSize='sm' bsStyle='danger'
-                                                        disabled={!playerIsCaptain(player, team)}
-                                                        onClick={() => this.handleRejectApplicationClick(application.id)}>
-                                                    Reject
-                                                </Button>
-                                            </ButtonToolbar>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                        <div>
+                            {this.renderAcceptConfirmModal()}
+                            {this.renderApplicationsTable(pendingApplications)}
+                        </div>
                     ) : <div>Error retrieving applications.</div>
                 )}
             </div>

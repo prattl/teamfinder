@@ -13,7 +13,6 @@ const initialEventsState = {
 const initialState = {
     applications: initialEventsState,
     invitations: initialEventsState,
-    confirmApplication: null,
 }
 
 const teamEvents = handleActions({
@@ -48,10 +47,18 @@ const teamEvents = handleActions({
         }
     }),
     [actions.CONFIRM_ACCEPT_APPLICATION]: (state, action) => ({
-        ...state, confirmAccept: action.payload
+        ...state,
+        applications: {
+            ...state.applications,
+            confirmAccept: action.payload
+        }
     }),
     [actions.CANCEL_ACCEPT_APPLICATION]: (state, action) => ({
-        ...state, confirmAccept: null
+        ...state,
+        applications: {
+            ...state.applications,
+            confirmAccept: null
+        }
     })
 }, initialState)
 
