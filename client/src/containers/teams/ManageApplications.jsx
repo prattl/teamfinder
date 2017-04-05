@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import { Link } from 'react-router'
-// import { LinkContainer } from 'react-router-bootstrap'
 import { Badge, Button, ButtonToolbar, Modal, Table, Tab, Tabs } from 'react-bootstrap'
 
 import PlayerName from 'containers/players/PlayerName'

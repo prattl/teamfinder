@@ -10,6 +10,7 @@ import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { withTeam } from 'components/connectors/WithTeam'
 import TeamMemberPosition from 'components/forms/TeamMemberPosition'
 import ManageApplications from 'containers/teams/ManageApplications'
+import ManageInvitations from 'containers/teams/ManageInvitations'
 import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tryDeleteTeamMember,
     deleteTeamMember, tryPromoteToCaptain, cancelPromoteToCaptain, promoteToCaptain } from 'actions/teams'
 import { Loading, playerIsCaptain } from 'utils'
@@ -279,6 +280,8 @@ class ManageTeam extends Component {
                             </div>
                             <h2>Applications</h2>
                             <ManageApplications team={team} player={player} />
+                            <h2>Invitations</h2>
+                            <ManageInvitations team={team} player={player} />
                         </div>
                     ) : (
                         <div>Error retrieving team.</div>

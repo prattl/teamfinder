@@ -4,15 +4,20 @@ import { arrayToObject } from 'utils'
 
 const initialEventsState = {
     items: {},
-    confirmAccept: null,
-    confirmReject: null,
     isLoading: false,
     lastUpdated: null,
 }
 
 const initialState = {
-    applications: initialEventsState,
-    invitations: initialEventsState,
+    applications: {
+        ...initialEventsState,
+        confirmAccept: null,
+        confirmReject: null
+    },
+    invitations: {
+        ...initialEventsState,
+        confirmWithdraw: null
+    },
 }
 
 const teamEvents = handleActions({
@@ -74,6 +79,20 @@ const teamEvents = handleActions({
             confirmReject: null
         }
     }),
+    [actions.CONFIRM_WITHDRAW_INVITATION]: (state, action) => ({
+        ...state,
+        invitations: {
+            ...state.invitations,
+            confirmWithdraw: action.payload
+        }
+    }),
+    [actions.CANCEL_WITHDRAW_INVITATION]: (state, action) => ({
+        ...state,
+        invitations: {
+            ...state.invitations,
+            confirmWithdraw: null
+        }
+    }),
     [actions.RECEIVE_UPDATE_APPLICATION_STATUS]: (state, action) => ({
         ...state,
         applications: {
@@ -83,6 +102,17 @@ const teamEvents = handleActions({
                 [action.payload.id]: action.payload,
             },
             confirmAccept: null, confirmReject: null
+        }
+    }),
+    [actions.RECEIVE_UPDATE_INVITATION_STATUS]: (state, action) => ({
+        ...state,
+        invitations: {
+            ...state.invitations,
+            items: {
+                ...state.invitations.items,
+                [action.payload.id]: action.payload,
+            },
+            confirmWithdraw: null
         }
     })
 }, initialState)
