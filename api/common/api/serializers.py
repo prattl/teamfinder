@@ -177,7 +177,7 @@ class EditApplicationSerializer(ReadOnlyApplicationSerializer):
 
 
 class ReadOnlyInvitationSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='application-detail')
+    url = serializers.HyperlinkedIdentityField(view_name='invitation-detail')
     team = serializers.PrimaryKeyRelatedField(read_only=True)
     player = serializers.PrimaryKeyRelatedField(read_only=True)
     position = serializers.PrimaryKeyRelatedField(read_only=True)
