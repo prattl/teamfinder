@@ -20,10 +20,12 @@ from .permissions import (
 from .serializers import (
     ApplicationSerializer,
     EditApplicationSerializer,
+    EditInvitationSerializer,
     EditMembershipAsCaptainSerializer,
     InvitationSerializer,
     PositionSerializer,
     ReadOnlyApplicationSerializer,
+    ReadOnlyInvitationSerializer,
     RegionSerializer,
     SkillBracketSerializer,
     MembershipSerializer,
@@ -101,8 +103,8 @@ class InvitationViewSet(JoinableEventViewSet):
         if self.request.method == 'POST':
             return InvitationSerializer
         if self.request.method in ('PUT', 'PATCH', ):
-            return EditApplicationSerializer
-        return ReadOnlyApplicationSerializer
+            return EditInvitationSerializer
+        return ReadOnlyInvitationSerializer
 
 
 class MembershipViewSet(mixins.RetrieveModelMixin,

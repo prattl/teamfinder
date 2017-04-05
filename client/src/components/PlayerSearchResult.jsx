@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { playerIsCaptain } from 'utils'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'

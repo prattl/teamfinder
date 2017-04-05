@@ -20,6 +20,11 @@ export const playerSelector = createSelector(
     player => (player)
 )
 
+export const playersSelector = createSelector(
+    state => state.players,
+    players => (players)
+)
+
 export const playerSearchSelector = createSelector(
     state => state.playerSearch,
     playerSearch => (playerSearch)

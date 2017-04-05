@@ -48,7 +48,7 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, creator, id, name, regions, skill_bracket, team_members, fixtures } = this.props
+        const { available_positions, captain, id, name, regions, skill_bracket, team_members, fixtures } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 

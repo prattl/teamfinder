@@ -46,7 +46,7 @@ const teams = handleActions({
         }
     }),
     [actions.RECEIVE_DELETE_TEAM]: (state, action) => {
-        const { [action.payload]: deletedTeam, ...newTeams} = state.teams
+        const { [action.payload]: _, ...newTeams} = state.teams
         return {
             ...state,
             teams: newTeams

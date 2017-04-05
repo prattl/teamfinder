@@ -3,7 +3,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { submitEditTeamMember } from 'actions/teams'
 
-import { Form, FormControl, FormGroup, Button, Label } from 'react-bootstrap'
+import { Form, FormControl, FormGroup, Button } from 'react-bootstrap'
 import { withPositions } from 'components/connectors/WithFixtures'
 
 

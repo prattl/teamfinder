@@ -121,9 +121,6 @@ class JoinableAction(AbstractBaseModel):
         if previous_status != self.status:
             self._create_status_history()
 
-    def delete(self, *args, **kwargs):
-        pass
-
     def save(self, *args, **kwargs):
         super(JoinableAction, self).save(*args, **kwargs)
         self._capture_status_history()
@@ -163,6 +160,14 @@ class Application(JoinableAction):
 
     def _create_status_history(self):
         ApplicationStatusHistory.objects.create_from_application(self)
+
+    def save(self, *args, **kwargs):
+        previous_status = Application.objects.get(pk=self.pk).status if self.pk else None
+        print("Application save", previous_status)
+        super(Application, self).save(*args, **kwargs)
+        print("Application save", self.status)
+        if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
+            TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
 
 
 class InvitationStatusHistoryManager(models.Manager):

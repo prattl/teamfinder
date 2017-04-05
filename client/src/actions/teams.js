@@ -28,15 +28,17 @@ const actions = keyMirror({
 export default actions
 
 // async : need for api requests
-export const requestTeam = id => (dispatch, getState) => {
+export const requestTeam = (id, refresh=false) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_TEAM)(id))
-    const { teams } = getState().teams
-    if (Object.keys(teams).includes(id)) {
-        const team = teams[id]
-        if (team.team) {
-            return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
-                { result: teams[id].team, id }
-            ))
+    if (!refresh) {
+        const {teams} = getState().teams
+        if (Object.keys(teams).includes(id)) {
+            const team = teams[id]
+            if (team.team) {
+                return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
+                    {result: teams[id].team, id}
+                ))
+            }
         }
     }
     const url = createUrl(`/api/teams/${id}/`)
