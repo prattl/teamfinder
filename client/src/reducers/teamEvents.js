@@ -59,6 +59,31 @@ const teamEvents = handleActions({
             ...state.applications,
             confirmAccept: null
         }
+    }),
+    [actions.CONFIRM_REJECT_APPLICATION]: (state, action) => ({
+        ...state,
+        applications: {
+            ...state.applications,
+            confirmReject: action.payload
+        }
+    }),
+    [actions.CANCEL_REJECT_APPLICATION]: (state, action) => ({
+        ...state,
+        applications: {
+            ...state.applications,
+            confirmReject: null
+        }
+    }),
+    [actions.RECEIVE_UPDATE_APPLICATION_STATUS]: (state, action) => ({
+        ...state,
+        applications: {
+            ...state.applications,
+            items: {
+                ...state.applications.items,
+                [action.payload.id]: action.payload,
+            },
+            confirmAccept: null, confirmReject: null
+        }
     })
 }, initialState)
 

@@ -1,16 +1,35 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import { Link } from 'react-router'
 // import { LinkContainer } from 'react-router-bootstrap'
-import { Button, ButtonToolbar, Modal, Table } from 'react-bootstrap'
+import { Badge, Button, ButtonToolbar, Modal, Table, Tab, Tabs } from 'react-bootstrap'
 
 import PlayerName from 'containers/players/PlayerName'
 import { withPositions } from 'components/connectors/WithFixtures'
-import { requestTeamApplications, tryAcceptApplication, cancelAcceptApplication,
-    acceptApplication } from 'actions/teamEvents'
+import { requestTeamApplications, 
+    acceptApplication, rejectApplication,
+    tryAcceptApplication, cancelAcceptApplication,
+    tryRejectApplication, cancelRejectApplication,
+ } from 'actions/teamEvents'
 import { Loading, playerIsCaptain } from 'utils'
 
+
+const ApplicationTabLabel = ({ children, count }) => (
+    <span>
+        {children}
+        {count > 0 && <span> <Badge>{count}</Badge></span>}
+    </span>
+)
+
+const statusMapping = {
+    Pending: 1,
+    Accepted: 2,
+    Rejected: 3,
+    Expired: 4,
+    Withdrawn: 5
+}
 
 class ManageApplications extends Component {
 
@@ -25,6 +44,8 @@ class ManageApplications extends Component {
         this.handleAcceptCancelClick = this.handleAcceptCancelClick.bind(this)
         this.handleAcceptConfirmClick = this.handleAcceptConfirmClick.bind(this)
         this.handleRejectApplicationClick = this.handleRejectApplicationClick.bind(this)
+        this.handleRejectCancelClick = this.handleRejectCancelClick.bind(this)
+        this.handleRejectConfirmClick = this.handleRejectConfirmClick.bind(this)
     }
 
     componentDidMount() {
@@ -47,9 +68,27 @@ class ManageApplications extends Component {
         acceptApplication(confirmAccept, items[confirmAccept].team)
     }
 
-    handleRejectApplicationClick() {
-        // const { deleteTeam, team: { team: { id } } } = this.props
-        // deleteTeam(id)
+    handleRejectApplicationClick(applicationId) {
+        const { tryRejectApplication } = this.props
+        tryRejectApplication(applicationId)
+    }
+    
+    handleRejectCancelClick() {
+        const { cancelRejectApplication } = this.props
+        cancelRejectApplication()
+    }
+
+    handleRejectConfirmClick() {
+        const { rejectApplication, teamEvents: { applications: { items, confirmReject } } } = this.props
+        rejectApplication(confirmReject, items[confirmReject].team)
+    }
+
+    getFilteredApplications() {
+        const { team, teamEvents: { applications: { items } } } = this.props
+
+        return Object.keys(items).map(
+            applicationId => items[applicationId]
+        ).filter(application => application.team === team.id)
     }
 
     renderAcceptConfirmModal() {
@@ -78,67 +117,110 @@ class ManageApplications extends Component {
         )
     }
 
-    renderApplicationsTable(applications) {
+    renderRejectConfirmModal() {
+        const { teamEvents: { applications: { items, confirmReject } } } = this.props
+        const application = confirmReject ? items[confirmReject] : null
+
+        return (application &&
+            <Modal show={Boolean(confirmReject)}>
+                <Modal.Header>
+                    <Modal.Title>
+                        Confirm Reject Application
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Are you sure you want to
+                        reject <strong><PlayerName playerId={application.player} />'s</strong> application? This
+                        cannot be undone.
+                    </p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link' onClick={this.handleRejectCancelClick}>Cancel</Button>
+                    <Button bsStyle='danger' onClick={this.handleRejectConfirmClick}>Reject</Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+    renderApplicationTab(index, statusLabel, statusIndex) {
+        let applications = this.getFilteredApplications()
+        applications = applications.filter(application => application.status === statusIndex)
         return (
-            <Table responsive>
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Position applying for</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {applications.map(application => (
-                        <tr key={application.id}>
-                            <td>
-                                <Link to={`/players/${application.player}/`}>
-                                    <PlayerName key={application.player} playerId={application.player} />
-                                </Link>
-                            </td>
-                            <td>
-                                {positions.items[application.position].name}
-                            </td>
-                            <td>
-                                <ButtonToolbar>
-                                    <Button bsSize='sm' bsStyle='success'
-                                            disabled={!playerIsCaptain(player, team)}
-                                            onClick={() => this.handleAcceptApplicationClick(application.id)}>
-                                        Accept
-                                    </Button>
-                                    <Button bsSize='sm' bsStyle='danger'
-                                            disabled={!playerIsCaptain(player, team)}
-                                            onClick={() => this.handleRejectApplicationClick(application.id)}>
-                                        Reject
-                                    </Button>
-                                </ButtonToolbar>
-                            </td>
+            <Tab eventKey={index} key={`${statusLabel}-applications-${index}`}
+                 title={<ApplicationTabLabel count={applications.length}>{statusLabel}</ApplicationTabLabel>}>
+                {this.renderApplicationsTable(applications)}
+            </Tab>
+        )
+    }
+
+    renderApplicationsTable(applications) {
+        const { team, player, positions } = this.props
+        return (
+            <div>
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Position applied for</th>
+                            <th>Applied On</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {applications.map(application => (
+                            <tr key={application.id}>
+                                <td>
+                                    <Link to={`/players/${application.player}/`}>
+                                        <PlayerName key={application.player} playerId={application.player} />
+                                    </Link>
+                                </td>
+                                <td>
+                                    {positions.items[application.position].name}
+                                </td>
+                                <td>
+                                    {moment(application.created).format('L')}
+                                </td>
+                                <td>
+                                    {application.status === 1 && (
+                                        <ButtonToolbar>
+                                            <Button bsSize='sm' bsStyle='success'
+                                                    disabled={!playerIsCaptain(player, team)}
+                                                    onClick={() => this.handleAcceptApplicationClick(application.id)}>
+                                                Accept
+                                            </Button>
+                                            <Button bsSize='sm' bsStyle='danger'
+                                                    disabled={!playerIsCaptain(player, team)}
+                                                    onClick={() => this.handleRejectApplicationClick(application.id)}>
+                                                Reject
+                                            </Button>
+                                        </ButtonToolbar>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+                {applications.length === 0 && <div className='text-center'>No applications</div>}
+            </div>
         )
     }
 
     render() {
-        const { team, player,
-            teamEvents: { applications: { items, isLoading, lastUpdated } },
-            positions
-        } = this.props
+        const { teamEvents: { applications: { isLoading, lastUpdated } } } = this.props
 
-        const applications = Object.keys(items).map(
-            applicationId => items[applicationId]
-        ).filter(application => application.team === team.id)
-
-        const pendingApplications = applications.filter(application => application.status === 1)
-        const acceptedApplications = applications.filter(application => application.status === 2)
         return (
             <div>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
                             {this.renderAcceptConfirmModal()}
-                            {this.renderApplicationsTable(pendingApplications)}
+                            {this.renderRejectConfirmModal()}
+                            <Tabs defaultActiveKey={1} id='application-tabs'>
+                                {Object.keys(statusMapping).map((statusText, i) => (
+                                    this.renderApplicationTab(i + 1, statusText, statusMapping[statusText])
+                                ))}
+                            </Tabs>
                         </div>
                     ) : <div>Error retrieving applications.</div>
                 )}
@@ -148,9 +230,6 @@ class ManageApplications extends Component {
 }
 
 ManageApplications = withPositions(ManageApplications)
-// ManageApplications = withPlayer(ManageApplications)
-// ManageApplications = withTeam(props => props.params.id)(ManageApplications)
-// ManageApplications = requireAuthentication(ManageApplications)
 ManageApplications = connect(
     state => ({
         teamEvents: state.teamEvents
@@ -158,7 +237,10 @@ ManageApplications = connect(
         requestTeamApplications,
         tryAcceptApplication,
         cancelAcceptApplication,
-        acceptApplication
+        acceptApplication,
+        tryRejectApplication,
+        cancelRejectApplication,
+        rejectApplication
     }
 )(ManageApplications)
 

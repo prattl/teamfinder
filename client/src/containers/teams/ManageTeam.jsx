@@ -118,12 +118,12 @@ class ManageTeam extends Component {
         )
     }
 
-    renderDeleteTeamMemberConfirmModal(teamMemberId) {
+    renderDeleteTeamMemberConfirmModal() {
         const { team: { confirmDeleteTeamMember, deleteTeamMemberError, team }, player } = this.props
-        const teamMember = team.team_members.find(member => member.id === teamMemberId)
-        const playerIsLeavingTeam = teamMember.player.id === player.id
-        return (
-            <Modal show={confirmDeleteTeamMember === teamMemberId}>
+        const teamMember = team.team_members.find(member => member.id === confirmDeleteTeamMember)
+        const playerIsLeavingTeam = teamMember && teamMember.player.id === player.id
+        return (teamMember &&
+            <Modal show={Boolean(confirmDeleteTeamMember)}>
                 <Modal.Header>
                     <Modal.Title>
                         {playerIsLeavingTeam ? 'Confirm Leave Team' : 'Confirm Remove Team Member'}
@@ -147,13 +147,12 @@ class ManageTeam extends Component {
                             cannot be undone.
                         </p>
                     )}
-
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle='link'
-                            onClick={() => this.handleDeleteTeamMemberCancelClick(teamMemberId)}>Cancel</Button>
+                            onClick={() => this.handleDeleteTeamMemberCancelClick(teamMember.id)}>Cancel</Button>
                     <Button bsStyle='danger'
-                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMemberId, true)}>
+                            onClick={() => this.handleDeleteTeamMemberConfirmClick(teamMember.id, playerIsLeavingTeam)}>
                         {playerIsLeavingTeam ? 'Leave Team' : 'Remove'}
                     </Button>
                 </Modal.Footer>
@@ -161,11 +160,11 @@ class ManageTeam extends Component {
         )
     }
 
-    renderPromoteToCaptainConfirmModal(teamMemberId) {
+    renderPromoteToCaptainConfirmModal() {
         const { team: { confirmPromoteToCaptain, confirmPromoteToCaptainError, team } } = this.props
-        const teamMember = team.team_members.find(member => member.id === teamMemberId)
-        return (
-            <Modal show={confirmPromoteToCaptain === teamMemberId}>
+        const teamMember = team.team_members.find(member => member.id === confirmPromoteToCaptain)
+        return (teamMember &&
+            <Modal show={Boolean(confirmPromoteToCaptain)}>
                 <Modal.Header>
                     <Modal.Title>Confirm Promote to Captain</Modal.Title>
                 </Modal.Header>
@@ -184,9 +183,9 @@ class ManageTeam extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button bsStyle='link'
-                            onClick={() => this.handlePromoteToCaptainCancelClick(teamMemberId)}>Cancel</Button>
+                            onClick={() => this.handlePromoteToCaptainCancelClick(teamMember.id)}>Cancel</Button>
                     <Button bsStyle='warning'
-                            onClick={() => this.handlePromoteToCaptainConfirmClick(teamMemberId)}>
+                            onClick={() => this.handlePromoteToCaptainConfirmClick(teamMember.id)}>
                         Promote to Captain
                     </Button>
                 </Modal.Footer>
@@ -198,8 +197,6 @@ class ManageTeam extends Component {
         const { team: { team }, player, fixtures: { positions } } = this.props
         return (
             <tr key={teamMember.id}>
-                {this.renderDeleteTeamMemberConfirmModal(teamMember.id)}
-                {this.renderPromoteToCaptainConfirmModal(teamMember.id)}
                 <td>
                     {playerIsCaptain(teamMember.player, team) && <span><CaptainIcon/>&nbsp;</span>}
                     <Link to={`/players/${teamMember.player.id}/`}>
@@ -232,7 +229,8 @@ class ManageTeam extends Component {
     }
 
     render() {
-        const { team: { team, isLoading, lastUpdated }, player } = this.props
+        const { team: { team, isLoading, lastUpdated, confirmDeleteTeamMember, confirmPromoteToCaptain },
+            player } = this.props
 
         return (
             <div>
@@ -240,6 +238,8 @@ class ManageTeam extends Component {
                     lastUpdated ? (
                         <div>
                             {this.renderDeleteTeamConfirmModal()}
+                            {this.renderDeleteTeamMemberConfirmModal(confirmDeleteTeamMember)}
+                            {this.renderPromoteToCaptainConfirmModal(confirmPromoteToCaptain)}
                             <h1>
                                 Manage Team: {team.name}&nbsp;
                                 <span className='pull-right'>
