@@ -19,7 +19,6 @@ class ManageTeams extends Component {
 
     render() {
         const { player, player: { teams }, isLoading, lastUpdated } = this.props
-        // const { fixtures: { regions, positions, skillBrackets } } = this.props
         return (
             <div>
                 <div>
@@ -59,7 +58,5 @@ ManageTeams = connect(
 )(ManageTeams)
 
 ManageTeams = requireAuthentication(ManageTeams)
-
-// ManageTeams = withAllFixtures(ManageTeams)
 
 export default ManageTeams

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { submitCreateTeam } from 'actions/teams'
@@ -7,15 +7,7 @@ import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
-    return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
-        if (!response.ok) {
-            const errors = json
-            if (json.hasOwnProperty('non_field_errors')) {
-                errors._error = json.non_field_errors[0]
-            }
-            throw new SubmissionError(errors)
-        }
-    })
+
 }
 
 const validate = values => {
@@ -44,8 +36,29 @@ const AvailablePositionInput = createSelectInput('Available Positions', Position
 
 class TeamForm extends Component {
 
+    static propTypes = {
+        showPlayerPosition: PropTypes.bool
+    }
+
+    static defaultProps = {
+        showPlayerPosition: true
+    }
+
+    // TODO: Use this submit and add a flag for "editing" or "creating"
+    submit(values, dispatch) {
+        return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
+            if (!response.ok) {
+                const errors = json
+                if (json.hasOwnProperty('non_field_errors')) {
+                    errors._error = json.non_field_errors[0]
+                }
+                throw new SubmissionError(errors)
+            }
+        })
+    }
+
     render() {
-        const { error, handleSubmit, submitting } = this.props
+        const { error, handleSubmit, submitting, showPlayerPosition } = this.props
         return (
             <form onSubmit={handleSubmit}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
@@ -58,9 +71,11 @@ class TeamForm extends Component {
                 <div>
                     <Field name='skill_bracket' component={SkillBracketInput} />
                 </div>
-                <div>
-                    <Field name='player_position' component={PlayerPositionInput} />
-                </div>
+                {showPlayerPosition && (
+                    <div>
+                        <Field name='player_position' component={PlayerPositionInput} />
+                    </div>
+                )}
                 {/* TODO: Add checkbox for "Currently recruiting?" and conditionally display available positions */}
                 <div>
                     <Field name='available_positions' component={AvailablePositionInput} />
