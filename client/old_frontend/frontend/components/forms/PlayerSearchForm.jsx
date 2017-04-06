@@ -10,7 +10,7 @@ const validate = values => {
 }
 
 const submit = (values, dispatch) => {
-    console.log('submit got', values, dispatch)
+    console.log('playerSubmit got', values, dispatch)
     return dispatch(requestPlayers(values)).then( ({json, response}) => {
         if (!response.ok) {
             if (json.hasOwnProperty('non_field_errors')) {

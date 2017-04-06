@@ -1,12 +1,16 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/player'
+import teamActions from 'actions/teams'
 import { actionTypes as reduxFormActions } from 'redux-form'
 
 const initialState = {
-    player: null,
+    player: {
+        teams: []
+    },
     changesSaved: false,
     isLoading: false,
-    lastUpdated: null
+    lastUpdated: null,
+    teamApplyingTo : null
 }
 
 const player = handleActions({
@@ -30,6 +34,15 @@ const player = handleActions({
     }),
     [actions.DISMISS_CHANGES_SAVED]: (state, action) => ({
         ...state, changesSaved: false
+    }),
+    [teamActions.RECEIVE_SUBMIT_CREATE_TEAM]: (state, action) => ({
+        ...state, player: {
+            ...state.player,
+            teams: action.error ? state.player.teams : [
+                ...state.player.teams,
+                action.payload
+            ]
+        }
     })
 }, initialState)
 

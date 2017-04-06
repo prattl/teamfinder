@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/playerSearch'
+import { actionTypes as reduxFormActions } from 'redux-form'
 
 const initialState = {
     results: [],
@@ -10,10 +11,10 @@ const initialState = {
     nextPageLoading: false,
     lastUpdated: null,
 
-    // TODO: This part should probably be moved into its own reducer
-    player: {},
-    playerIsLoading: false,
-    playerLastUpdated: null
+    confirmInvitation: {
+        playerId: null,
+        teamId: null
+    }
 }
 
 const playerSearch = handleActions({
@@ -42,7 +43,27 @@ const playerSearch = handleActions({
     }),
     [actions.RECEIVE_PLAYER]: (state, action) => ({
         ...state, playerIsLoading: false, playerLastUpdated: action.meta.receivedAt,
-        player: action.payload
+        player: action.error ? state.player : action.payload,
+        error: action.error ? action.payload : null
+    }),
+    [actions.CONFIRM_INVITE_TO_TEAM]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            ...state.confirmInvitation, ...action.payload
+        }
+    }),
+    [actions.CANCEL_INVITE_TO_TEAM]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            ...state.confirmInvitation, playerId: null, teamId: null
+        }
+    }),
+    [reduxFormActions.SET_SUBMIT_SUCCEEDED]: (state, action) => ({
+        ...state,
+        confirmInvitation: {
+            playerId: action.meta.form === 'invitation' ? null : state.confirmInvitation.playerId,
+            teamId: action.meta.form === 'invitation' ? null : state.confirmInvitation.teamId
+        }
     })
 }, initialState)
 

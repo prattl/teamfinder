@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Col, Row } from 'react-bootstrap'
-import { playerSubmit } from 'components/forms/SearchForm'
+import { teamSubmit } from 'components/forms/SearchForm'
 import { createInput, RegionSelect, PositionSelect, SkillBracketSelect } from 'components/forms'
 
 const KeywordsInput = createInput()
 
-class PlayerSearchForm extends Component {
+class TeamSearchForm extends Component {
 
     render() {
         const { handleSubmit, submitting } = this.props
@@ -38,15 +38,13 @@ class PlayerSearchForm extends Component {
 
 }
 
-PlayerSearchForm = reduxForm({
-    form: 'playerSearch',
+TeamSearchForm = reduxForm({
+    form: 'teamSearch',
     initialValues: {
         keywords: '',
         regions: [],
-        positions: [],
-        skill_bracket: ''
     },
-    onSubmit: playerSubmit
-})(PlayerSearchForm)
+    onSubmit: teamSubmit
+})(TeamSearchForm)
 
-export default PlayerSearchForm
+export default TeamSearchForm

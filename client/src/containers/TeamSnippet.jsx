@@ -1,36 +1,32 @@
-import React, {Component, PropTypes} from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { requestTeam } from 'actions/teams'
 
 import { Label } from 'react-bootstrap'
 import { Link } from 'react-router'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, playerIsOnTeam } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
-import { teamsSelector } from 'utils/selectors'
+
+import { playerSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withTeam } from 'components/connectors/WithTeam'
 
 class TeamSnippet extends Component {
 
-    static propTypes = {
-        teamId: PropTypes.string.isRequired
-    }
-
-    componentDidMount() {
-        this.props.onLoad()
-    }
-
     render() {
-        const { teamId, teams,
-            fixtures: { regions, positions, skillBrackets } } = this.props
-        const thisTeam = teams[teamId] || {}
-        const { team=null, isLoading=true, lastUpdated=null } = thisTeam
+        const { fixtures: { regions, positions, skillBrackets } } = this.props
+        const { team: { team, isLoading, lastUpdated }, player } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
                             <div>
-                                <h4 className='pull-left'>{team.name}</h4>
+                                <h4 className='pull-left'>
+                                    <Link to={`/teams/${team.id}`}>{team.name}</Link>
+                                    {playerIsOnTeam(player, team) && (
+                                        <small>&nbsp;(<Link to={`/teams/manage/${team.id}/`}>manage</Link>)</small>
+                                    )}
+                                </h4>
                                 <span className='pull-right'>
                                     <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
                                     &nbsp;Recruiting
@@ -56,13 +52,15 @@ class TeamSnippet extends Component {
                                 <PlayersIcon fixedWidth={true}/>&nbsp;
                                 {team.team_members.map(teamMember => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
-                                         key={`teamm-member-${teamMember.id}`}>
+                                         key={`team-member-${teamMember.id}`}>
                                         <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
                                             <Label>
                                                 {team.captain === teamMember.player.id && (
                                                     <span><CaptainIcon />&nbsp;</span>
                                                 )}
-                                                {teamMember.player.username} - {positions.items[teamMember.position].name}
+                                                {teamMember.player.username}{teamMember.position && (
+                                                    ` - ${positions.items[teamMember.position].name}`
+                                                )}
                                             </Label>
                                         </Link>
                                     </div>
@@ -78,13 +76,9 @@ class TeamSnippet extends Component {
 
 }
 
-TeamSnippet = connect(
-    teamsSelector,
-    (dispatch, props) => ({
-        onLoad: () => dispatch(requestTeam(props.teamId))
-    })
-)(TeamSnippet)
+TeamSnippet = connect(playerSelector, null)(TeamSnippet)
 
+TeamSnippet = withTeam(props => props.teamId)(TeamSnippet)
 TeamSnippet = withAllFixtures(TeamSnippet)
 
 export default TeamSnippet

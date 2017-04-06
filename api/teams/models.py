@@ -13,5 +13,12 @@ class Team(AbstractBaseModel):
     creator = models.ForeignKey('players.Player', null=True, blank=True, related_name='teams_created',
                                 on_delete=models.SET_NULL)
 
+    # TODO:
+    # accepting_applications = models.BooleanField(default=True)
+
+    @property
+    def actively_recruiting(self):
+        return self.available_positions.exists()
+
     def __str__(self):
         return self.name

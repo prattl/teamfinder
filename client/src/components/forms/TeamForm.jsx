@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { submitProfile } from 'actions/player'
+import { submitCreateTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
-    return dispatch(submitProfile(values)).then(({ response, json }) => {
+    return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
         if (!response.ok) {
-            const errors = {}
+            const errors = json
             if (json.hasOwnProperty('non_field_errors')) {
                 errors._error = json.non_field_errors[0]
             }
@@ -20,8 +20,8 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['username', 'regions', 'skill_bracket', 'positions']
-    const multiSelectFields = ['regions', 'positions']
+    const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
+    const multiSelectFields = ['regions', 'available_positions']
     fields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
             errors[fieldName] = 'Required'
@@ -36,12 +36,13 @@ const validate = values => {
     return errors
 }
 
-const UsernameInput = createInput('Username')
-const RegionInput = createSelectInput('Region', RegionSelect)
+const NameInput = createInput('Name')
+const RegionInput = createSelectInput('Regions', RegionSelect)
 const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
-const PositionInput = createSelectInput('Positions', PositionSelect)
+const PlayerPositionInput = createSelectInput('My Position', PositionSelect, false)
+const AvailablePositionInput = createSelectInput('Available Positions', PositionSelect)
 
-class ProfileForm extends Component {
+class TeamForm extends Component {
 
     render() {
         const { error, handleSubmit, submitting } = this.props
@@ -49,7 +50,7 @@ class ProfileForm extends Component {
             <form onSubmit={handleSubmit}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
-                    <Field name='username' component={UsernameInput} />
+                    <Field name='name' component={NameInput} />
                 </div>
                 <div>
                     <Field name='regions' component={RegionInput} />
@@ -58,11 +59,15 @@ class ProfileForm extends Component {
                     <Field name='skill_bracket' component={SkillBracketInput} />
                 </div>
                 <div>
-                    <Field name='positions' component={PositionInput} />
+                    <Field name='player_position' component={PlayerPositionInput} />
+                </div>
+                {/* TODO: Add checkbox for "Currently recruiting?" and conditionally display available positions */}
+                <div>
+                    <Field name='available_positions' component={AvailablePositionInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>
-                        Save Changes
+                        Submit
                     </Button>
                 </div>
             </form>
@@ -71,10 +76,10 @@ class ProfileForm extends Component {
 }
 
 
-ProfileForm = reduxForm({
-    form: 'profile',
+TeamForm = reduxForm({
+    form: 'team',
     validate,
     onSubmit: submit
-})(ProfileForm)
+})(TeamForm)
 
-export default ProfileForm
+export default TeamForm

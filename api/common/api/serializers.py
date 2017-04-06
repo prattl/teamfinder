@@ -176,6 +176,43 @@ class EditApplicationSerializer(ReadOnlyApplicationSerializer):
         )
 
 
+class ReadOnlyInvitationSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='invitation-detail')
+    team = serializers.PrimaryKeyRelatedField(read_only=True)
+    player = serializers.PrimaryKeyRelatedField(read_only=True)
+    position = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        queryset = queryset.select_related(
+            'team',
+            'player',
+            'position',
+        )
+        return queryset
+
+    class Meta:
+        model = Invitation
+        fields = (
+            'id',
+            'created',
+            'updated',
+            'team',
+            'player',
+            'position',
+            'status',
+            'url',
+        )
+        read_only_fields = (
+            'created',
+            'status',
+            'team',
+            'player',
+            'position',
+            'status',
+        )
+
+
 class InvitationSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='invitation-detail')
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all())
@@ -244,6 +281,47 @@ class InvitationSerializer(serializers.ModelSerializer):
             'position',
             'created_by',
             'url',
+        )
+
+
+class EditInvitationSerializer(ReadOnlyInvitationSerializer):
+    """Used for changing status."""
+    status = serializers.ChoiceField(Status.CHOICES)
+
+    @staticmethod
+    def _process_status_changed_as_player(current_status, new_status):
+        if not (current_status == Status.PENDING and new_status in (Status.ACCEPTED, Status.REJECTED)):
+            raise serializers.ValidationError('You cannot change invitation status to that value.')
+
+    @staticmethod
+    def _process_status_changed_as_captain(current_status, new_status):
+        if not (current_status == Status.PENDING and new_status == Status.WITHDRAWN):
+            raise serializers.ValidationError('You cannot change invitation status to that value.')
+
+    def validate_status(self, new_status):
+        # Only allowable state transfers:
+        #   As player: PENDING --> ACCEPTED, PENDING --> REJECTED
+        #   As captain: PENDING --> WITHDRAWN
+        if self.instance:
+            current_player = self.context['request'].user.player
+            current_status = self.instance.status
+            status_changed = current_status != new_status
+
+            if status_changed:
+                if current_player == self.instance.player:
+                    self._process_status_changed_as_player(current_status, new_status)
+                elif current_player == self.instance.team.captain:
+                    self._process_status_changed_as_captain(current_status, new_status)
+
+        return new_status
+
+    class Meta(ReadOnlyApplicationSerializer.Meta):
+        read_only_fields = (
+            'created',
+            'status',
+            'team',
+            'player',
+            'position',
         )
 
 

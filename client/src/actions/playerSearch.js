@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
-import { GET } from 'utils/api'
+import { GET, POST } from 'utils/api'
 
 const actions = keyMirror({
     REQUEST_PLAYER_SEARCH: null,
@@ -9,14 +9,18 @@ const actions = keyMirror({
     REQUEST_PLAYER: null,
     RECEIVE_PLAYER: null,
     REQUEST_NEXT_PAGE_OF_PLAYERS: null,
-    RECEIVE_NEXT_PAGE_OF_PLAYERS: null
+    RECEIVE_NEXT_PAGE_OF_PLAYERS: null,
+    CONFIRM_INVITE_TO_TEAM: null,
+    CANCEL_INVITE_TO_TEAM: null,
+    REQUEST_INVITE_TO_TEAM: null,
+    RECEIVE_INVITE_TO_TEAM: null
 })
 export default actions
 
 export const requestPlayerSearch = (values) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
-    const { keywords, regions, positions, skillBracket } = values
-    let url = createUrl(`/api/players/?keywords=${keywords}&skill_bracket=${skillBracket}`)
+    const { keywords, regions, positions, skill_bracket } = values
+    let url = createUrl(`/api/players/?keywords=${keywords}&skill_bracket=${skill_bracket}`)
     regions.forEach(region => url += `&regions[]=${region}`)
     positions.forEach(position => url += `&positions[]=${position}`)
     return GET(url).then(response => response.json().then(json => {
@@ -30,15 +34,17 @@ export const requestPlayerSearch = (values) => (dispatch, getState) => {
 }
 
 export const requestPlayer = id => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_PLAYER)())
-    const { results } = getState().playerSearch
-    const player = results.find(result => result.id === id)
-    if (player) {
-        return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
-    } else {
+
+    const { players } = getState().players
+    const player = players[id]
+    // if (player) {
+    //     return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(player))
+    if (!player) {
+        dispatch(createAction(actions.REQUEST_PLAYER)())
         const url = createUrl(`/api/players/${id}/`)
         return GET(url).then(response => response.json().then(json => {
-            const payload = response.ok ? json : new Error('Error retrieving player results.')
+            // TODO: Implement NotFoundError
+            const payload = response.ok ? json : new Error('Error retrieving player.')
             return dispatch(createAction(actions.RECEIVE_PLAYER, null, metaGenerator)(payload))
         }))
     }
@@ -55,4 +61,21 @@ export const requestNextPageOfPlayers = () => (dispatch, getState) => {
         }
         return json
     }))
+}
+
+export const tryInviteToTeam = createAction(actions.CONFIRM_INVITE_TO_TEAM)
+export const cancelInviteToTeam = createAction(actions.CANCEL_INVITE_TO_TEAM)
+
+export const inviteToTeam = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_INVITE_TO_TEAM)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (authToken) {
+        return POST(createUrl('/api/invitations/'), authToken, { ...data, created_by: id }).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating invitation')
+                dispatch(createAction(actions.RECEIVE_INVITE_TO_TEAM, null, metaGenerator)(payload))
+                return ({ response, json })
+            })
+        )
+    }
 }

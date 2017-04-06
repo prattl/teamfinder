@@ -20,10 +20,12 @@ from .permissions import (
 from .serializers import (
     ApplicationSerializer,
     EditApplicationSerializer,
+    EditInvitationSerializer,
     EditMembershipAsCaptainSerializer,
     InvitationSerializer,
     PositionSerializer,
     ReadOnlyApplicationSerializer,
+    ReadOnlyInvitationSerializer,
     RegionSerializer,
     SkillBracketSerializer,
     MembershipSerializer,
@@ -101,8 +103,8 @@ class InvitationViewSet(JoinableEventViewSet):
         if self.request.method == 'POST':
             return InvitationSerializer
         if self.request.method in ('PUT', 'PATCH', ):
-            return EditApplicationSerializer
-        return ReadOnlyApplicationSerializer
+            return EditInvitationSerializer
+        return ReadOnlyInvitationSerializer
 
 
 class MembershipViewSet(mixins.RetrieveModelMixin,
@@ -139,6 +141,15 @@ class MembershipViewSet(mixins.RetrieveModelMixin,
             queryset = queryset.filter(team_id=team_id)
 
         return queryset
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.player.id == self.request.user.player.id and instance.team.captain.id == self.request.user.player.id:
+            return Response({'error': 'You cannot remove yourself from the team if you are the captain.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        # return Response({{}, status=})
+        return super(MembershipViewSet, self).destroy(request, *args, **kwargs)
 
     def perform_destroy(self, instance):
         instance.delete(player_id=self.request.user.player.id)

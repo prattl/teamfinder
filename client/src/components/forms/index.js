@@ -2,7 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
 import Select from 'react-select'
 
-import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withAllFixtures, withPositions } from 'components/connectors/WithFixtures'
+
+export const createGenericInput = (Component, label) => field => (
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
+        {label && <ControlLabel>{label}</ControlLabel>}
+        <Component {...field.input} />
+        {field.meta.touched && field.meta.error && (
+            <HelpBlock>{field.meta.error}</HelpBlock>
+        )}
+    </FormGroup>
+)
 
 export const createInput = (label, type='text') => (field) => (
     <FormGroup controlId={field.input.name}
@@ -14,15 +25,37 @@ export const createInput = (label, type='text') => (field) => (
     </FormGroup>
 )
 
-export const createSelectInput = (label, SelectComponent) => field => (
+export const createSelectInput = (label, SelectComponent, multi) => field => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
-        <SelectComponent {...field} />
+        <SelectComponent {...field} multi={multi} />
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
 )
+
+let SinglePositionSelect = ({ positions, input, meta, children, ...rest }) => (
+    <FormGroup controlId={input.name}
+               validationState={meta.touched && meta.error ? 'error' : null}>
+        <ControlLabel>Position</ControlLabel>
+        <FormControl componentClass='select'
+                     placeholder='Position' {...input} {...rest}>
+            <option>---</option>
+            {Object.keys(positions.items).map(positionId => (
+                <option key={`position-${positionId}-${meta.form}`}
+                        value={positionId}>
+                    {positions.items[positionId].name}
+                </option>
+            ))}
+        </FormControl>
+        {meta.touched && meta.error && (
+            <HelpBlock>{meta.error}</HelpBlock>
+        )}
+    </FormGroup>
+
+)
+SinglePositionSelect = withPositions(SinglePositionSelect)
 
 
 class SelectWrapper extends Component {
@@ -65,13 +98,13 @@ class SelectWrapper extends Component {
 }
 
 let RegionSelect = props => {
-    const { input, fixtures: { regions: { items, isLoading, lastUpdated } } } = props
+    const { input, multi=true, fixtures: { regions: { items, isLoading, lastUpdated } } } = props
     const options = Object.keys(items).map(itemId => ({
         value: itemId, label: items[itemId].name
     }))
     return (!isLoading && lastUpdated) ? (
         <SelectWrapper input={input}
-                       multi={true}
+                       multi={multi}
                        matchProp='label'
                        placeholder='Regions'
                        options={options} />
@@ -81,13 +114,13 @@ let RegionSelect = props => {
 RegionSelect = withAllFixtures(RegionSelect)
 
 let SkillBracketSelect = props => {
-    const { input, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
+    const { input, multi=false, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
     const options = Object.keys(items).map(itemId => ({
         value: itemId, label: items[itemId].name
     }))
     return (!isLoading && lastUpdated) ? (
         <SelectWrapper input={input}
-                       multi={false}
+                       multi={multi}
                        matchProp='label'
                        placeholder='Skill Bracket'
                        options={options} />
@@ -97,7 +130,7 @@ let SkillBracketSelect = props => {
 SkillBracketSelect = withAllFixtures(SkillBracketSelect)
 
 let PositionSelect = props => {
-    const { input, fixtures: { positions: { items, isLoading, lastUpdated } } } = props
+    const { input, multi=true, fixtures: { positions: { items, isLoading, lastUpdated } } } = props
     const primaryOptions = Object.keys(items).filter(itemId => !items[itemId].secondary).map(itemId => ({
         value: itemId, label: items[itemId].name
     }))
@@ -111,7 +144,7 @@ let PositionSelect = props => {
     ]
     return (!isLoading && lastUpdated) ? (
         <SelectWrapper input={input}
-                       multi={true}
+                       multi={multi}
                        matchProp='label'
                        placeholder='Positions'
                        options={options} />
@@ -119,10 +152,10 @@ let PositionSelect = props => {
 }
 
 PositionSelect = withAllFixtures(PositionSelect)
-// export PositionSelect
 
 export {
     RegionSelect,
     SkillBracketSelect,
-    PositionSelect
+    PositionSelect,
+    SinglePositionSelect
 }
