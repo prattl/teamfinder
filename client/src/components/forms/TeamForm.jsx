@@ -6,10 +6,6 @@ import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
 
-const submit = (values, dispatch) => {
-
-}
-
 const validate = values => {
     const errors = {}
     const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
@@ -37,18 +33,26 @@ const AvailablePositionInput = createSelectInput('Available Positions', Position
 class TeamForm extends Component {
 
     static propTypes = {
-        editing: PropTypes.bool,
+        teamId: PropTypes.string,
         showPlayerPosition: PropTypes.bool
     }
 
     static defaultProps = {
-        editing: false,
+        teamId: null,
         showPlayerPosition: true
+    }
+
+    constructor(props) {
+        super(props)
+        this.submit = this.submit.bind(this)
     }
 
     // TODO: Use this submit and add a flag for "editing" or "creating"
     submit(values, dispatch) {
-        return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
+        console.log('TeamForm submit', values)
+        const { teamId } = this.props
+        const action = teamId ? submitEditTeam(teamId, values) : submitCreateTeam(values)
+        return dispatch(action).then(({ response, json }) => {
             if (!response.ok) {
                 const errors = json
                 if (json.hasOwnProperty('non_field_errors')) {
@@ -62,7 +66,7 @@ class TeamForm extends Component {
     render() {
         const { error, handleSubmit, submitting, showPlayerPosition } = this.props
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(this.submit)}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
                     <Field name='name' component={NameInput} />
@@ -95,8 +99,8 @@ class TeamForm extends Component {
 
 TeamForm = reduxForm({
     form: 'team',
-    validate,
-    onSubmit: submit
+    validate
+    // onSubmit: submit
 })(TeamForm)
 
 export default TeamForm

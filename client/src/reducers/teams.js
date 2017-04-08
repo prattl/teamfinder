@@ -19,6 +19,19 @@ const initialState = {
     teams: {},
 }
 
+const replaceTeam = (state, action) => ({
+    ...state,
+    teams: {
+        ...state.teams,
+        [action.payload.id]: {
+            ...state.teams[action.payload.id],
+            team: action.payload,
+            isLoading: false,
+            lastUpdated: action.meta.receivedAt
+        }
+    }
+})
+
 // TODO : reduxjs guide
 const teams = handleActions({
     // brackets : like a constant
@@ -33,18 +46,8 @@ const teams = handleActions({
             })
         }
     }),
-    [actions.RECEIVE_TEAM]: (state, action) => ({
-        ...state,
-        teams: {
-            ...state.teams,
-            [action.payload.id]: {
-                ...state.teams[action.payload.id],
-                team: action.payload.result,
-                isLoading: false,
-                lastUpdated: action.meta.receivedAt
-            }
-        }
-    }),
+    [actions.RECEIVE_TEAM]: replaceTeam,
+    [actions.RECEIVE_SUBMIT_EDIT_TEAM]: replaceTeam,
     [actions.RECEIVE_DELETE_TEAM]: (state, action) => {
         const { [action.payload]: _, ...newTeams} = state.teams
         return {

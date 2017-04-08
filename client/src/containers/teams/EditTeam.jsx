@@ -40,7 +40,7 @@ class EditTeam extends Component {
                         {/*{changesSaved && (*/}
                             {/*<Alert bsStyle='success' onDismiss={this.handleChangesSavedDismiss}>Changes saved!</Alert>*/}
                         {/*)}*/}
-                        {team && <TeamForm initialValues={initialValues} showPlayerPosition={false} />}
+                        {team && <TeamForm initialValues={initialValues} showPlayerPosition={false} teamId={team.id} />}
                     </Col>
                 </Row>
 
