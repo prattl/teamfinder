@@ -47,9 +47,7 @@ class TeamForm extends Component {
         this.submit = this.submit.bind(this)
     }
 
-    // TODO: Use this submit and add a flag for "editing" or "creating"
     submit(values, dispatch) {
-        console.log('TeamForm submit', values)
         const { teamId } = this.props
         const action = teamId ? submitEditTeam(teamId, values) : submitCreateTeam(values)
         return dispatch(action).then(({ response, json }) => {
@@ -100,7 +98,6 @@ class TeamForm extends Component {
 TeamForm = reduxForm({
     form: 'team',
     validate
-    // onSubmit: submit
 })(TeamForm)
 
 export default TeamForm

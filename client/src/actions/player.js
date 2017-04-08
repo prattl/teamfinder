@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, PATCH, POST } from 'utils/api'
+import { notify } from 'utils/actions'
 
 const actions = keyMirror({
     REQUEST_OWN_PLAYER: null,
@@ -42,6 +43,7 @@ export const submitProfile = data => (dispatch, getState) => {
                     dispatch(requestOwnPlayer())
                 }
                 dispatch(createAction(actions.RECEIVE_SUBMIT_PROFILE, null, metaGenerator)(payload))
+                notify(response)
                 return ({ response, json })
             })
         )

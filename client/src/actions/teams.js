@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router'
 import { requestOwnPlayer } from 'actions/player'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, PATCH, POST, DELETE } from 'utils/api'
+import { notify } from 'utils/actions'
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
@@ -74,6 +75,7 @@ export const submitEditTeam = (teamId, data) => (dispatch, getState) => {
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error('Error creating team.')
                 dispatch(createAction(actions.RECEIVE_SUBMIT_EDIT_TEAM, null, metaGenerator)(payload))
+                notify(response)
                 return ({ response, json })
             })
         )
@@ -152,6 +154,7 @@ export const submitEditTeamMember = (teamMemberId, data) => (dispatch, getState)
                     ...metaGenerator(p),
                     teamMemberId
                 }))(payload))
+                notify(response)
                 return ({ response, json })
             })
         )

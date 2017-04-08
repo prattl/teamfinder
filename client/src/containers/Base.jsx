@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
 
+import Alert from 'react-s-alert';
 import { Grid } from 'react-bootstrap'
 import TopNav from 'components/layout/TopNav'
 import Footer from 'components/layout/Footer'
@@ -22,6 +22,7 @@ class Base extends Component {
                 </div>
 
                 <Footer />
+                <Alert stack={{limit: 3}} effect='slide' />
             </div>
         )
     }
