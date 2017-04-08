@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { submitCreateTeam } from 'actions/teams'
+import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
@@ -37,10 +37,12 @@ const AvailablePositionInput = createSelectInput('Available Positions', Position
 class TeamForm extends Component {
 
     static propTypes = {
+        editing: PropTypes.bool,
         showPlayerPosition: PropTypes.bool
     }
 
     static defaultProps = {
+        editing: false,
         showPlayerPosition: true
     }
 
