@@ -20,7 +20,7 @@ const initialState = {
     },
 }
 
-const teamEvents = handleActions({
+const playerEvents = handleActions({
     [actions.REQUEST_TEAM_INVITATIONS]: (state, action) => ({
         ...state, invitations: {
             ...state.invitations, isLoading: true
@@ -93,7 +93,7 @@ const teamEvents = handleActions({
             confirmWithdraw: null
         }
     }),
-    [actions.RECEIVE_UPDATE_APPLICATION_STATUS]: (state, action) => ({
+    [actions.RECEIVE_UPDATE_TEAM_APPLICATION_STATUS]: (state, action) => ({
         ...state,
         applications: {
             ...state.applications,
@@ -104,7 +104,7 @@ const teamEvents = handleActions({
             confirmAccept: null, confirmReject: null
         }
     }),
-    [actions.RECEIVE_UPDATE_INVITATION_STATUS]: (state, action) => ({
+    [actions.RECEIVE_UPDATE_TEAM_INVITATION_STATUS]: (state, action) => ({
         ...state,
         invitations: {
             ...state.invitations,
@@ -117,4 +117,4 @@ const teamEvents = handleActions({
     })
 }, initialState)
 
-export default teamEvents
+export default playerEvents
