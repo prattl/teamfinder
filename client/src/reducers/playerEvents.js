@@ -1,5 +1,7 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/playerEvents'
+import authActions from 'actions/auth'
+
 import { arrayToObject } from 'utils'
 
 const initialEventsState = {
@@ -114,6 +116,9 @@ const teamEvents = handleActions({
             },
             confirmAccept: null, confirmReject: null
         }
+    }),
+    [authActions.RECEIVE_LOGOUT]: (state, action) => ({
+        ...initialState
     })
 }, initialState)
 

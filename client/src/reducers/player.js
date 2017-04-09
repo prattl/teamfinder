@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions'
 import actions from 'actions/player'
+import authActions from 'actions/auth'
 import teamActions from 'actions/teams'
-// import { actionTypes as reduxFormActions } from 'redux-form'
 
 const initialState = {
     player: {
@@ -20,7 +20,7 @@ const player = handleActions({
     [actions.RECEIVE_OWN_PLAYER]: (state, action) => ({
         ...state,
         player: action.error ? state.player : action.payload,
-        isLoading: false, lastUpdated: action.meta.receivedAt
+        isLoading: false, lastUpdated: action.error ? null : action.meta.receivedAt
     }),
     [actions.RECEIVE_SUBMIT_PROFILE]: (state, action) => ({
         ...state,
@@ -61,6 +61,9 @@ const player = handleActions({
             ...state.player,
             teamApplyingTo: action.error ? state.player.teamApplyingTo : null
         }
+    }),
+    [authActions.RECEIVE_LOGOUT]: (state, action) => ({
+        ...initialState
     })
 }, initialState)
 

@@ -37,7 +37,6 @@ export const requestOwnPlayerIfNeeded = () => (dispatch, getState) => {
 export const submitProfile = data => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_SUBMIT_PROFILE)())
     const { auth: { authToken }, player: { player: { id } } } = getState()
-    console.log('id', id, authToken)
     if (id && authToken) {
         return PATCH(createUrl(`/api/players/${id}/`), authToken, data).then(
             response => response.json().then(json => {
