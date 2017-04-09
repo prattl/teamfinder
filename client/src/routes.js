@@ -4,7 +4,7 @@ import { IndexRoute, Route } from 'react-router'
 import Base from 'containers/Base'
 import CreateTeam from 'containers/teams/CreateTeam'
 import EditProfile from 'containers/EditProfile'
-import EditTeam from 'containers/EditTeam'
+import EditTeam from 'containers/teams/EditTeam'
 import Index from 'components/Index'
 import LogIn from 'components/auth/LogIn'
 import LogOut from 'containers/auth/LogOut'
@@ -30,7 +30,9 @@ export default (
         <Route path='teams'>
             <IndexRoute component={TeamSearch} />
             <Route path='create' component={CreateTeam} />
-            <Route path='edit' component={EditTeam} />
+            <Route path='edit'>
+                <Route path=':id' component={EditTeam}/>
+            </Route>
             <Route path='manage'>
                 <IndexRoute component={ManageTeams} />
                 <Route path=':id' component={ManageTeam} />

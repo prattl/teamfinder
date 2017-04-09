@@ -1,22 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
-import { submitCreateTeam } from 'actions/teams'
+import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
-
-const submit = (values, dispatch) => {
-    return dispatch(submitCreateTeam(values)).then(({ response, json }) => {
-        if (!response.ok) {
-            const errors = json
-            if (json.hasOwnProperty('non_field_errors')) {
-                errors._error = json.non_field_errors[0]
-            }
-            throw new SubmissionError(errors)
-        }
-    })
-}
 
 const validate = values => {
     const errors = {}
@@ -44,10 +32,39 @@ const AvailablePositionInput = createSelectInput('Available Positions', Position
 
 class TeamForm extends Component {
 
+    static propTypes = {
+        teamId: PropTypes.string,
+        showPlayerPosition: PropTypes.bool
+    }
+
+    static defaultProps = {
+        teamId: null,
+        showPlayerPosition: true
+    }
+
+    constructor(props) {
+        super(props)
+        this.submit = this.submit.bind(this)
+    }
+
+    submit(values, dispatch) {
+        const { teamId } = this.props
+        const action = teamId ? submitEditTeam(teamId, values) : submitCreateTeam(values)
+        return dispatch(action).then(({ response, json }) => {
+            if (!response.ok) {
+                const errors = json
+                if (json.hasOwnProperty('non_field_errors')) {
+                    errors._error = json.non_field_errors[0]
+                }
+                throw new SubmissionError(errors)
+            }
+        })
+    }
+
     render() {
-        const { error, handleSubmit, submitting } = this.props
+        const { error, handleSubmit, submitting, showPlayerPosition } = this.props
         return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(this.submit)}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
                     <Field name='name' component={NameInput} />
@@ -58,9 +75,11 @@ class TeamForm extends Component {
                 <div>
                     <Field name='skill_bracket' component={SkillBracketInput} />
                 </div>
-                <div>
-                    <Field name='player_position' component={PlayerPositionInput} />
-                </div>
+                {showPlayerPosition && (
+                    <div>
+                        <Field name='player_position' component={PlayerPositionInput} />
+                    </div>
+                )}
                 {/* TODO: Add checkbox for "Currently recruiting?" and conditionally display available positions */}
                 <div>
                     <Field name='available_positions' component={AvailablePositionInput} />
@@ -78,8 +97,7 @@ class TeamForm extends Component {
 
 TeamForm = reduxForm({
     form: 'team',
-    validate,
-    onSubmit: submit
+    validate
 })(TeamForm)
 
 export default TeamForm

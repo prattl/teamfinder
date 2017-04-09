@@ -123,7 +123,7 @@ class ManageInvitations extends Component {
                     </thead>
                     <tbody>
                         {invitations.map(invitation => (
-                            <tr key={invitations}>
+                            <tr key={invitation.id}>
                                 <td>
                                     <Link to={`/players/${invitation.player}/`}>
                                         <PlayerName key={invitation.player} playerId={invitation.player} />

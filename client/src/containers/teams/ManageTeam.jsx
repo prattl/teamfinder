@@ -16,7 +16,7 @@ import { cancelDeleteTeam, tryDeleteTeam, deleteTeam, cancelDeleteTeamMember, tr
 import { Loading, playerIsCaptain } from 'utils'
 
 const canEditTeam = (player, team) => (
-    playerIsCaptain(player, team)
+    player && team && playerIsCaptain(player, team)
 )
 
 class ManageTeam extends Component {
@@ -74,6 +74,7 @@ class ManageTeam extends Component {
 
     render() {
         const { team: teamInstance, team: { team, isLoading, lastUpdated }, player } = this.props
+        const hasEditPermission = canEditTeam(player, team)
 
         return (
             <div>
@@ -86,15 +87,22 @@ class ManageTeam extends Component {
                                 Manage Team: {team.name}&nbsp;
                                 <span className='pull-right'>
                                     <ButtonToolbar>
-                                        <LinkContainer to={`/teams/${team.id}/`}>
+                                        {hasEditPermission && (
+                                            <LinkContainer to={`/teams/${team.id}/`}>
+                                                <Button bsSize='sm'>
+                                                    <i className='fa fa-eye'/>&nbsp;View
+                                                </Button>
+                                            </LinkContainer>
+                                        )}
+                                        <LinkContainer to={`/teams/edit/${team.id}/`}>
                                             <Button bsSize='sm'>
-                                                <i className='fa fa-eye'/>&nbsp;View
+                                                <i className='fa fa-pencil'/>&nbsp;Edit
                                             </Button>
                                         </LinkContainer>
                                         <Button bsStyle='warning' bsSize='sm' onClick={this.handleLeaveTeamClick}>
                                             Leave Team
                                         </Button>
-                                        {canEditTeam(player, team) && (
+                                        {hasEditPermission && (
                                             <Button bsStyle='danger' bsSize='sm' onClick={this.handleDeleteTeamClick}>
                                                 <i className='fa fa-trash'/>&nbsp;Delete
                                             </Button>

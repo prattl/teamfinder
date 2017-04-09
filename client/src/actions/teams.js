@@ -4,12 +4,15 @@ import { browserHistory } from 'react-router'
 import { requestOwnPlayer } from 'actions/player'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, PATCH, POST, DELETE } from 'utils/api'
+import { notify } from 'utils/actions'
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
     RECEIVE_TEAM: null,
     REQUEST_SUBMIT_CREATE_TEAM: null,
     RECEIVE_SUBMIT_CREATE_TEAM: null,
+    REQUEST_SUBMIT_EDIT_TEAM: null,
+    RECEIVE_SUBMIT_EDIT_TEAM: null,
     CONFIRM_DELETE_TEAM: null,
     CANCEL_DELETE_TEAM: null,
     CONFIRM_DELETE_TEAM_MEMBER: null,
@@ -35,9 +38,7 @@ export const requestTeam = (id, refresh=false) => (dispatch, getState) => {
         if (Object.keys(teams).includes(id)) {
             const team = teams[id]
             if (team.team) {
-                return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
-                    {result: teams[id].team, id}
-                ))
+                return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(team))
             }
         }
     }
@@ -45,9 +46,7 @@ export const requestTeam = (id, refresh=false) => (dispatch, getState) => {
     // then : how you finish a promise (start and finish later (async))
     return GET(url).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving team.')
-        return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(
-            { result: payload, id }
-        ))
+        return dispatch(createAction(actions.RECEIVE_TEAM, null, metaGenerator)(payload))
     }))
 }
 
@@ -62,6 +61,21 @@ export const submitCreateTeam = data => (dispatch, getState) => {
                 if (response.ok) {
                     browserHistory.push(`/teams/manage/${json.id}`)
                 }
+                return ({ response, json })
+            })
+        )
+    }
+}
+
+export const submitEditTeam = (teamId, data) => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_SUBMIT_EDIT_TEAM))
+    const { auth: { authToken } } = getState()
+    if (authToken) {
+        return PATCH(createUrl(`/api/teams/${teamId}/`), authToken, data).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error creating team.')
+                dispatch(createAction(actions.RECEIVE_SUBMIT_EDIT_TEAM, null, metaGenerator)(payload))
+                notify(response)
                 return ({ response, json })
             })
         )
@@ -140,6 +154,7 @@ export const submitEditTeamMember = (teamMemberId, data) => (dispatch, getState)
                     ...metaGenerator(p),
                     teamMemberId
                 }))(payload))
+                notify(response)
                 return ({ response, json })
             })
         )

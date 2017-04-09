@@ -26,12 +26,12 @@ const player = handleActions({
         ...state,
         player: action.error ? state.player : action.payload
     }),
-    [reduxFormActions.SET_SUBMIT_SUCCEEDED]: (state, action) => ({
-        ...state, changesSaved: action.meta.form === 'profile'
-    }),
-    [reduxFormActions.CHANGE]: (state, action) => ({
-        ...state, changesSaved: action.meta.form === 'profile' ? false : state.changesSaved
-    }),
+    // [reduxFormActions.SET_SUBMIT_SUCCEEDED]: (state, action) => ({
+    //     ...state, changesSaved: action.meta.form === 'profile'
+    // }),
+    // [reduxFormActions.CHANGE]: (state, action) => ({
+    //     ...state, changesSaved: action.meta.form === 'profile' ? false : state.changesSaved
+    // }),
     [actions.DISMISS_CHANGES_SAVED]: (state, action) => ({
         ...state, changesSaved: false
     }),
