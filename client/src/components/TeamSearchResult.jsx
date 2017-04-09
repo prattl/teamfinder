@@ -20,7 +20,10 @@ class TeamSearchResult extends Component {
     }
 
     renderApplyToTeamConfirmModal() {
-        const { cancelApplyToTeam, id, player: { teamApplyingTo } } = this.props
+        const { cancelApplyToTeam, id, player: { teamApplyingTo, lastUpdated } } = this.props
+        if (!lastUpdated) {
+            return this.renderSignInRequiredModal()
+        }
         return (
             <Modal show={teamApplyingTo === id}>
                 <Modal.Header>
@@ -34,6 +37,33 @@ class TeamSearchResult extends Component {
                     <Button onClick={cancelApplyToTeam} bsStyle='link' >
                         Cancel</Button>
                     <Button bsStyle='success' onClick={() => this.props.submit('application')}>Apply</Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+    renderSignInRequiredModal() {
+        const { cancelApplyToTeam, id, player: { teamApplyingTo } } = this.props
+        return (
+            <Modal show={teamApplyingTo === id}>
+                <Modal.Header>
+                    <Modal.Title>Sign In Required</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        You need to sign in and create a profile before you can apply to teams.
+                    </p>
+                    <p>
+                        <Link to='signup'>Sign up</Link> or <Link to='login'>Log in</Link>
+                    </p>
+                    <p>
+                        <i>Steam Sign In is coming soon!</i>
+                    </p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={cancelApplyToTeam} bsStyle='link' >
+                        Close
+                    </Button>
                 </Modal.Footer>
             </Modal>
         )
