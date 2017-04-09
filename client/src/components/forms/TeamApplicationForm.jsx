@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
 
 import { submitApplication } from 'actions/player'
-import { PositionSelect } from 'components/forms/TeamMemberPosition'
+import { SinglePositionSelect } from 'components/forms'
 
 import { Alert } from 'react-bootstrap'
 
@@ -33,7 +33,7 @@ class TeamApplicationForm extends Component {
             <form onSubmit={handleSubmit}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
-                    <Field name='position' component={PositionSelect} />
+                    <Field name='position' component={SinglePositionSelect} />
                 </div>
                 <div>
                     <Field name='team' component='input' type='hidden' />
@@ -46,7 +46,10 @@ class TeamApplicationForm extends Component {
 TeamApplicationForm = reduxForm({
     form: 'application',
     validate,
-    onSubmit: submit
+    onSubmit: submit,
+    initialValues: {
+        position: null
+    }
 })(TeamApplicationForm)
 
 export default TeamApplicationForm

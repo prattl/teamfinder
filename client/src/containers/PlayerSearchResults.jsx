@@ -59,7 +59,7 @@ class PlayerSearchResults extends PureComponent {
                 <Modal.Footer>
                     <Button bsStyle='link'
                         onClick={() => this.handleCancelInviteToTeamClick()}>Cancel</Button>
-                    <Button bsStyle='warning'
+                    <Button bsStyle='success'
                         onClick={() => this.handleInviteToTeamClick()}>
                         Invite
                     </Button>

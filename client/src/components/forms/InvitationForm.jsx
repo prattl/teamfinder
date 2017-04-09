@@ -48,7 +48,10 @@ class InvitationForm extends Component {
 InvitationForm = reduxForm({
     form: 'invitation',
     validate,
-    onSubmit: submit
+    onSubmit: submit,
+    initialValues: {
+        position: null
+    }
 })(InvitationForm)
 
 export default InvitationForm
