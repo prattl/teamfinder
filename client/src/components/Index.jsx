@@ -30,6 +30,25 @@ class Index extends Component {
                     Looking for players to round out your roster? Sign in, create a team with the positions you
                     need to fill. Then start searching for players.
                 </p>
+                <p>
+                    If you just want to browse, no sign in is required!
+                </p>
+
+                <h3>Alpha Release</h3>
+                <p>
+                    This is the alpha release of the Dota 2 teamfinder. Feedback is greatly appreciated - you can
+                    use the form in the lower right to submit feedback on any page.
+                </p>
+                <p>
+                    This website is still a work in progress. Below is a list of features that are currently planned:
+                </p>
+                <ul>
+                    <li>Feature request voting system (so we know what features the community wants most)</li>
+                    <li>Sign in with Steam</li>
+                    <li>Verify / confirm players</li>
+                    <li>Add player and team interests (competitive, casual, battle cup, etc.)</li>
+                    <li>Password reset</li>
+                </ul>
             </div>
         )
     }
