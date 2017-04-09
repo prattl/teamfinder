@@ -65,6 +65,7 @@ export const submitApplication = data => (dispatch, getState) => {
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error('Error creating application.')
                 dispatch(createAction(actions.RECEIVE_SUBMIT_APPLICATION, null, metaGenerator)(payload))
+                notify(response, 'Application submitted!')
                 return ({ response, json })
             })
         )

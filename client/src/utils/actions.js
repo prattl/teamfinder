@@ -3,7 +3,7 @@ import Alert from 'react-s-alert'
 
 class ChangesSavedNotification extends Component {
     static defaultProps = {
-        message: 'Changes Saved!'
+        message: 'Changes saved!'
     }
     render() {
         const { message } = this.props

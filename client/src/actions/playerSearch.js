@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, POST } from 'utils/api'
+import { notify } from 'utils/actions'
 
 const actions = keyMirror({
     REQUEST_PLAYER_SEARCH: null,
@@ -74,6 +75,7 @@ export const inviteToTeam = data => (dispatch, getState) => {
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error('Error creating invitation')
                 dispatch(createAction(actions.RECEIVE_INVITE_TO_TEAM, null, metaGenerator)(payload))
+                notify(response, 'Invitation sent!')
                 return ({ response, json })
             })
         )
