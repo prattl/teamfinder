@@ -5,13 +5,14 @@ import moment from 'moment'
 import { Link } from 'react-router'
 import { Badge, Button, ButtonToolbar, Modal, Table, Tab, Tabs } from 'react-bootstrap'
 
-import PlayerName from 'containers/players/PlayerName'
+import TeamName from 'containers/teams/TeamName'
 import { withPositions } from 'components/connectors/WithFixtures'
-import { requestTeamInvitations,
-    withdrawInvitation,
-    tryWithdrawInvitation, cancelWithdrawInvitation
-} from 'actions/teamEvents'
-import { Loading, playerIsCaptain } from 'utils'
+import { requestPlayerInvitations,
+    acceptInvitation, rejectInvitation,
+    tryAcceptInvitation, cancelAcceptInvitation,
+    tryRejectInvitation, cancelRejectInvitation,
+} from 'actions/playerEvents'
+import { Loading } from 'utils'
 
 
 const InvitationTabLabel = ({ children, count }) => (
@@ -32,73 +33,110 @@ const statusMapping = {
 class ManageInvitations extends Component {
 
     static propTypes = {
-        team: PropTypes.object.isRequired,
         player: PropTypes.object.isRequired
     }
 
     constructor(props) {
         super(props)
-        this.handleWithdrawInvitationClick = this.handleWithdrawInvitationClick.bind(this)
-        this.handleWithdrawCancelClick = this.handleWithdrawCancelClick.bind(this)
-        this.handleWithdrawConfirmClick = this.handleWithdrawConfirmClick.bind(this)
+        this.handleAcceptInvitationClick = this.handleAcceptInvitationClick.bind(this)
+        this.handleAcceptCancelClick = this.handleAcceptCancelClick.bind(this)
+        this.handleAcceptConfirmClick = this.handleAcceptConfirmClick.bind(this)
+        this.handleRejectInvitationClick = this.handleRejectInvitationClick.bind(this)
+        this.handleRejectCancelClick = this.handleRejectCancelClick.bind(this)
+        this.handleRejectConfirmClick = this.handleRejectConfirmClick.bind(this)
     }
 
     componentDidMount() {
-        const { requestTeamInvitations, team: { id } } = this.props
-        requestTeamInvitations(id)
+        const { requestPlayerInvitations } = this.props
+        requestPlayerInvitations()
     }
 
-    handleWithdrawInvitationClick(invitationId) {
-        const { tryWithdrawInvitation } = this.props
-        tryWithdrawInvitation(invitationId)
+    handleAcceptInvitationClick(invitationId) {
+        const { tryAcceptInvitation } = this.props
+        tryAcceptInvitation(invitationId)
     }
 
-    handleWithdrawCancelClick() {
-        const { cancelWithdrawInvitation } = this.props
-        cancelWithdrawInvitation()
+    handleAcceptCancelClick() {
+        const { cancelAcceptInvitation } = this.props
+        cancelAcceptInvitation()
     }
 
-    handleWithdrawConfirmClick() {
-        const { withdrawInvitation, teamEvents: { invitations: { items, confirmWithdraw } } } = this.props
-        withdrawInvitation(confirmWithdraw, items[confirmWithdraw].team)
+    handleAcceptConfirmClick() {
+        const { acceptInvitation, playerEvents: { invitations: { items, confirmAccept } } } = this.props
+        acceptInvitation(confirmAccept, items[confirmAccept])
     }
 
-    getFilteredInvitations() {
-        const { team, teamEvents: { invitations: { items } } } = this.props
-
-        return Object.keys(items).map(
-            invitationId => items[invitationId]
-        ).filter(invitation => invitation.team === team.id)
+    handleRejectInvitationClick(invitationId) {
+        const { tryRejectInvitation } = this.props
+        tryRejectInvitation(invitationId)
     }
 
-    renderWithdrawConfirmModal() {
-        const { teamEvents: { invitations: { items, confirmWithdraw } } } = this.props
-        const invitation = confirmWithdraw ? items[confirmWithdraw] : null
+    handleRejectCancelClick() {
+        const { cancelRejectInvitation } = this.props
+        cancelRejectInvitation()
+    }
+
+    handleRejectConfirmClick() {
+        const { rejectInvitation, playerEvents: { invitations: { items, confirmReject } } } = this.props
+        rejectInvitation(confirmReject, items[confirmReject])
+    }
+
+    renderAcceptConfirmModal() {
+        const { positions, playerEvents: { invitations: { items, confirmAccept } } } = this.props
+        const invitation = confirmAccept ? items[confirmAccept] : null
 
         return (invitation &&
-            <Modal show={Boolean(confirmWithdraw)}>
+            <Modal show={Boolean(confirmAccept)}>
                 <Modal.Header>
                     <Modal.Title>
-                        Confirm Withdraw Invitation
+                        Confirm Accept Invitation
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <p>
                         Are you sure you want to
-                        withdraw <strong><PlayerName playerId={invitation.player} />'s</strong> invitation? They will
-                        no longer be able to join the team with this invitation. This cannot be undone.
+                        accept <strong><TeamName teamId={invitation.team} />'s</strong> invitation? If you accept,
+                        you will be added to the team
+                        as {positions.items[invitation.position] && positions.items[invitation.position].name}.
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle='link' onClick={this.handleWithdrawCancelClick}>Cancel</Button>
-                    <Button bsStyle='danger' onClick={this.handleWithdrawConfirmClick}>Withdraw</Button>
+                    <Button bsStyle='link' onClick={this.handleAcceptCancelClick}>Cancel</Button>
+                    <Button bsStyle='success' onClick={this.handleAcceptConfirmClick}>Accept</Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+
+    renderRejectConfirmModal() {
+        const { positions, playerEvents: { invitations: { items, confirmReject } } } = this.props
+        const invitation = confirmReject ? items[confirmReject] : null
+
+        return (invitation &&
+            <Modal show={Boolean(confirmReject)}>
+                <Modal.Header>
+                    <Modal.Title>
+                        Confirm Reject Invitation
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        Are you sure you want to
+                        reject <strong><TeamName teamId={invitation.team} />'s</strong> invitation? You will no logner
+                        be able to join the team from this invitation.
+                    </p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button bsStyle='link' onClick={this.handleRejectCancelClick}>Cancel</Button>
+                    <Button bsStyle='danger' onClick={this.handleRejectConfirmClick}>Reject</Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 
     renderInvitationTab(index, statusLabel, statusIndex) {
-        let invitations = this.getFilteredInvitations()
+        const { playerEvents: { invitations: { items } } } = this.props
+        let invitations = Object.keys(items).map(invitationId => items[invitationId])
         invitations = invitations.filter(invitation => invitation.status === statusIndex)
         return (
             <Tab eventKey={index} key={`${statusLabel}-invitations-${index}`}
@@ -109,13 +147,13 @@ class ManageInvitations extends Component {
     }
 
     renderInvitationsTable(invitations) {
-        const { team, player, positions } = this.props
+        const { positions } = this.props
         return (
             <div>
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Player</th>
+                            <th>Team</th>
                             <th>Position invited for</th>
                             <th>Invited On</th>
                             <th>Actions</th>
@@ -123,14 +161,14 @@ class ManageInvitations extends Component {
                     </thead>
                     <tbody>
                         {invitations.map(invitation => (
-                            <tr key={invitations}>
+                            <tr key={invitation.id}>
                                 <td>
-                                    <Link to={`/players/${invitation.player}/`}>
-                                        <PlayerName key={invitation.player} playerId={invitation.player} />
+                                    <Link to={`/teams/${invitation.team}/`}>
+                                        <TeamName key={invitation.team} teamId={invitation.team} />
                                     </Link>
                                 </td>
                                 <td>
-                                    {positions.items[invitation.position].name}
+                                    {positions.items[invitation.position] && positions.items[invitation.position].name}
                                 </td>
                                 <td>
                                     {moment(invitation.created).format('L')}
@@ -138,10 +176,13 @@ class ManageInvitations extends Component {
                                 <td>
                                     {invitation.status === 1 && (
                                         <ButtonToolbar>
+                                            <Button bsSize='sm' bsStyle='success'
+                                                    onClick={() => this.handleAcceptInvitationClick(invitation.id)}>
+                                                Accept
+                                            </Button>
                                             <Button bsSize='sm' bsStyle='danger'
-                                                    disabled={!playerIsCaptain(player, team)}
-                                                    onClick={() => this.handleWithdrawInvitationClick(invitation.id)}>
-                                                Withdraw
+                                                    onClick={() => this.handleRejectInvitationClick(invitation.id)}>
+                                                Reject
                                             </Button>
                                         </ButtonToolbar>
                                     )}
@@ -156,14 +197,15 @@ class ManageInvitations extends Component {
     }
 
     render() {
-        const { teamEvents: { invitations: { isLoading, lastUpdated } } } = this.props
+        const { playerEvents: { invitations: { isLoading, lastUpdated } } } = this.props
 
         return (
             <div>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
-                            {this.renderWithdrawConfirmModal()}
+                            {this.renderAcceptConfirmModal()}
+                            {this.renderRejectConfirmModal()}
                             <Tabs defaultActiveKey={1} id='invitation-tabs'>
                                 {Object.keys(statusMapping).map((statusText, i) => (
                                     this.renderInvitationTab(i + 1, statusText, statusMapping[statusText])
@@ -180,12 +222,15 @@ class ManageInvitations extends Component {
 ManageInvitations = withPositions(ManageInvitations)
 ManageInvitations = connect(
     state => ({
-        teamEvents: state.teamEvents
+        playerEvents: state.playerEvents
     }), {
-        requestTeamInvitations,
-        tryWithdrawInvitation,
-        cancelWithdrawInvitation,
-        withdrawInvitation
+        requestPlayerInvitations,
+        acceptInvitation,
+        rejectInvitation,
+        tryAcceptInvitation,
+        cancelAcceptInvitation,
+        tryRejectInvitation,
+        cancelRejectInvitation
     }
 )(ManageInvitations)
 

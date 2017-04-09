@@ -2,6 +2,7 @@ import { createAction } from 'redux-actions'
 import keyMirror from 'keymirror'
 import { createUrl, metaGenerator } from 'utils'
 import { requestOwnPlayer } from 'actions/player'
+import { requestTeam } from 'actions/teams'
 import { GET, PATCH } from 'utils/api'
 
 const actions = keyMirror({
@@ -72,6 +73,7 @@ const updatePlayerEventStatus = eventType => status => (eventId) => (dispatch, g
                 dispatch(createAction(receiveActionType, null, metaGenerator)(payload))
                 if (response.ok) {
                     dispatch(requestOwnPlayer())
+                    dispatch(requestTeam(payload.team, true))
                 }
             })
         )

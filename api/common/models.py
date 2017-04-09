@@ -199,6 +199,17 @@ class Invitation(JoinableAction):
     def _create_status_history(self):
         InvitationStatusHistory.objects.create_from_invitation(self)
 
+    def save(self, *args, **kwargs):
+        try:
+            previous_self = Invitation.objects.get(pk=self.pk)
+        except Invitation.DoesNotExist:
+            previous_status = None
+        else:
+            previous_status = previous_self.status
+        super(Invitation, self).save(*args, **kwargs)
+        if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
+            TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
+
 
 class TeamMemberHistoryManager(models.Manager):
     def create_from_team_member(self, team_member, player_id):

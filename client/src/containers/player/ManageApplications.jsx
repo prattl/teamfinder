@@ -59,16 +59,8 @@ class ManageApplications extends Component {
 
     handleWithdrawConfirmClick() {
         const { withdrawApplication, playerEvents: { applications: { items, confirmWithdraw } } } = this.props
-        withdrawApplication(confirmWithdraw, items[confirmWithdraw].team)
+        withdrawApplication(confirmWithdraw, items[confirmWithdraw])
     }
-
-    // getFilteredApplications() {
-    //     const { team, teamEvents: { applications: { items } } } = this.props
-    //
-    //     return Object.keys(items).map(
-    //         applicationId => items[applicationId]
-    //     ).filter(application => application.team === team.id)
-    // }
 
     renderWithdrawConfirmModal() {
         const { playerEvents: { applications: { items, confirmWithdraw } } } = this.props
@@ -84,7 +76,7 @@ class ManageApplications extends Component {
                 <Modal.Body>
                     <p>
                         Are you sure you want to withdraw your application
-                        to <strong><TeamName playerId={application.team} /></strong>? This
+                        to <strong><TeamName teamId={application.team} /></strong>? This
                         cannot be undone.
                     </p>
                 </Modal.Body>
@@ -95,32 +87,6 @@ class ManageApplications extends Component {
             </Modal>
         )
     }
-    //
-    // renderRejectConfirmModal() {
-    //     const { teamEvents: { applications: { items, confirmReject } } } = this.props
-    //     const application = confirmReject ? items[confirmReject] : null
-    //
-    //     return (application &&
-    //         <Modal show={Boolean(confirmReject)}>
-    //             <Modal.Header>
-    //                 <Modal.Title>
-    //                     Confirm Reject Application
-    //                 </Modal.Title>
-    //             </Modal.Header>
-    //             <Modal.Body>
-    //                 <p>
-    //                     Are you sure you want to
-    //                     reject <strong><PlayerName playerId={application.player} />'s</strong> application? This
-    //                     cannot be undone.
-    //                 </p>
-    //             </Modal.Body>
-    //             <Modal.Footer>
-    //                 <Button bsStyle='link' onClick={this.handleRejectCancelClick}>Cancel</Button>
-    //                 <Button bsStyle='danger' onClick={this.handleRejectConfirmClick}>Reject</Button>
-    //             </Modal.Footer>
-    //         </Modal>
-    //     )
-    // }
 
     renderApplicationTab(index, statusLabel, statusIndex) {
         const { playerEvents: { applications: { items } } } = this.props
@@ -156,7 +122,7 @@ class ManageApplications extends Component {
                                     </Link>
                                 </td>
                                 <td>
-                                    {positions.items[application.position].name}
+                                    {positions.items[application.position] && positions.items[application.position].name}
                                 </td>
                                 <td>
                                     {moment(application.created).format('L')}
@@ -164,7 +130,8 @@ class ManageApplications extends Component {
                                 <td>
                                     {application.status === 1 && (
                                         <ButtonToolbar>
-                                            <Button bsStyle='danger' onClick={this.handleWithdrawConfirmClick}>
+                                            <Button bsStyle='danger'
+                                                    onClick={() => this.handleWithdrawApplicationClick(application.id)}>
                                                 Withdraw
                                             </Button>
                                         </ButtonToolbar>

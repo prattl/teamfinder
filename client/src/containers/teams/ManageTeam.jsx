@@ -94,11 +94,13 @@ class ManageTeam extends Component {
                                                 </Button>
                                             </LinkContainer>
                                         )}
-                                        <LinkContainer to={`/teams/edit/${team.id}/`}>
-                                            <Button bsSize='sm'>
-                                                <i className='fa fa-pencil'/>&nbsp;Edit
-                                            </Button>
-                                        </LinkContainer>
+                                        {hasEditPermission && (
+                                            <LinkContainer to={`/teams/edit/${team.id}/`}>
+                                                <Button bsSize='sm'>
+                                                    <i className='fa fa-pencil'/>&nbsp;Edit
+                                                </Button>
+                                            </LinkContainer>
+                                        )}
                                         <Button bsStyle='warning' bsSize='sm' onClick={this.handleLeaveTeamClick}>
                                             Leave Team
                                         </Button>

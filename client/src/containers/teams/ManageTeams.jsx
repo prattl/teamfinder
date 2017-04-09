@@ -38,7 +38,7 @@ class ManageTeams extends Component {
                                 <div>You're not on any teams yet.</div>
                             )}
                             <h2>Invitations</h2>
-                            {/*<ManageInvitations player={player} />*/}
+                            <ManageInvitations player={player} />
                             <h2>Applications</h2>
                             <ManageApplications player={player} />
                         </div>

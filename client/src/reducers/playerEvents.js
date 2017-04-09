@@ -101,7 +101,7 @@ const teamEvents = handleActions({
                 ...state.applications.items,
                 [action.payload.id]: action.payload,
             },
-            confirmAccept: null, confirmReject: null
+            confirmWithdraw: null
         }
     }),
     [actions.RECEIVE_UPDATE_PLAYER_INVITATION_STATUS]: (state, action) => ({
@@ -112,7 +112,7 @@ const teamEvents = handleActions({
                 ...state.invitations.items,
                 [action.payload.id]: action.payload,
             },
-            confirmWithdraw: null
+            confirmAccept: null, confirmReject: null
         }
     })
 }, initialState)
