@@ -43,10 +43,10 @@ class FeedbackForm extends Component {
                     </Field>
                 </div>
                 <div>
-                    <Field name='comments' type={CommentsInput} />
+                    <Field name='comments' component={CommentsInput} />
                 </div>
                 <div>
-                    <Field name='url' type='hidden' />
+                    <Field name='url' component='input' type='hidden' />
                 </div>
             </form>
         )

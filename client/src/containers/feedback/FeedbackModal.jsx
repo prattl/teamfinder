@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { submit } from 'redux-form'
 
 import { closeFeedbackForm } from 'actions/feedback'
 import { feedbackSelector } from 'utils/selectors'
@@ -28,8 +29,11 @@ class FeedbackModal extends Component {
 }
 
 FeedbackModal = connect(
-    feedbackSelector, {
-    onClose: closeFeedbackForm
-})(FeedbackModal)
+    feedbackSelector,
+    {
+        onClose: closeFeedbackForm,
+        submit
+    }
+)(FeedbackModal)
 
 export default FeedbackModal

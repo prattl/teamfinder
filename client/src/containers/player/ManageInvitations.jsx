@@ -109,7 +109,7 @@ class ManageInvitations extends Component {
     }
 
     renderRejectConfirmModal() {
-        const { positions, playerEvents: { invitations: { items, confirmReject } } } = this.props
+        const { playerEvents: { invitations: { items, confirmReject } } } = this.props
         const invitation = confirmReject ? items[confirmReject] : null
 
         return (invitation &&

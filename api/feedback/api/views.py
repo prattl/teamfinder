@@ -13,7 +13,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             'user_agent': self.request.META.get('HTTP_USER_AGENT')
         }
 
-        if self.request.user.is_authenticated and self.request.user.player:
+        if self.request.user.is_authenticated() and self.request.user.player:
             serializer_kwargs['player'] = self.request.user.player
 
         serializer.save(**serializer_kwargs)
