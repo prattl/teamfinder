@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect'
 import { requestTeamSearch, requestNextPageOfTeams } from 'actions/teamSearch'
 import { teamSearchSelector } from 'utils/selectors'
 
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Loading } from 'utils'
 import LastUpdated from 'utils/components/LastUpdated'
 import TeamSearchResult from 'components/TeamSearchResult'

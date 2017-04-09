@@ -11,7 +11,7 @@ import { requestPlayerApplications,
     withdrawApplication,
     tryWithdrawApplication, cancelWithdrawApplication
  } from 'actions/playerEvents'
-import { Loading, playerIsCaptain } from 'utils'
+import { Loading } from 'utils'
 
 
 const ApplicationTabLabel = ({ children, count }) => (
