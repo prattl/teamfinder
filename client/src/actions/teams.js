@@ -51,10 +51,10 @@ export const requestTeam = (id, refresh=false) => (dispatch, getState) => {
 }
 
 export const submitCreateTeam = data => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_SUBMIT_CREATE_TEAM))
+    dispatch(createAction(actions.REQUEST_SUBMIT_CREATE_TEAM)())
     const { auth: { authToken } } = getState()
     if (authToken) {
-        return POST(createUrl(`/api/teams/`), authToken, data).then(
+        return POST(createUrl('/api/teams/'), authToken, data).then(
             response => response.json().then(json => {
                 const payload = response.ok ? json : new Error('Error creating team.')
                 dispatch(createAction(actions.RECEIVE_SUBMIT_CREATE_TEAM, null, metaGenerator)(payload))
@@ -68,7 +68,7 @@ export const submitCreateTeam = data => (dispatch, getState) => {
 }
 
 export const submitEditTeam = (teamId, data) => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_SUBMIT_EDIT_TEAM))
+    dispatch(createAction(actions.REQUEST_SUBMIT_EDIT_TEAM)())
     const { auth: { authToken } } = getState()
     if (authToken) {
         return PATCH(createUrl(`/api/teams/${teamId}/`), authToken, data).then(

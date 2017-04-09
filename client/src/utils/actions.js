@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import Alert from 'react-s-alert'
 
 class ChangesSavedNotification extends Component {
-    static defaultProps = {
-        message: 'Changes saved!'
-    }
     render() {
         const { message } = this.props
         return (
@@ -12,6 +9,6 @@ class ChangesSavedNotification extends Component {
         )
     }
 }
-export const notify = (response, message=null) => response.ok && (
+export const notify = (response, message='Changes saved!') => response.ok && (
     Alert.success(<ChangesSavedNotification message={message} />)
 )

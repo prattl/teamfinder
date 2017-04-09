@@ -19,7 +19,7 @@ const player = handleActions({
     }),
     [actions.RECEIVE_OWN_PLAYER]: (state, action) => ({
         ...state,
-        player: action.payload,
+        player: action.error ? state.player : action.payload,
         isLoading: false, lastUpdated: action.meta.receivedAt
     }),
     [actions.RECEIVE_SUBMIT_PROFILE]: (state, action) => ({

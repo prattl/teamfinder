@@ -4,7 +4,8 @@ import Alert from 'react-s-alert';
 import { Grid } from 'react-bootstrap'
 import TopNav from 'components/layout/TopNav'
 import Footer from 'components/layout/Footer'
-import FeedbackButton from 'containers/FeedbackButton'
+import FeedbackButton from 'containers/feedback/FeedbackButton'
+import FeedbackModal from 'containers/feedback/FeedbackModal'
 
 class Base extends Component {
 
@@ -22,6 +23,7 @@ class Base extends Component {
                 <Footer />
                 <Alert stack={{limit: 3}} effect='slide' />
                 <FeedbackButton />
+                <FeedbackModal />
             </div>
         )
     }

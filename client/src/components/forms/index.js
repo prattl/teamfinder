@@ -24,6 +24,26 @@ export const createInput = (label, type='text') => (field) => (
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
 )
+export const createTextArea = (label) => (field) => (
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
+        {label && <ControlLabel>{label}</ControlLabel>}
+        <FormControl {...field.input} componentClass='textarea' placeholder={field.placeholder} />
+        {field.meta.touched && field.meta.error &&
+        <HelpBlock>{field.meta.error}</HelpBlock>}
+    </FormGroup>
+)
+export const createSelect = (label) => (field) => (
+    <FormGroup controlId={field.input.name}
+               validationState={field.meta.touched && field.meta.error ? 'error' : null}>
+        {label && <ControlLabel>{label}</ControlLabel>}
+        <FormControl {...field.input} componentClass='select' placeholder={field.placeholder}>
+            {field.children}
+        </FormControl>
+        {field.meta.touched && field.meta.error &&
+        <HelpBlock>{field.meta.error}</HelpBlock>}
+    </FormGroup>
+)
 
 export const createSelectInput = (label, SelectComponent, multi) => field => (
     <FormGroup controlId={field.input.name}
@@ -53,7 +73,6 @@ let SinglePositionSelect = ({ positions, input, meta, children, ...rest }) => (
             <HelpBlock>{meta.error}</HelpBlock>
         )}
     </FormGroup>
-
 )
 SinglePositionSelect = withPositions(SinglePositionSelect)
 

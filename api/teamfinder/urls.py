@@ -20,12 +20,14 @@ from django.contrib import admin
 from rest_framework import routers
 
 from common.api import views as common_views
+from feedback.api import views as feedback_views
 from players.api import views as player_views
 from teams.api import views as team_views
 from common.views import deploy
 
 router = routers.DefaultRouter()
 router.register(r'applications', common_views.ApplicationViewSet)
+router.register(r'feedback', feedback_views.FeedbackViewSet)
 router.register(r'invitations', common_views.InvitationViewSet)
 router.register(r'players', player_views.PlayerViewSet)
 router.register(r'regions', common_views.RegionViewSet)

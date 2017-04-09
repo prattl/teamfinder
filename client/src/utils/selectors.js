@@ -5,6 +5,11 @@ export const authSelector = createSelector(
     auth => (auth)
 )
 
+export const feedbackSelector = createSelector(
+    state => state.feedback,
+    feedback => (feedback)
+)
+
 export const fixturesSelector = createSelector(
     state => state.fixtures,
     fixtures => (fixtures)

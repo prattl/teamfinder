@@ -11,7 +11,6 @@ const initialState = {
 const players = handleActions({
     [actions.REQUEST_PLAYER]: (state, action) => ({
         ...state, isLoading: true
-
     }),
     [actions.RECEIVE_PLAYER]: (state, action) => ({
         ...state, isLoading: false, lastUpdated: action.meta.receivedAt,

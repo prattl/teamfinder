@@ -9,6 +9,7 @@ import { playerSearchSelector } from 'utils/selectors'
 import { FixtureDisplay, Loading } from 'utils'
 import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
+import { withPlayer } from 'components/connectors/WithPlayer'
 
 const FixtureRow = ({ label, children }) => (
     <Row>
@@ -23,26 +24,25 @@ const FixtureRow = ({ label, children }) => (
 
 class PlayerProfile extends Component {
 
-    componentDidMount() {
-        this.props.onLoad()
-    }
+    // componentDidMount() {
+    //     this.props.onLoad()
+    // }
 
-    componentDidUpdate(oldProps) {
-        if (this.props.params.id !== oldProps.params.id) {
-            this.props.onLoad()
-        }
-    }
+    // componentDidUpdate(oldProps) {
+    //     if (this.props.params.id !== oldProps.params.id) {
+    //         this.props.onLoad()
+    //     }
+    // }
 
     render() {
-        const { playerSearch: { error, player, playerIsLoading, playerLastUpdated } } = this.props
-        const { fixtures: { regions, positions, skillBrackets } } = this.props
+        console.log('PlayerProfile', this.props)
+        const { player, fixtures: { regions, positions, skillBrackets } } = this.props
         return (
             <div>
                 <h1>Player Profile</h1>
-                {playerIsLoading ? <Loading /> : (
-                    // makes sure something was actually returned from the server
-                    playerLastUpdated ? (
-                        !error ? (
+                {/*{playerIsLoading ? <Loading /> : (*/}
+                    {/*playerLastUpdated ? (*/}
+                        {/*!error ? (*/}
                             <div>
                                 <h2>{player.username}</h2>
                                 <FixtureRow label='Regions:'>
@@ -66,25 +66,27 @@ class PlayerProfile extends Component {
                                     </Row>
                                 ))}
                             </div>
-                        ) : (
-                            <div>Error: {error.message}</div>
-                        )
-                    ) : <div>Error loading player</div>
-                )}
+                        {/*) : (*/}
+                            {/*<div>Error: {error.message}</div>*/}
+                        {/*)*/}
+                    {/*) : <div>Error loading player</div>*/}
+                {/*)}*/}
             </div>
         )
     }
 
 }
 
-PlayerProfile = connect(
-    createStructuredSelector({
-        playerSearch: playerSearchSelector,
-    }),
-    (dispatch, props) => ({
-        onLoad: () => dispatch(requestPlayer(props.params.id))
-    })
-)(PlayerProfile)
+PlayerProfile = withPlayer(props => props.params.id)(PlayerProfile)
+
+// PlayerProfile = connect(
+//     createStructuredSelector({
+//         playerSearch: playerSearchSelector,
+//     }),
+//     (dispatch, props) => ({
+//         onLoad: () => dispatch(requestPlayer(props.params.id))
+//     })
+// )(PlayerProfile)
 
 PlayerProfile = withAllFixtures(PlayerProfile)
 

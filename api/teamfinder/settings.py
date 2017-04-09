@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'tf_auth',
     'common',
+    'feedback',
     'teams',
     'players',
     'rest_framework',
@@ -78,18 +79,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'teamfinder.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

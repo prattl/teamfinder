@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
 import auth from 'reducers/auth'
+import feedback from 'reducers/feedback'
 import fixtures from 'reducers/fixtures'
 import player from 'reducers/player'
 import playerEvents from 'reducers/playerEvents'
@@ -14,6 +15,7 @@ import teamSearch from 'reducers/teamSearch'
 
 export default combineReducers({
     auth,
+    feedback,
     fixtures,
     player,
     playerEvents,
