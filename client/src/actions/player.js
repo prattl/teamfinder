@@ -9,6 +9,8 @@ const actions = keyMirror({
     REQUEST_SUBMIT_PROFILE: null,
     RECEIVE_SUBMIT_PROFILE: null,
     DISMISS_CHANGES_SAVED: null,
+    CONFIRM_APPLY_TO_TEAM: null,
+    CANCEL_APPLY_TO_TEAM: null,
     REQUEST_SUBMIT_APPLICATION: null,
     RECEIVE_SUBMIT_APPLICATION: null
 })
@@ -49,6 +51,9 @@ export const submitProfile = data => (dispatch, getState) => {
 }
 
 export const dismissChangesSaved = createAction(actions.DISMISS_CHANGES_SAVED)
+
+export const tryApplyToTeam = createAction(actions.CONFIRM_APPLY_TO_TEAM)
+export const cancelApplyToTeam = createAction(actions.CANCEL_APPLY_TO_TEAM)
 
 export const submitApplication = data => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_SUBMIT_APPLICATION)())

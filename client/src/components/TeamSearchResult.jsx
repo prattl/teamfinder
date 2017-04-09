@@ -3,8 +3,10 @@ import { Link } from 'react-router'
 import { submit } from 'redux-form'
 import { connect } from 'react-redux'
 
-import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 
+import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { Label, Button, Modal } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, SkillBracketIcon } from 'utils/components/icons'
@@ -12,25 +14,15 @@ import TeamApplicationForm from 'components/forms/TeamApplicationForm'
 
 class TeamSearchResult extends Component {
 
-    // static == meaningless
     static propTypes = {
         available_positions: PropTypes.array,
         name: PropTypes.string.isRequired
     }
 
-    // Player component
-    // recruiting
-    // players
-    //
-
-    constructor(props) {
-        super(props)
-        this.state = { teamApplyingTo : false}
-    }
-
     renderApplyToTeamConfirmModal() {
+        const { cancelApplyToTeam, id, player: { teamApplyingTo } } = this.props
         return (
-            <Modal show={true}>
+            <Modal show={teamApplyingTo === id}>
                 <Modal.Header>
                     <Modal.Title>Confirm Apply to Team</Modal.Title>
                 </Modal.Header>
@@ -39,7 +31,7 @@ class TeamSearchResult extends Component {
                     <TeamApplicationForm initialValues={{ team : this.props.id }} />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => this.setState({ teamApplyingTo : false })} bsStyle='link' >
+                    <Button onClick={cancelApplyToTeam} bsStyle='link' >
                         Cancel</Button>
                     <Button bsStyle='success' onClick={() => this.props.submit('application')}>Apply</Button>
                 </Modal.Footer>
@@ -48,7 +40,8 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, id, name, regions, skill_bracket, team_members, fixtures } = this.props
+        const { available_positions, captain, id, name, regions, skill_bracket, team_members, fixtures, tryApplyToTeam,
+            player: { teamApplyingTo } } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -57,7 +50,7 @@ class TeamSearchResult extends Component {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
-                            {this.state.teamApplyingTo && this.renderApplyToTeamConfirmModal()}
+                            {teamApplyingTo && this.renderApplyToTeamConfirmModal()}
                             <div style={{ marginBottom: '1rem' }}>
                                 <Link to={`teams/${id}`}>
                                     <strong>{name}</strong>
@@ -66,9 +59,9 @@ class TeamSearchResult extends Component {
                                     <i className={`fa fa-${available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
                                     &nbsp;Recruiting
                                 </span>
-                                <div style={{ clear: 'both' }}></div>
+                                <div style={{ clear: 'both' }} />
                                 <Button style={{ marginTop: '1rem'}} bsSize='sm' className='pull-right'
-                                        onClick={() => this.setState({ teamApplyingTo : true })}>Apply</Button>
+                                        onClick={() => tryApplyToTeam(id)}>Apply</Button>
                             </div>
                             <div>
                                 <RegionIcon fixedWidth={true}/>&nbsp;
@@ -111,7 +104,10 @@ class TeamSearchResult extends Component {
 }
 
 TeamSearchResult = withAllFixtures(TeamSearchResult)
-
-TeamSearchResult =  connect(null, {submit})(TeamSearchResult
-)
+TeamSearchResult = withOwnPlayer(TeamSearchResult)
+TeamSearchResult =  connect(null, {
+    submit,
+    tryApplyToTeam,
+    cancelApplyToTeam
+})(TeamSearchResult)
 export default TeamSearchResult

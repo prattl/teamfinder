@@ -1,25 +1,18 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
-import { requestOwnPlayerIfNeeded } from 'actions/player'
-import { playerSelector } from 'utils/selectors'
-
 import { Button, Col, Row } from 'react-bootstrap'
 
+import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
+import ManageApplications from 'containers/player/ManageApplications'
+import ManageInvitations from 'containers/player/ManageInvitations'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Loading } from 'utils'
 import TeamSnippet from 'containers/TeamSnippet'
 
 class ManageTeams extends Component {
 
-    componentDidMount() {
-        this.props.onLoad()
-    }
-
     render() {
         const { player, player: { teams }, isLoading, lastUpdated } = this.props
-        // const { fixtures: { regions, positions, skillBrackets } } = this.props
         return (
             <div>
                 <div>
@@ -44,6 +37,10 @@ class ManageTeams extends Component {
                             ))) : (
                                 <div>You're not on any teams yet.</div>
                             )}
+                            <h2>Invitations</h2>
+                            {/*<ManageInvitations player={player} />*/}
+                            <h2>Applications</h2>
+                            <ManageApplications player={player} />
                         </div>
                     ) : <div>Error loading player</div>
                 )}
@@ -53,13 +50,7 @@ class ManageTeams extends Component {
 
 }
 
-ManageTeams = connect(
-    playerSelector,
-    { onLoad: requestOwnPlayerIfNeeded }
-)(ManageTeams)
-
+ManageTeams = withOwnPlayer(ManageTeams)
 ManageTeams = requireAuthentication(ManageTeams)
-
-// ManageTeams = withAllFixtures(ManageTeams)
 
 export default ManageTeams

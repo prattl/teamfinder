@@ -13,12 +13,12 @@ const actions = keyMirror({
     CANCEL_ACCEPT_APPLICATION: null,
     CONFIRM_REJECT_APPLICATION: null,
     CANCEL_REJECT_APPLICATION: null,
-    REQUEST_UPDATE_APPLICATION_STATUS: null,
-    RECEIVE_UPDATE_APPLICATION_STATUS: null,
     CONFIRM_WITHDRAW_INVITATION: null,
     CANCEL_WITHDRAW_INVITATION: null,
-    REQUEST_UPDATE_INVITATION_STATUS: null,
-    RECEIVE_UPDATE_INVITATION_STATUS: null,
+    REQUEST_UPDATE_TEAM_INVITATION_STATUS: null,
+    RECEIVE_UPDATE_TEAM_INVITATION_STATUS: null,
+    REQUEST_UPDATE_TEAM_APPLICATION_STATUS: null,
+    RECEIVE_UPDATE_TEAM_APPLICATION_STATUS: null
 })
 export default actions
 
@@ -54,9 +54,9 @@ export const cancelWithdrawInvitation = createAction(actions.CANCEL_WITHDRAW_INV
 
 const updateTeamEventStatus = eventType => status => (eventId, teamId) => (dispatch, getState) => {
     const actionTypes = eventType === TEAM_EVENT_TYPES.INVITATION ? [
-        actions.REQUEST_UPDATE_INVITATION_STATUS, actions.RECEIVE_UPDATE_INVITATION_STATUS
+        actions.REQUEST_UPDATE_TEAM_INVITATION_STATUS, actions.RECEIVE_UPDATE_TEAM_INVITATION_STATUS
     ] : [
-        actions.REQUEST_UPDATE_APPLICATION_STATUS, actions.RECEIVE_UPDATE_APPLICATION_STATUS
+        actions.REQUEST_UPDATE_TEAM_APPLICATION_STATUS, actions.RECEIVE_UPDATE_TEAM_APPLICATION_STATUS
     ]
     const [requestActionType, receiveActionType] = actionTypes
     dispatch(createAction(requestActionType)(eventId))

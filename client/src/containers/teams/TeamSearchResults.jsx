@@ -48,13 +48,11 @@ class TeamSearchResults extends PureComponent {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <div>
-                            <Row>
-                                {results.map(result => (
-                                    <Col sm={6} key={result.id}>
-                                        <TeamSearchResult {...result} />
-                                    </Col>
-                                ))}
-                            </Row>
+                            {results.map(result => (
+                                <div key={result.id}>
+                                    <TeamSearchResult {...result} />
+                                </div>
+                            ))}
                             {next && (
                                 <div className='text-center'>
                                     <Button bsStyle='default' disabled={nextPageLoading}

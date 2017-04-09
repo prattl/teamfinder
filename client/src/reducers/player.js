@@ -43,6 +43,24 @@ const player = handleActions({
                 action.payload
             ]
         }
+    }),
+    [actions.CONFIRM_APPLY_TO_TEAM]: (state, action) => ({
+        ...state, player: {
+            ...state.player,
+            teamApplyingTo: action.payload
+        }
+    }),
+    [actions.CANCEL_APPLY_TO_TEAM]: (state, action) => ({
+        ...state, player: {
+            ...state.player,
+            teamApplyingTo: null
+        }
+    }),
+    [actions.RECEIVE_SUBMIT_APPLICATION]: (state, action) => ({
+        ...state, player: {
+            ...state.player,
+            teamApplyingTo: action.error ? state.player.teamApplyingTo : null
+        }
     })
 }, initialState)
 

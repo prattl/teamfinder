@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import actions from 'actions/teamEvents'
+import actions from 'actions/playerEvents'
 import { arrayToObject } from 'utils'
 
 const initialEventsState = {
@@ -11,22 +11,22 @@ const initialEventsState = {
 const initialState = {
     applications: {
         ...initialEventsState,
-        confirmAccept: null,
-        confirmReject: null
+        confirmWithdraw: null
     },
     invitations: {
         ...initialEventsState,
-        confirmWithdraw: null
+        confirmAccept: null,
+        confirmReject: null
     },
 }
 
-const playerEvents = handleActions({
-    [actions.REQUEST_TEAM_INVITATIONS]: (state, action) => ({
+const teamEvents = handleActions({
+    [actions.REQUEST_PLAYER_INVITATIONS]: (state, action) => ({
         ...state, invitations: {
             ...state.invitations, isLoading: true
         }
     }),
-    [actions.RECEIVE_TEAM_INVITATIONS]: (state, action) => ({
+    [actions.RECEIVE_PLAYER_INVITATIONS]: (state, action) => ({
         ...state, invitations: {
             ...state.invitations,
             items: {
@@ -36,12 +36,12 @@ const playerEvents = handleActions({
             isLoading: false, lastUpdated: action.meta.receivedAt
         }
     }),
-    [actions.REQUEST_TEAM_APPLICATIONS]: (state, action) => ({
+    [actions.REQUEST_PLAYER_APPLICATIONS]: (state, action) => ({
         ...state, applications: {
             ...state.applications, isLoading: true
         }
     }),
-    [actions.RECEIVE_TEAM_APPLICATIONS]: (state, action) => ({
+    [actions.RECEIVE_PLAYER_APPLICATIONS]: (state, action) => ({
         ...state, applications: {
             ...state.applications,
             items: {
@@ -51,49 +51,49 @@ const playerEvents = handleActions({
             isLoading: false, lastUpdated: action.meta.receivedAt
         }
     }),
-    [actions.CONFIRM_ACCEPT_APPLICATION]: (state, action) => ({
+    [actions.CONFIRM_ACCEPT_INVITATION]: (state, action) => ({
         ...state,
-        applications: {
-            ...state.applications,
+        invitations: {
+            ...state.invitations,
             confirmAccept: action.payload
         }
     }),
-    [actions.CANCEL_ACCEPT_APPLICATION]: (state, action) => ({
+    [actions.CANCEL_ACCEPT_INVITATION]: (state, action) => ({
         ...state,
-        applications: {
-            ...state.applications,
+        invitations: {
+            ...state.invitations,
             confirmAccept: null
         }
     }),
-    [actions.CONFIRM_REJECT_APPLICATION]: (state, action) => ({
+    [actions.CONFIRM_REJECT_INVITATION]: (state, action) => ({
         ...state,
-        applications: {
-            ...state.applications,
+        invitations: {
+            ...state.invitations,
             confirmReject: action.payload
         }
     }),
-    [actions.CANCEL_REJECT_APPLICATION]: (state, action) => ({
+    [actions.CANCEL_REJECT_INVITATION]: (state, action) => ({
         ...state,
-        applications: {
-            ...state.applications,
+        invitations: {
+            ...state.invitations,
             confirmReject: null
         }
     }),
-    [actions.CONFIRM_WITHDRAW_INVITATION]: (state, action) => ({
+    [actions.CONFIRM_WITHDRAW_APPLICATION]: (state, action) => ({
         ...state,
-        invitations: {
-            ...state.invitations,
+        applications: {
+            ...state.applications,
             confirmWithdraw: action.payload
         }
     }),
-    [actions.CANCEL_WITHDRAW_INVITATION]: (state, action) => ({
+    [actions.CANCEL_WITHDRAW_APPLICATION]: (state, action) => ({
         ...state,
-        invitations: {
-            ...state.invitations,
+        applications: {
+            ...state.applications,
             confirmWithdraw: null
         }
     }),
-    [actions.RECEIVE_UPDATE_TEAM_APPLICATION_STATUS]: (state, action) => ({
+    [actions.RECEIVE_UPDATE_PLAYER_APPLICATION_STATUS]: (state, action) => ({
         ...state,
         applications: {
             ...state.applications,
@@ -104,7 +104,7 @@ const playerEvents = handleActions({
             confirmAccept: null, confirmReject: null
         }
     }),
-    [actions.RECEIVE_UPDATE_TEAM_INVITATION_STATUS]: (state, action) => ({
+    [actions.RECEIVE_UPDATE_PLAYER_INVITATION_STATUS]: (state, action) => ({
         ...state,
         invitations: {
             ...state.invitations,
@@ -117,4 +117,4 @@ const playerEvents = handleActions({
     })
 }, initialState)
 
-export default playerEvents
+export default teamEvents

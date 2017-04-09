@@ -24,6 +24,7 @@ const validate = values => {
     return errors
 }
 
+// TODO: Limit position options to available team positions
 class TeamApplicationForm extends Component {
 
     render() {
