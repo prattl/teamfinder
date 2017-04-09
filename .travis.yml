@@ -1,8 +1,13 @@
 language: python
 python:
   - '3.5'
+services:
+  - postgresql
+addons:
+  postgresql: "9.4"
 install: pip install -r api/requirements.txt
 before_script:
+  - psql -c 'create user teamfinder; create database teamfinder owner teamfinder;' -U postgres
   - echo "SECRET_KEY = 'foo'" > api/teamfinder/settings_local.py
   - python api/manage.py migrate
 script:
