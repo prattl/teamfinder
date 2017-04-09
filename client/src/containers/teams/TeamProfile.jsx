@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
+
 import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
@@ -32,10 +34,12 @@ class TeamProfile extends Component {
 
         const { fixtures: { regions, positions, skillBrackets } } = this.props
 
-        console.log('TEAM: ', team)
-
         return (
             <div>
+                <Helmet>
+                    <title>{`${team.team ? team.team.name : 'Team Profile'} | Dota 2 Team Finder`}</title>
+                    <meta name="description" content="Team profile" />
+                </Helmet>
                 <h1>Team Profile</h1>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (

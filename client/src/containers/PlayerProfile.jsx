@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import { Col, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
@@ -24,6 +25,10 @@ class PlayerProfile extends Component {
         const { player, fixtures: { regions, positions, skillBrackets } } = this.props
         return (
             <div>
+                <Helmet>
+                    <title>{`${player.username} - Player Profile | Dota 2 Team Finder`}</title>
+                    <meta name="description" content={`View ${player.username}'s profile on Dota 2 team finder.`} />
+                </Helmet>
                 <h1>Player Profile</h1>
                 <div>
                     <h2>{player.username}</h2>

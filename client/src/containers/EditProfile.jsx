@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 import { dismissChangesSaved, requestOwnPlayerIfNeeded } from 'actions/player'
 import { playerSelector } from 'utils/selectors'
@@ -34,6 +35,9 @@ class EditProfile extends Component {
         }) : {}
         return (
             <div>
+                <Helmet>
+                    <title>Edit Profile | Dota 2 Team Finder</title>
+                </Helmet>
                 <h1>Profile</h1>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (

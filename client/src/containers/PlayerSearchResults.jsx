@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { submit } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
+import { Helmet } from 'react-helmet'
 
 import { requestPlayerSearch, requestNextPageOfPlayers, cancelInviteToTeam } from 'actions/playerSearch'
 import { playerSearchSelector } from 'utils/selectors'
@@ -74,6 +75,10 @@ class PlayerSearchResults extends PureComponent {
         }, player } = this.props
         return (
             <div>
+                <Helmet>
+                    <title>Find Players | Dota 2 Team Finder</title>
+                    <meta name="description" content="Search for players for your next Dota 2 team." />
+                </Helmet>
                 {confirmInvitation.playerId && confirmInvitation.teamId && (
                     this.renderInviteToTeamModal(confirmInvitation.playerId, confirmInvitation.teamId)
                 )}

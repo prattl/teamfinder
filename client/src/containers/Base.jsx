@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import Alert from 'react-s-alert';
 import { Grid } from 'react-bootstrap'
@@ -12,6 +13,11 @@ class Base extends Component {
     render() {
         return (
             <div id='page-wrapper'>
+                <Helmet>
+                    <title>Dota 2 Team Finder</title>
+                    <meta name="description" content="Find your next Dota 2 team!" />
+                </Helmet>
+
                 <TopNav loggedIn={false} location={this.props.location.pathname}/>
 
                 <div id='page-content'>

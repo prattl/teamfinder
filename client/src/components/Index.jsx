@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import { Button, ButtonToolbar, Jumbotron } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -7,6 +8,7 @@ class Index extends Component {
     render() {
         return (
             <div>
+
                 <Jumbotron>
                     <h1>Dota 2 Team Finder</h1>
                     <p>

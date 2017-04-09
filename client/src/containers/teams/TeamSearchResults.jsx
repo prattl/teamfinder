@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { submit } from 'redux-form'
 import { createStructuredSelector } from 'reselect'
+import { Helmet } from 'react-helmet'
 
 import { requestTeamSearch, requestNextPageOfTeams } from 'actions/teamSearch'
 import { teamSearchSelector } from 'utils/selectors'
@@ -35,6 +36,10 @@ class TeamSearchResults extends PureComponent {
             teamSearch: { results, count, next, nextPageLoading, isLoading, lastUpdated } } = this.props
         return (
             <div>
+                <Helmet>
+                    <title>Find Teams | Dota 2 Team Finder</title>
+                    <meta name="description" content="Search for your next Dota 2 team." />
+                </Helmet>
                 <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
                     <div className='pull-left'>
                         {count} teams found
