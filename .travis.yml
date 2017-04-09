@@ -7,7 +7,7 @@ addons:
   postgresql: "9.4"
 install: pip install -r api/requirements.txt
 before_script:
-  - psql -c 'create user teamfinder;' -U postgres
+  - psql -c 'create user teamfinder with CREATEDB;' -U postgres
   - psql -c 'create database teamfinder owner teamfinder;' -U postgres
   - echo "SECRET_KEY = 'foo'" > api/teamfinder/settings_local.py
   - python api/manage.py migrate
