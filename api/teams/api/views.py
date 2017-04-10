@@ -70,15 +70,15 @@ class TeamViewSet(viewsets.ModelViewSet):
 
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
-        positions = self.request.query_params.getlist('positions[]')
+        available_positions = self.request.query_params.getlist('available_positions[]')
         skill_bracket = self.request.query_params.get('skill_bracket')
 
         if keywords:
             queryset = queryset.filter(name__icontains=keywords)
         if regions:
             queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
-        if positions:
-            queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
+        if available_positions:
+            queryset = queryset.filter(available_positions__in=Position.objects.filter(pk__in=available_positions))
         if skill_bracket:
             queryset = queryset.filter(skill_bracket_id=skill_bracket)
 
