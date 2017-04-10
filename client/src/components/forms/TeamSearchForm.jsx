@@ -43,6 +43,8 @@ TeamSearchForm = reduxForm({
     initialValues: {
         keywords: '',
         regions: [],
+        positions: [],
+        skill_bracket: ''
     },
     onSubmit: teamSubmit
 })(TeamSearchForm)
