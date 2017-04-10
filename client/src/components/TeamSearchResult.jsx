@@ -20,8 +20,8 @@ class TeamSearchResult extends Component {
     }
 
     renderApplyToTeamConfirmModal() {
-        const { cancelApplyToTeam, id, player: { teamApplyingTo, lastUpdated } } = this.props
-        if (!lastUpdated) {
+        const { cancelApplyToTeam, id, player: { teamApplyingTo, id: playerId } } = this.props
+        if (!playerId) {
             return this.renderSignInRequiredModal()
         }
         return (
