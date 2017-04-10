@@ -28,15 +28,9 @@ html body {
   border: none;
 }
 
-#feedback-button {
+#feedback-button.fixed {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  display: inline-block;
-  border: 2px solid #2c91da;
-  /*border-bottom: none;*/
-  padding: 1rem 2rem;
-  background-color: #1e347b;
-  color: #FFF;
-  cursor: pointer;
+  /*display: inline-block;*/
 }

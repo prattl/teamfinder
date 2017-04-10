@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Button, ButtonToolbar, Jumbotron } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
+import FeedbackButton from 'containers/feedback/FeedbackButton'
+
 class Index extends Component {
 
     render() {
@@ -39,7 +41,7 @@ class Index extends Component {
                 <h3>Alpha Release</h3>
                 <p>
                     This is the alpha release of the Dota 2 teamfinder. Feedback is greatly appreciated - you can
-                    use the form in the lower right to submit feedback on any page.
+                    use the <FeedbackButton inline={true} /> button to submit feedback on any page.
                 </p>
                 <p>
                     This website is still a work in progress. Below is a list of features that are currently planned:

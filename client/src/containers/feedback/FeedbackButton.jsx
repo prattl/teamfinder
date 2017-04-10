@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { Button } from 'react-bootstrap'
 import { openFeedbackForm } from 'actions/feedback'
 
 class FeedbackButton extends Component {
 
+    static defaultProps = {
+        inline: false
+    }
+
     render() {
-        const { onClick } = this.props
+        const { onClick, inline } = this.props
         return (
-            <div id='feedback-button' onClick={() => onClick()}>
+            <Button id='feedback-button' className={!inline && 'fixed'}
+                    bsStyle='warning' bsSize={inline ? 'xs' : 'lg'}
+                    onClick={() => onClick()}>
                 <strong>Submit Feedback</strong> <i>(alpha)</i>
-            </div>
+            </Button>
         )
     }
 
