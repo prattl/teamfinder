@@ -9,8 +9,11 @@ import configureStore from './store/configureStore'
 import routes from './routes'
 
 import 'styles/app.css'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/css/bootstrap-theme.css'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap-theme.css'
+// import 'styles/bootstrap-theme-darkly.css'
+import 'styles/bootstrap-theme-slate.css'
+
 import 'font-awesome/css/font-awesome.css'
 import 'react-select/dist/react-select.css'
 import 'react-s-alert/dist/s-alert-default.css';

@@ -25,7 +25,7 @@ class Footer extends Component {
                                 {/*<NavItem eventKey={2}>Find Players</NavItem>*/}
                             {/*</LinkContainer>*/}
                         {/*</Nav>*/}
-                        <Nav pullRight className='hidden-xs'>
+                        <Nav className='hidden-xs'>
                             <NavItem eventKey={3} href='#'><i className='fa fa-github'/>&nbsp;View on Github</NavItem>
                         </Nav>
                     </Navbar.Collapse>

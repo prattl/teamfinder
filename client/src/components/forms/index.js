@@ -24,11 +24,11 @@ export const createInput = (label, type='text') => (field) => (
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
 )
-export const createTextArea = (label) => (field) => (
+export const createTextArea = (label, rows=5) => (field) => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
-        <FormControl {...field.input} componentClass='textarea' placeholder={field.placeholder} />
+        <FormControl {...field.input} componentClass='textarea' rows={rows} placeholder={field.placeholder} />
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
