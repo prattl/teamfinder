@@ -13,7 +13,9 @@ const actions = keyMirror({
     CONFIRM_APPLY_TO_TEAM: null,
     CANCEL_APPLY_TO_TEAM: null,
     REQUEST_SUBMIT_APPLICATION: null,
-    RECEIVE_SUBMIT_APPLICATION: null
+    RECEIVE_SUBMIT_APPLICATION: null,
+    REQUEST_NEW_PLAYER_ITEMS: null,
+    RECEIVE_NEW_PLAYER_ITEMS: null
 })
 export default actions
 
@@ -22,7 +24,8 @@ export const requestOwnPlayer = () => (dispatch, getState) => {
     return GET(createUrl('/api/players/me/'), getState().auth.authToken).then(
         response => response.json().then(json => {
             const payload = response.ok ? json : new Error('Error retrieving own player.')
-            return dispatch(createAction(actions.RECEIVE_OWN_PLAYER, null, metaGenerator)(payload))
+            dispatch(createAction(actions.RECEIVE_OWN_PLAYER, null, metaGenerator)(payload))
+            if (response.ok) dispatch(requestNewItems())
         })
     )
 }
@@ -67,6 +70,19 @@ export const submitApplication = data => (dispatch, getState) => {
                 dispatch(createAction(actions.RECEIVE_SUBMIT_APPLICATION, null, metaGenerator)(payload))
                 notify(response, 'Application submitted!')
                 return ({ response, json })
+            })
+        )
+    }
+}
+
+export const requestNewItems = () => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_NEW_PLAYER_ITEMS)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (id && authToken) {
+        return GET(createUrl('/api/players/me/new_items/'), authToken).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error retrieving new items.')
+                return dispatch(createAction(actions.RECEIVE_NEW_PLAYER_ITEMS)(payload))
             })
         )
     }

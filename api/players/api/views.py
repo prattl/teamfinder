@@ -1,5 +1,5 @@
 from common.api.permissions import IsStaffOrTargetPlayer
-from common.models import Region, Position
+from common.models import Region, Position, Application, Invitation, Status
 from players.models import Player
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import list_route
@@ -48,6 +48,14 @@ class PlayerViewSet(viewsets.ModelViewSet):
         player = request.user.player
         serializer = self.get_serializer(player)
         return Response(serializer.data)
+
+    @list_route(url_path='me/new_items', permission_classes=(permissions.IsAuthenticated, ), methods=('GET', ))
+    def new_items(self, request):
+        player = request.user.player
+        return Response({
+            'new_team_applications': Application.objects.filter(team__captain=player, status=Status.PENDING).count(),
+            'new_invitations': player.invitation_set.filter(status=Status.PENDING).count()
+        })
 
     # # TODO: This isn't really useful anymore after redesign
     # @detail_route(methods=('GET', ))

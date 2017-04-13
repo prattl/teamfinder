@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 
+// TODO: These all need to be namespaced
 export const authSelector = createSelector(
     state => state.auth,
     auth => (auth)

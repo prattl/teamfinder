@@ -7,6 +7,10 @@ const initialState = {
     player: {
         teams: []
     },
+    newItems: {
+        new_team_applications: 0,
+        new_invitations: 0
+    },
     changesSaved: false,
     isLoading: false,
     lastUpdated: null,
@@ -60,6 +64,12 @@ const player = handleActions({
         ...state, player: {
             ...state.player,
             teamApplyingTo: action.error ? state.player.teamApplyingTo : null
+        }
+    }),
+    [actions.RECEIVE_NEW_PLAYER_ITEMS]: (state, action) => ({
+        ...state,
+        newItems: {
+            ...state.newItems, ...action.payload
         }
     }),
     [authActions.RECEIVE_LOGOUT]: (state, action) => ({
