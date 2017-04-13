@@ -13,7 +13,7 @@ class FeedbackModal extends Component {
         const { feedbackFormOpen, onClose } = this.props
         return (
             <Modal show={feedbackFormOpen}>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton onHide={onClose}>
                     <Modal.Title>Submit Feedback</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
