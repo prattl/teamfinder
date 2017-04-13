@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { compose } from 'redux'
+
 import { Button, Col, Row } from 'react-bootstrap'
 
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -50,7 +52,9 @@ class ManageTeams extends Component {
 
 }
 
-ManageTeams = withOwnPlayer(ManageTeams)
-ManageTeams = requireAuthentication(ManageTeams)
+ManageTeams = compose(
+    withOwnPlayer,
+    requireAuthentication
+)(ManageTeams)
 
 export default ManageTeams

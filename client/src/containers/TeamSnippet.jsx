@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { compose } from 'redux'
 
-import { Label } from 'react-bootstrap'
+import { Button, Label } from 'react-bootstrap'
 import { Link } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap'
 import { FixtureDisplay, Loading, playerIsOnTeam } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
 
-import { playerSelector } from 'utils/selectors'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
+import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { withTeam } from 'components/connectors/WithTeam'
 
 class TeamSnippet extends Component {
 
     render() {
         const { fixtures: { regions, positions, skillBrackets } } = this.props
-        const { team: { team, isLoading, lastUpdated }, player } = this.props
+        const { team: { team, isLoading, lastUpdated }, player, newItems: { new_team_applications } } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
                 {isLoading ? <Loading /> : (
@@ -24,12 +25,34 @@ class TeamSnippet extends Component {
                                 <h4 className='pull-left'>
                                     <Link to={`/teams/${team.id}`}>{team.name}</Link>
                                     {playerIsOnTeam(player, team) && (
-                                        <small>&nbsp;(<Link to={`/teams/manage/${team.id}/`}>manage</Link>)</small>
+                                        <span>
+                                            &nbsp;
+                                            <LinkContainer to={`/teams/manage/${team.id}/`}>
+                                                <Button bsSize='sm'>
+                                                    <i className='fa fa-cog'/>&nbsp;Manage
+                                                </Button>
+                                            </LinkContainer>
+                                            {new_team_applications > 0 && (
+                                                <span>
+                                                    &nbsp;
+                                                    <Label bsStyle='info' bsSize='md'>
+                                                        <i className='fa fa-exclamation-circle' />&nbsp;
+                                                        {new_team_applications} new application{new_team_applications > 1 && 's'}
+                                                    </Label>
+                                                </span>
+                                            )}
+                                        </span>
                                     )}
                                 </h4>
                                 <span className='pull-right'>
-                                    <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
-                                    &nbsp;Recruiting
+                                    <div className='text-right'>
+
+                                        <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
+                                            &nbsp;Recruiting
+                                    </div>
+                                    <div>
+
+                                    </div>
                                 </span>
                                 <div style={{ clear: 'both' }}/>
                             </div>
@@ -76,9 +99,10 @@ class TeamSnippet extends Component {
 
 }
 
-TeamSnippet = connect(playerSelector, null)(TeamSnippet)
-
-TeamSnippet = withTeam(props => props.teamId)(TeamSnippet)
-TeamSnippet = withAllFixtures(TeamSnippet)
+TeamSnippet = compose(
+    withOwnPlayer,
+    withTeam(props => props.teamId),
+    withAllFixtures
+)(TeamSnippet)
 
 export default TeamSnippet
