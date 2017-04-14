@@ -1,7 +1,11 @@
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.db import models
 from django.utils import timezone
 import uuid
+
+from teamfinder.email import send_email
 
 
 class UUIDModel(models.Model):
@@ -169,8 +173,33 @@ class Application(JoinableAction):
         else:
             previous_status = previous_self.status
         super(Application, self).save(*args, **kwargs)
+
+        self.process_application_status_change(previous_status)
+
+    def process_application_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
-            TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
+            self.process_application_accepted()
+        elif self.status == Status.REJECTED and previous_status != Status.REJECTED:
+            self.process_application_rejected()
+
+    def process_application_accepted(self):
+        TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
+        email_body = """Hi {},
+        
+Good news -- your application to {} has been accepted! You can view your new team here: {}
+
+Thanks for using the Dota Team Finder!
+https://dotateamfinder.com""".format(
+            self.player.username, self.team.name, '{}://{}/teams/manage/{}'.format(
+                'http' if settings.DEBUG else 'https',
+                Site.objects.get_current().domain,
+                self.team.id
+            )
+        )
+        send_email('Your application has been accepted!', email_body, [self.player.user.email])
+
+    def process_application_rejected(self):
+        pass
 
 
 class InvitationStatusHistoryManager(models.Manager):

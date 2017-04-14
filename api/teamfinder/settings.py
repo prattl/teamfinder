@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 ]
 
@@ -149,7 +150,6 @@ REST_FRAMEWORK = {
 
 SHELL_PLUS = 'ipython'
 
-from .settings_local import *
 
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = (
@@ -163,3 +163,12 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:9000',
     'dotateamfinder.com',
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+SITE_ID = 1
+
+from .settings_local import *
