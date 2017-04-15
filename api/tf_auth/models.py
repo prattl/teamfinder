@@ -1,4 +1,5 @@
 from common.models import UUIDModel
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
@@ -21,6 +22,7 @@ class TFUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         Player.objects.create(user=user)
+        UserEmailPreferences.objects.create(user=user)
         return user
 
     def create_user(self, email=None, password=None, **extra_fields):
@@ -80,6 +82,52 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
     def get_short_name(self):
         return self.email
 
-    def email_user(self, subject, body):
-        # TODO: Check user's email preferences first. Also use a tagging system
-        send_email(subject, body, [self.email])
+    def email_user(self, subject, body, tag):
+        if self.should_send_email(tag):
+            send_email(subject, body, [self.email])
+
+    def should_send_email(self, tag):
+        return self.user_email_preferences.should_send_email(tag)
+
+
+class EmailTag:
+    ALL = 0
+    UPDATES = 1
+    PLAYER_NOTIFICATIONS = 2
+    TEAM_NOTIFICATIONS = 3
+    CHOICES = (
+        (ALL, 'All'),
+        (UPDATES, 'Updates and New Features'),
+        (PLAYER_NOTIFICATIONS, 'Player Notifications'),
+        (TEAM_NOTIFICATIONS, 'Team Notifications'),
+    )
+
+
+class EmailPreference(models.Model):
+    tag = models.IntegerField(choices=EmailTag.CHOICES)
+    receive = models.BooleanField(default=True)
+    user_email_preferences = models.ForeignKey('tf_auth.UserEmailPreferences', related_name='email_preferences')
+
+    class Meta:
+        unique_together = (
+            ('tag', 'user_email_preferences'),
+        )
+
+
+class UserEmailPreferences(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                related_name='user_email_preferences')
+
+    def save(self, *args, **kwargs):
+        new_instance = not self.pk
+        super(UserEmailPreferences, self).save(*args, **kwargs)
+        if new_instance:
+            self.create_default_preferences()
+
+    def create_default_preferences(self):
+        for (option, _) in EmailTag.CHOICES:
+            EmailPreference.objects.create(tag=option, user_email_preferences=self)
+
+    def should_send_email(self, tag):
+        should_send_any = not self.email_preferences.filter(tag=EmailTag.ALL, receive=False).exists()
+        return should_send_any and self.email_preferences.filter(tag=tag, receive=True).exists()

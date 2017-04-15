@@ -7,7 +7,7 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from teamfinder.email import send_email
+from tf_auth.models import EmailTag
 
 
 class UUIDModel(models.Model):
@@ -204,8 +204,9 @@ class Application(JoinableAction, EmailMixin):
                 self.team.id
             ))
         })
-        send_email('You have a new applicatin for {}'.format(self.team.name),
-                   email_body, [self.team.captain.user.email])
+        self.team.captain.user.email_user(
+            'You have a new application for {}'.format(self.team.name), email_body, EmailTag.TEAM_NOTIFICATIONS
+        )
 
     def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
@@ -225,7 +226,9 @@ class Application(JoinableAction, EmailMixin):
                 self.team.id
             ))
         })
-        send_email('Your application has been accepted!', email_body, [self.player.user.email])
+        self.player.user.email_user(
+            'Your application has been accepted!', email_body, EmailTag.PLAYER_NOTIFICATIONS
+        )
 
     def process_application_rejected(self):
         self.send_application_rejected_email()
@@ -236,7 +239,9 @@ class Application(JoinableAction, EmailMixin):
             'team': self.team.name,
             'team_search_link': self.create_url('teams')
         })
-        send_email('☹ Your application was not accepted', email_body, [self.player.user.email])
+        self.player.user.email_user(
+            '☹ Your application was not accepted', email_body, EmailTag.PLAYER_NOTIFICATIONS
+        )
 
 
 class InvitationStatusHistoryManager(models.Manager):
@@ -290,8 +295,9 @@ class Invitation(JoinableAction, EmailMixin):
             'team': self.team.name,
             'teams_link': self.create_url('teams/manage')
         })
-        send_email('You have been invited to join {}!'.format(self.team.name),
-                   email_body, [self.player.user.email])
+        self.player.user.email_user(
+            'You have been invited to join {}!'.format(self.team.name), email_body, EmailTag.PLAYER_NOTIFICATIONS
+        )
 
     def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
@@ -311,7 +317,9 @@ class Invitation(JoinableAction, EmailMixin):
             'invite_date': self.created.strftime('%-d %B %Y'),
             'team_link': self.create_url('teams/manage/{}'.format(self.team.id))
         })
-        send_email('Your invitation has been accepted!', email_body, [self.team.captain.user.email])
+        self.team.captain.user.email_user(
+            'Your invitation has been accepted!', email_body, EmailTag.TEAM_NOTIFICATIONS
+        )
 
     def process_invitation_rejected(self):
         self.send_invitation_rejected_email()
@@ -324,7 +332,9 @@ class Invitation(JoinableAction, EmailMixin):
             'invite_date': self.created.strftime('%-d %B %Y'),
             'player_search_link': self.create_url('players')
         })
-        send_email('Your invitation was not accepted', email_body, [self.team.captain.user.email])
+        self.team.captain.user.email_user(
+            'Your invitation was not accepted', email_body, EmailTag.TEAM_NOTIFICATIONS
+        )
 
 
 class TeamMemberHistoryManager(models.Manager):
