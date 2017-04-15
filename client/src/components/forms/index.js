@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
+import { Checkbox, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
 import Select from 'react-select'
 
 import { withAllFixtures, withPositions } from 'components/connectors/WithFixtures'
@@ -53,6 +53,14 @@ export const createSelectInput = (label, SelectComponent, multi) => field => (
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>
+)
+
+export const createCheckboxInput = (label) => (field) => (
+    <Checkbox validationState={field.meta.touched && field.meta.error ? 'error' : null} {...field}>
+        {label}
+        {field.meta.touched && field.meta.error &&
+        <HelpBlock>{field.meta.error}</HelpBlock>}
+    </Checkbox>
 )
 
 let SinglePositionSelect = ({ positions, input, meta, children, ...rest }) => (

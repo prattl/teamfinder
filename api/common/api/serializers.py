@@ -1,5 +1,6 @@
 from common.models import (
     Application,
+    EmailTag,
     Invitation,
     Position,
     Region,
@@ -11,6 +12,7 @@ from django.contrib.auth import get_user_model
 from players.models import Player
 from rest_framework import serializers
 from teams.models import Team
+from tf_auth.models import EmailPreference, UserEmailPreferences
 
 User = get_user_model()
 
@@ -367,3 +369,91 @@ class EditMembershipAsCaptainSerializer(MembershipSerializer):
             'player',
             'url',
         )
+
+
+class EmailPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailPreference
+        fields = (
+            'id',
+            'created',
+            'updated',
+            'tag',
+            'receive',
+        )
+        readonly_fields = (
+            # 'id',
+            'created',
+            'updated',
+            'tag',
+        )
+        extra_kwargs = {
+            "id": {
+                "read_only": False
+            }
+        }
+
+
+class UserEmailPreferencesSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='useremailpreferences-detail')
+    email_preferences = EmailPreferenceSerializer(many=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        queryset = queryset.select_related(
+            'user',
+        ).prefetch_related(
+            'email_preferences',
+        )
+        return queryset
+
+    def update(self, instance, validated_data):
+        email_preferences = validated_data.pop('email_preferences')
+
+        for preference in email_preferences:
+            preference_id = preference.get('id')
+            preference_receive = preference.get('receive')
+            if None in (preference_id, preference_receive):
+                raise serializers.ValidationError('Receive email preference without ID or new value.')
+
+            try:
+                preference_instance = instance.email_preferences.get(pk=preference_id)
+            except EmailPreference.DoesNotExist:
+                raise serializers.ValidationError('Received invalid email preference ID.')
+            else:
+                if preference_receive != preference_instance.receive:
+                    preference_instance.receive = preference_receive
+                    preference_instance.save()
+
+        # import ipdb; ipdb.set_trace()
+        return UserEmailPreferences.objects.get(pk=instance.pk)
+
+    class Meta:
+        model = UserEmailPreferences
+        fields = (
+            'id',
+            'created',
+            'updated',
+            'url',
+            'user',
+            'email_preferences',
+        )
+        readonly_fields = (
+            'id',
+            'created',
+            'updated',
+            'url',
+            'user',
+        )
+
+"""
+{
+    "id": "d91488ec-14e0-422b-9917-2c516453705b",
+    "email_preferences": [
+        {
+            "id": "7d089256-9942-4ae0-930c-587aaf35bb22",
+            "receive": false
+        }
+    ]
+}
+"""

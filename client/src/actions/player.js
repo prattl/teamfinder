@@ -15,9 +15,54 @@ const actions = keyMirror({
     REQUEST_SUBMIT_APPLICATION: null,
     RECEIVE_SUBMIT_APPLICATION: null,
     REQUEST_NEW_PLAYER_ITEMS: null,
-    RECEIVE_NEW_PLAYER_ITEMS: null
+    RECEIVE_NEW_PLAYER_ITEMS: null,
+    REQUEST_EMAIL_PREFERENCES: null,
+    RECEIVE_EMAIL_PREFERENCES: null,
+    REQUEST_SUBMIT_EMAIL_PREFERENCES: null,
+    RECEIVE_SUBMIT_EMAIL_PREFERENCES: null
 })
 export default actions
+
+export const requestNewItems = () => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_NEW_PLAYER_ITEMS)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (id && authToken) {
+        return GET(createUrl('/api/players/me/new_items/'), authToken).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error retrieving new items.')
+                return dispatch(createAction(actions.RECEIVE_NEW_PLAYER_ITEMS)(payload))
+            })
+        )
+    }
+}
+
+export const requestEmailPreferences = () => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_EMAIL_PREFERENCES)())
+    const { auth: { authToken }, player: { player: { id } } } = getState()
+    if (id && authToken) {
+        return GET(createUrl('/api/user_email_preferences/self/'), authToken).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error retrieving email preferences.')
+                return dispatch(createAction(actions.RECEIVE_EMAIL_PREFERENCES)(payload))
+            })
+        )
+    }
+}
+
+export const submitEmailPreferences = data => (dispatch, getState) => {
+    dispatch(createAction(actions.REQUEST_SUBMIT_EMAIL_PREFERENCES)())
+    const { auth: { authToken }, player: { userEmailPreferences: { id } } } = getState()
+    if (id && authToken) {
+        return PATCH(createUrl(`/api/user_email_preferences/${id}/`), authToken, data).then(
+            response => response.json().then(json => {
+                const payload = response.ok ? json : new Error('Error submitting email preferences.')
+                dispatch(createAction(actions.RECEIVE_SUBMIT_EMAIL_PREFERENCES, null, metaGenerator)(payload))
+                notify(response)
+                return ({ response, json })
+            })
+        )
+    }
+}
 
 export const requestOwnPlayer = () => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_OWN_PLAYER)())
@@ -25,7 +70,10 @@ export const requestOwnPlayer = () => (dispatch, getState) => {
         response => response.json().then(json => {
             const payload = response.ok ? json : new Error('Error retrieving own player.')
             dispatch(createAction(actions.RECEIVE_OWN_PLAYER, null, metaGenerator)(payload))
-            if (response.ok) dispatch(requestNewItems())
+            if (response.ok) {
+                dispatch(requestNewItems())
+                dispatch(requestEmailPreferences())
+            }
         })
     )
 }
@@ -70,19 +118,6 @@ export const submitApplication = data => (dispatch, getState) => {
                 dispatch(createAction(actions.RECEIVE_SUBMIT_APPLICATION, null, metaGenerator)(payload))
                 notify(response, 'Application submitted!')
                 return ({ response, json })
-            })
-        )
-    }
-}
-
-export const requestNewItems = () => (dispatch, getState) => {
-    dispatch(createAction(actions.REQUEST_NEW_PLAYER_ITEMS)())
-    const { auth: { authToken }, player: { player: { id } } } = getState()
-    if (id && authToken) {
-        return GET(createUrl('/api/players/me/new_items/'), authToken).then(
-            response => response.json().then(json => {
-                const payload = response.ok ? json : new Error('Error retrieving new items.')
-                return dispatch(createAction(actions.RECEIVE_NEW_PLAYER_ITEMS)(payload))
             })
         )
     }

@@ -5,7 +5,7 @@ import { authSelector } from 'utils/selectors'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { requestAuthStatusIfNeeded } from 'actions/auth'
 
-import { Badge, Nav, Navbar, NavItem } from 'react-bootstrap'
+import { Badge, MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { IndexLinkContainer } from 'react-router-bootstrap'
 
@@ -17,7 +17,7 @@ const baseMenuLinks = [
 const loggedInMenuLinks = [
     { route: '/profile', label: 'Edit Profile' },
     { route: '/teams/manage', label: 'My Teams', showItems: true },
-    { route: '/logout', label: 'Log Out' }
+    // { route: '/logout', label: 'Log Out' }
 ]
 
 const loggedOutMenuLinks = [
@@ -56,6 +56,19 @@ class TopNav extends Component {
                                 </NavItem>
                             </IndexLinkContainer>
                         ))}
+                        {loggedIn && (
+                            <NavDropdown eventKey={menuLinks.length + 1}
+                                         title={<i className='fa fa-cog'/>}
+                                         id='settings-dropdown'>
+                                <IndexLinkContainer to='/settings'>
+                                    <MenuItem eventKey={menuLinks.length + 1.1}>Settings</MenuItem>
+                                </IndexLinkContainer>
+                                <MenuItem divider />
+                                <IndexLinkContainer to='/logout'>
+                                    <MenuItem eventKey={menuLinks.length + 1.2}>Log Out</MenuItem>
+                                </IndexLinkContainer>
+                            </NavDropdown>
+                        )}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

@@ -35,6 +35,7 @@ router.register(r'positions', common_views.PositionViewSet)
 router.register(r'skill_brackets', common_views.SkillBracketViewSet)
 router.register(r'teams', team_views.TeamViewSet)
 router.register(r'memberships', common_views.MembershipViewSet)
+router.register(r'user_email_preferences', common_views.UserEmailPreferencesViewSet)
 # router.register(r'current-user', common_views.CurrentUserView)
 
 

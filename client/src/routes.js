@@ -4,6 +4,7 @@ import { IndexRoute, Route } from 'react-router'
 import Base from 'containers/Base'
 import CreateTeam from 'containers/teams/CreateTeam'
 import EditProfile from 'containers/EditProfile'
+import EditSettings from 'containers/EditSettings'
 import EditTeam from 'containers/teams/EditTeam'
 import Index from 'components/Index'
 import LogIn from 'components/auth/LogIn'
@@ -24,6 +25,7 @@ export default (
         <Route path='login-required' component={props => <LogIn alertRequired={true} {...props} />}/>
         <Route path='signup' component={SignUp}/>
         <Route path='logout' component={LogOut}/>
+        <Route path='settings' component={EditSettings}/>
         <Route path='profile' component={EditProfile}/>
         <Route path='players' component={PlayerSearch} />
         <Route path='players/:id' component={PlayerProfile} />

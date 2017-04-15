@@ -8,14 +8,16 @@ from common.models import (
 )
 from django.contrib.auth import get_user_model
 from players.models import Player
-from rest_framework import mixins, status, viewsets
-# from rest_framework import generics, mixins, views
+from rest_framework import mixins, permissions, status, viewsets
+from rest_framework.decorators import list_route
 
 from rest_framework.response import Response
 from teams.models import Team
+from tf_auth.models import EmailPreference, UserEmailPreferences
 from .permissions import (
     JoinableActionPermissions,
     MembershipPermissions,
+    UserEmailPreferencesPermissions,
 )
 from .serializers import (
     ApplicationSerializer,
@@ -29,6 +31,7 @@ from .serializers import (
     RegionSerializer,
     SkillBracketSerializer,
     MembershipSerializer,
+    UserEmailPreferencesSerializer,
 )
 
 User = get_user_model()
@@ -153,3 +156,25 @@ class MembershipViewSet(mixins.RetrieveModelMixin,
 
     def perform_destroy(self, instance):
         instance.delete(player_id=self.request.user.player.id)
+
+
+class UserEmailPreferencesViewSet(mixins.RetrieveModelMixin,
+                                  mixins.UpdateModelMixin,
+                                  mixins.ListModelMixin,
+                                  viewsets.GenericViewSet):
+    queryset = UserEmailPreferences.objects.all()
+    serializer_class = UserEmailPreferencesSerializer
+    # permission_classes = (UserEmailPreferencesPermissions, permissions.IsAuthenticated)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = self.get_serializer_class().setup_eager_loading(queryset)
+        if self.request.user.is_authenticated and not self.request.user.is_staff:
+            queryset = queryset.filter(user=self.request.user)
+        return queryset
+
+    @list_route(url_path='self', methods=('GET',))
+    def self(self, request):
+        user = request.user
+        serializer = self.get_serializer(user.user_email_preferences)
+        return Response(serializer.data)

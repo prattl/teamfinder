@@ -66,3 +66,8 @@ class JoinableActionPermissions(permissions.IsAuthenticated):
         # Only the applicant/invitee, team captain, or staff users can access
         current_player = request.user.player
         return current_player == obj.player or current_player.id == obj.team.captain_id or request.user.is_staff
+
+
+class UserEmailPreferencesPermissions(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user or request.user.is_staff

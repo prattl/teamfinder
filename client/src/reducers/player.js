@@ -11,6 +11,10 @@ const initialState = {
         new_team_applications: 0,
         new_invitations: 0
     },
+    userEmailPreferences: {
+        email_preferences: []
+    },
+    receivedEmailPreferences: false,
     changesSaved: false,
     isLoading: false,
     lastUpdated: null,
@@ -71,6 +75,14 @@ const player = handleActions({
         newItems: {
             ...state.newItems, ...action.payload
         }
+    }),
+    [actions.RECEIVE_EMAIL_PREFERENCES]: (state, action) => ({
+        ...state,
+        userEmailPreferences: {
+            ...state.userEmailPreferences,
+            ...action.payload
+        },
+        receivedEmailPreferences: true
     }),
     [authActions.RECEIVE_LOGOUT]: (state, action) => ({
         ...initialState

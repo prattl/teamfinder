@@ -17,7 +17,7 @@ export const closeFeedbackForm = createAction(actions.CLOSE_FEEDBACK_FORM)
 
 export const submitFeedbackForm = data => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_SUBMIT_FEEDBACK_FORM)())
-    const { form, ...state } = getState()
+    const { form: _, ...state } = getState()
     data.redux_state = state
     return POST(createUrl('/api/feedback/'), getState().auth.authToken, data).then(
         response => response.json().then(json => {
