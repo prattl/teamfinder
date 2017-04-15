@@ -1,4 +1,4 @@
-from common.models import UUIDModel
+from common.models import EmailTag, UUIDModel
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
@@ -88,19 +88,6 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     def should_send_email(self, tag):
         return self.user_email_preferences.should_send_email(tag)
-
-
-class EmailTag:
-    ALL = 0
-    UPDATES = 1
-    PLAYER_NOTIFICATIONS = 2
-    TEAM_NOTIFICATIONS = 3
-    CHOICES = (
-        (ALL, 'All'),
-        (UPDATES, 'Updates and New Features'),
-        (PLAYER_NOTIFICATIONS, 'Player Notifications'),
-        (TEAM_NOTIFICATIONS, 'Team Notifications'),
-    )
 
 
 class EmailPreference(models.Model):

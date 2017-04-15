@@ -7,8 +7,6 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.utils import timezone
 
-from tf_auth.models import EmailTag
-
 
 class UUIDModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -116,6 +114,19 @@ class Status:
         (REJECTED, 'Rejected'),
         (EXPIRED, 'Expired'),
         (WITHDRAWN, 'Withdrawn'),
+    )
+
+
+class EmailTag:
+    ALL = 0
+    UPDATES = 1
+    PLAYER_NOTIFICATIONS = 2
+    TEAM_NOTIFICATIONS = 3
+    CHOICES = (
+        (ALL, 'All'),
+        (UPDATES, 'Updates and New Features'),
+        (PLAYER_NOTIFICATIONS, 'Player Notifications'),
+        (TEAM_NOTIFICATIONS, 'Team Notifications'),
     )
 
 
