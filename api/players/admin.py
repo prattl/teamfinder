@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from tf_auth.admin import EmailPreferenceAdminInline
 from . import models
 
 

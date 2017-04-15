@@ -1,4 +1,4 @@
-from common.models import EmailTag, UUIDModel
+from common.models import AbstractBaseModel, EmailTag, UUIDModel
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
@@ -90,7 +90,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
         return self.user_email_preferences.should_send_email(tag)
 
 
-class EmailPreference(models.Model):
+class EmailPreference(AbstractBaseModel):
     tag = models.IntegerField(choices=EmailTag.CHOICES)
     receive = models.BooleanField(default=True)
     user_email_preferences = models.ForeignKey('tf_auth.UserEmailPreferences', related_name='email_preferences')
@@ -101,7 +101,7 @@ class EmailPreference(models.Model):
         )
 
 
-class UserEmailPreferences(models.Model):
+class UserEmailPreferences(AbstractBaseModel):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                 related_name='user_email_preferences')
 

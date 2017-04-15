@@ -5,21 +5,42 @@ from __future__ import unicode_literals
 from django.db import migrations
 
 
+class EmailTag:
+    ALL = 0
+    UPDATES = 1
+    PLAYER_NOTIFICATIONS = 2
+    TEAM_NOTIFICATIONS = 3
+    CHOICES = (
+        (ALL, 'All'),
+        (UPDATES, 'Updates and New Features'),
+        (PLAYER_NOTIFICATIONS, 'Player Notifications'),
+        (TEAM_NOTIFICATIONS, 'Team Notifications'),
+    )
+
+
 def forwards(apps, schema_editor):
     TFUser = apps.get_model('tf_auth.TFUser')
     UserEmailPreferences = apps.get_model('tf_auth.UserEmailPreferences')
+    EmailPreference = apps.get_model('tf_auth.EmailPreference')
+
+    def create_default_preferences(self):
+        for (option, _) in EmailTag.CHOICES:
+            EmailPreference.objects.create(tag=option, user_email_preferences=self)
+
+    UserEmailPreferences.create_default_preferences = create_default_preferences
 
     for user in TFUser.objects.all():
         try:
             user.user_email_preferences
         except UserEmailPreferences.DoesNotExist:
-            UserEmailPreferences.objects.create(user=user)
+            preferences = UserEmailPreferences.objects.create(user=user)
+            preferences.create_default_preferences()
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tf_auth', '0002_auto_20170415_1710'),
+        ('tf_auth', '0002_auto_20170415_1821'),
     ]
 
     operations = [

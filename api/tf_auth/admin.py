@@ -1,11 +1,10 @@
-
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from tf_auth.models import TFUser
+from tf_auth.models import TFUser, EmailPreference, UserEmailPreferences
 
 
 class TFUserCreationForm(forms.ModelForm):
@@ -84,8 +83,25 @@ class TFUserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
+
+class EmailPreferenceAdminInline(admin.TabularInline):
+    model = EmailPreference
+    extra = 0
+
+
+class UserEmailPreferencesAdmin(admin.ModelAdmin):
+    model = UserEmailPreferences
+    list_display = (
+        'user',
+    )
+    readonly_fields = ('user', )
+    inlines = (EmailPreferenceAdminInline,)
+
+
 # Now register the new UserAdmin...
 admin.site.register(TFUser, TFUserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)
+admin.site.register(UserEmailPreferences, UserEmailPreferencesAdmin)
+
