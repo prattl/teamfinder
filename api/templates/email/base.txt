@@ -1,0 +1,4 @@
+{% block content %}{% endblock %}
+
+Thanks for using the Dota Team Finder!
+https://dotateamfinder.com

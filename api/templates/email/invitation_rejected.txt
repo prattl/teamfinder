@@ -1,0 +1,9 @@
+{% extends "email/base.txt" %}
+
+{% block content %}
+Hi {{ username }},
+
+We just wanted to let you know that your invitation for {{ player }} to join {{ team }} was not accepted. You invited
+{{ player }} on {{ invite_date }}. There are plenty of other players looking for teams just like yours though!
+Try searching for other players to invite: {{ player_search_link }}
+{% endblock %}

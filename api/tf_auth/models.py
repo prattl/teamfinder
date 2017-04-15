@@ -1,10 +1,10 @@
 from common.models import UUIDModel
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from players.models import Player
+from teamfinder.email import send_email
 
 
 class TFUserManager(BaseUserManager):
@@ -80,8 +80,6 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
     def get_short_name(self):
         return self.email
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """
-        Sends an email to this User.
-        """
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+    def email_user(self, subject, body):
+        # TODO: Check user's email preferences first. Also use a tagging system
+        send_email(subject, body, [self.email])

@@ -1,9 +1,11 @@
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import models
+from django.template.loader import render_to_string
 from django.utils import timezone
-import uuid
 
 from teamfinder.email import send_email
 
@@ -37,6 +39,16 @@ class UpdateableModel(models.Model):
 class AbstractBaseModel(CreatableModel, UpdateableModel, UUIDModel):
     class Meta:
         abstract = True
+
+
+class EmailMixin:
+    @staticmethod
+    def create_url(url):
+        return '{}://{}/{}'.format(
+            'http' if settings.DEBUG else 'https',
+            Site.objects.get_current().domain,
+            url
+        )
 
 
 class SkillBracket(UUIDModel):
@@ -156,7 +168,7 @@ class ApplicationStatusHistory(JoinableStatusHistory):
     objects = ApplicationStatusHistoryManager()
 
 
-class Application(JoinableAction):
+class Application(JoinableAction, EmailMixin):
     status_history_class = ApplicationStatusHistory
 
     def _get_previous_status_history(self):
@@ -174,9 +186,9 @@ class Application(JoinableAction):
             previous_status = previous_self.status
         super(Application, self).save(*args, **kwargs)
 
-        self.process_application_status_change(previous_status)
+        self.process_status_change(previous_status)
 
-    def process_application_status_change(self, previous_status):
+    def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
             self.process_application_accepted()
         elif self.status == Status.REJECTED and previous_status != Status.REJECTED:
@@ -184,22 +196,28 @@ class Application(JoinableAction):
 
     def process_application_accepted(self):
         TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
-        email_body = """Hi {},
-        
-Good news -- your application to {} has been accepted! You can view your new team here: {}
+        self.send_application_accepted_email()
 
-Thanks for using the Dota Team Finder!
-https://dotateamfinder.com""".format(
-            self.player.username, self.team.name, '{}://{}/teams/manage/{}'.format(
-                'http' if settings.DEBUG else 'https',
-                Site.objects.get_current().domain,
+    def send_application_accepted_email(self):
+        email_body = render_to_string('email/application_accepted.txt', {
+            'username': self.player.username,
+            'team': self.team.name,
+            'team_link': self.create_url('teams/manage/{}'.format(
                 self.team.id
-            )
-        )
+            ))
+        })
         send_email('Your application has been accepted!', email_body, [self.player.user.email])
 
     def process_application_rejected(self):
-        pass
+        self.send_application_rejected_email()
+
+    def send_application_rejected_email(self):
+        email_body = render_to_string('email/application_rejected.txt', {
+            'username': self.player.username,
+            'team': self.team.name,
+            'team_search_link': self.create_url('teams')
+        })
+        send_email('☹ Your application was not accepted', email_body, [self.player.user.email])
 
 
 class InvitationStatusHistoryManager(models.Manager):
@@ -218,7 +236,7 @@ class InvitationStatusHistory(JoinableStatusHistory):
     objects = InvitationStatusHistoryManager()
 
 
-class Invitation(JoinableAction):
+class Invitation(JoinableAction, EmailMixin):
     created_by = models.ForeignKey('players.Player', on_delete=models.CASCADE,
                                    related_name='invitations_created')
 
@@ -235,9 +253,43 @@ class Invitation(JoinableAction):
             previous_status = None
         else:
             previous_status = previous_self.status
+
         super(Invitation, self).save(*args, **kwargs)
+
+        self.process_status_change(previous_status)
+
+    def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
-            TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
+            self.process_invitation_accepted()
+        elif self.status == Status.REJECTED and previous_status != Status.REJECTED:
+            self.process_invitation_rejected()
+
+    def process_invitation_accepted(self):
+        TeamMember.objects.create(player=self.player, team=self.team, position=self.position)
+        self.send_invitation_accepted_email()
+
+    def send_invitation_accepted_email(self):
+        email_body = render_to_string('email/invitation_accepted.txt', {
+            'username': self.team.captain.username,
+            'player': self.player.username,
+            'team': self.team.name,
+            'invite_date': self.created.strftime('%-d %B %Y'),
+            'team_link': self.create_url('teams/manage/{}'.format(self.team.id))
+        })
+        send_email('Your invitation has been accepted!', email_body, [self.team.captain.user.email])
+
+    def process_invitation_rejected(self):
+        self.send_invitation_rejected_email()
+
+    def send_invitation_rejected_email(self):
+        email_body = render_to_string('email/invitation_rejected.txt', {
+            'username': self.team.captain.username,
+            'player': self.player.username,
+            'team': self.team.name,
+            'invite_date': self.created.strftime('%-d %B %Y'),
+            'player_search_link': self.create_url('players')
+        })
+        send_email('Your invitation was not accepted', email_body, [self.team.captain.user.email])
 
 
 class TeamMemberHistoryManager(models.Manager):

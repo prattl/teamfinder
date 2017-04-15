@@ -1,0 +1,7 @@
+{% extends "email/base.txt" %}
+
+{% block content %}
+Hi {{ username }},
+
+Good news -- your application to {{ team }} has been accepted! You can view your new team here: {{ team_link }}
+{% endblock %}
