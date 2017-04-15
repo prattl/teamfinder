@@ -1,0 +1,8 @@
+{% extends "email/base.txt" %}
+
+{% block content %}
+Hi {{ username }},
+
+Good news -- you have been invited by {{ captain }} to join {{ team }}! You can view your invitations
+here: {{ teams_link }}
+{% endblock %}

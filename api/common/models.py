@@ -181,12 +181,31 @@ class Application(JoinableAction, EmailMixin):
         try:
             previous_self = Application.objects.get(pk=self.pk)
         except Application.DoesNotExist:
+            previous_self = None
             previous_status = None
         else:
             previous_status = previous_self.status
+
+        new_instance = not previous_self
+
         super(Application, self).save(*args, **kwargs)
 
         self.process_status_change(previous_status)
+
+        if new_instance:
+            self.send_application_created_email()
+
+    def send_application_created_email(self):
+        email_body = render_to_string('email/application_created.txt', {
+            'username': self.team.captain.username,
+            'player': self.player.username,
+            'team': self.team.name,
+            'team_link': self.create_url('teams/manage/{}'.format(
+                self.team.id
+            ))
+        })
+        send_email('You have a new applicatin for {}'.format(self.team.name),
+                   email_body, [self.team.captain.user.email])
 
     def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:
@@ -250,13 +269,29 @@ class Invitation(JoinableAction, EmailMixin):
         try:
             previous_self = Invitation.objects.get(pk=self.pk)
         except Invitation.DoesNotExist:
+            previous_self = None
             previous_status = None
         else:
             previous_status = previous_self.status
 
+        new_instance = not previous_self
+
         super(Invitation, self).save(*args, **kwargs)
 
         self.process_status_change(previous_status)
+
+        if new_instance:
+            self.send_invitation_created_email()
+
+    def send_invitation_created_email(self):
+        email_body = render_to_string('email/invitation_created.txt', {
+            'username': self.player.username,
+            'captain': self.team.captain.username,
+            'team': self.team.name,
+            'teams_link': self.create_url('teams/manage')
+        })
+        send_email('You have been invited to join {}!'.format(self.team.name),
+                   email_body, [self.player.user.email])
 
     def process_status_change(self, previous_status):
         if self.status == Status.ACCEPTED and previous_status != Status.ACCEPTED:

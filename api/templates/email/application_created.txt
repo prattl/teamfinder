@@ -1,0 +1,8 @@
+{% extends "email/base.txt" %}
+
+{% block content %}
+Hi {{ username }},
+
+Good news -- you have a new application for {{ player}} to join {{ team }}! You can view your team's applications
+here: {{ team_link }}
+{% endblock %}
