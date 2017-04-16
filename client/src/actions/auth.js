@@ -32,6 +32,13 @@ export const requestAuthStatus = () => (dispatch, getState) => {
     )
 }
 
+export const setAuthTokenFromSteamSignIn = token => (dispatch, getState) => {
+    localStorage.setItem('authtoken', token)
+    dispatch(createAction(actions.RECEIVE_LOGIN, null, metaGenerator)({ auth_token: token }))
+    dispatch(requestAuthStatus())
+    browserHistory.push('/profile')
+}
+
 export const requestAuthStatusIfNeeded = () => (dispatch, getState) => {
     const { isLoading, lastUpdated } = getState().auth
     if (!isLoading && !lastUpdated) {

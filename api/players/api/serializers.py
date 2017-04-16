@@ -38,6 +38,7 @@ class PlayerTeamSerializer(serializers.ModelSerializer):
 
 class BasePlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
+    username = serializers.CharField(source='user.username')
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -45,6 +46,8 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'positions',
             'regions',
             'teams',
+        ).select_related(
+            'user'
         )
         return queryset
 
@@ -64,6 +67,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'user',
+            'username',
         )
 
 

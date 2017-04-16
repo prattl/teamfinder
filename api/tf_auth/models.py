@@ -11,26 +11,27 @@ from teamfinder.email import send_email
 class TFUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, steamid, username, email, password, **extra_fields):
         """
         Creates and saves a User with the given username, email and password.
         """
-        if not email:
-            raise ValueError('The given email must be set')
+        if not username:
+            raise ValueError('The given username must be set')
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        # username = self.model.normalize_username(username)
+        user = self.model(steamid=steamid, username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         Player.objects.create(user=user)
         UserEmailPreferences.objects.create(user=user)
         return user
 
-    def create_user(self, email=None, password=None, **extra_fields):
+    def create_user(self, steamid, username, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(steamid, username, email, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, steamid, username, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -39,7 +40,7 @@ class TFUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(steamid, username, email, password, **extra_fields)
 
 
 class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
@@ -49,8 +50,9 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     Email and password are required. Other fields are optional.
     """
-    email = models.EmailField(_('email address'), unique=True,
-                              error_messages={'unique': _('User with this %(field_label)s already exists.'), })
+    steamid = models.CharField('Steam ID', max_length=64, unique=True, null=True)
+    username = models.CharField('username', max_length=150, null=True)
+    email = models.EmailField(_('email address'), null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     is_staff = models.BooleanField(
@@ -70,11 +72,16 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     objects = TFUserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'steamid'
+    REQUIRED_FIELDS = ['username', 'email']
 
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def clean(self):
+        pass
+        # setattr(self, self.USERNAME_FIELD, self.normalize_username(self.get_username()))
 
     def get_full_name(self):
         return self.email
@@ -88,6 +95,9 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     def should_send_email(self, tag):
         return self.user_email_preferences.should_send_email(tag)
+
+    def __str__(self):
+        return str(self.username)
 
 
 class EmailPreference(AbstractBaseModel):

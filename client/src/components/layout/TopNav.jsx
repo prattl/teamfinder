@@ -28,6 +28,7 @@ const loggedOutMenuLinks = [
 class TopNav extends Component {
 
     componentDidMount() {
+        console.log('TopNav mount')
         this.props.onLoad()
     }
 
@@ -56,7 +57,7 @@ class TopNav extends Component {
                                 </NavItem>
                             </IndexLinkContainer>
                         ))}
-                        {loggedIn && (
+                        {loggedIn ? (
                             <NavDropdown eventKey={menuLinks.length + 1}
                                          title={<i className='fa fa-cog'/>}
                                          id='settings-dropdown'>
@@ -68,6 +69,10 @@ class TopNav extends Component {
                                     <MenuItem eventKey={menuLinks.length + 1.2}>Log Out</MenuItem>
                                 </IndexLinkContainer>
                             </NavDropdown>
+                        ) : (
+                            <NavItem href='http://localhost:8000/login/steam/?next=/social-redirect'>
+                                Sign in with Steam
+                            </NavItem>
                         )}
                     </Nav>
                 </Navbar.Collapse>

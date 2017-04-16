@@ -23,6 +23,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
+    'localhost:3000',
+    'localhost:8000',
     'dotateamfinder.com',
 ]
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
+    'social_django',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.contenttypes',
@@ -57,6 +60,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'teamfinder.social_backends.steam.SteamOpenId',
+    # 'social_core.backends.steam.SteamOpenId',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 ROOT_URLCONF = 'teamfinder.urls'

@@ -6,11 +6,17 @@ from . import models
 
 class PlayerAdmin(admin.ModelAdmin):
     model = models.Player
-    fields = ('id', 'created', 'updated', 'username', 'user', 'skill_bracket', 'regions', 'positions', )
-    readonly_fields = ('id', 'created', 'updated', )
-    list_display = ('get_user_email', 'username', 'skill_bracket', 'get_date_joined', 'created', 'updated', )
+    fields = ('id', 'created', 'updated', 'get_username', 'user', 'skill_bracket', 'regions', 'positions', )
+    readonly_fields = ('id', 'created', 'updated', 'get_username', )
+    list_display = ('get_user_email', 'get_username', 'skill_bracket', 'get_date_joined', 'created', 'updated', )
     list_filter = ('user__date_joined', 'skill_bracket', 'regions', 'positions', 'created', 'updated', )
+    search_fields = ('user__username', )
     raw_id_fields = ('user', )
+
+    def get_username(self, obj):
+        return obj.user.username
+    get_username.short_description = 'Username'
+    get_username.admin_order_field = 'user__username'
 
     def get_user_email(self, obj):
         return obj.user.email

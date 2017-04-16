@@ -23,7 +23,7 @@ from common.api import views as common_views
 from feedback.api import views as feedback_views
 from players.api import views as player_views
 from teams.api import views as team_views
-from common.views import deploy
+from common.views import deploy, social_redirect
 
 router = routers.DefaultRouter()
 router.register(r'applications', common_views.ApplicationViewSet)
@@ -45,6 +45,8 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^deploy/', deploy),
+    url(r'^social-redirect/', social_redirect),
+    url('', include('social_django.urls', namespace='social'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
