@@ -24,3 +24,5 @@ traitlets==4.2.2
 wcwidth==0.1.7
 Werkzeug==0.11.10
 psycopg2==2.7.1
+social-auth-app-django==1.1.0
+social-auth-core==1.2.0
