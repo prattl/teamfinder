@@ -382,7 +382,6 @@ class EmailPreferenceSerializer(serializers.ModelSerializer):
             'receive',
         )
         readonly_fields = (
-            # 'id',
             'created',
             'updated',
             'tag',
@@ -425,7 +424,6 @@ class UserEmailPreferencesSerializer(serializers.ModelSerializer):
                     preference_instance.receive = preference_receive
                     preference_instance.save()
 
-        # import ipdb; ipdb.set_trace()
         return UserEmailPreferences.objects.get(pk=instance.pk)
 
     class Meta:
@@ -445,15 +443,3 @@ class UserEmailPreferencesSerializer(serializers.ModelSerializer):
             'url',
             'user',
         )
-
-"""
-{
-    "id": "d91488ec-14e0-422b-9917-2c516453705b",
-    "email_preferences": [
-        {
-            "id": "7d089256-9942-4ae0-930c-587aaf35bb22",
-            "receive": false
-        }
-    ]
-}
-"""

@@ -15,11 +15,12 @@ export const createGenericInput = (Component, label) => field => (
     </FormGroup>
 )
 
-export const createInput = (label, type='text') => (field) => (
+export const createInput = ({ label='', type='text', disabled=false, helpText=null } = {}) => (field) => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
-        <FormControl {...field.input} type={type} placeholder={field.placeholder} />
+        <FormControl {...field.input} type={type} placeholder={field.placeholder} disabled={disabled}/>
+        {helpText && <HelpBlock>{helpText}</HelpBlock>}
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>

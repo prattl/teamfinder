@@ -20,7 +20,7 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['username', 'regions', 'skill_bracket', 'positions']
+    const fields = ['email', 'regions', 'skill_bracket', 'positions']
     const multiSelectFields = ['regions', 'positions']
     fields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
@@ -36,7 +36,13 @@ const validate = values => {
     return errors
 }
 
-const UsernameInput = createInput('Username')
+const UsernameInput = createInput({
+    label: 'Username',
+    disabled: true,
+})
+const EmailInput = createInput({
+    label: 'Email', type: 'email', helpText: 'Your email will not be shared with anyone.'
+})
 const RegionInput = createSelectInput('Region', RegionSelect)
 const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
 const PositionInput = createSelectInput('Positions', PositionSelect)
@@ -50,6 +56,9 @@ class ProfileForm extends Component {
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
                 <div>
                     <Field name='username' component={UsernameInput} />
+                </div>
+                <div>
+                    <Field name='email' component={EmailInput} />
                 </div>
                 <div>
                     <Field name='regions' component={RegionInput} />

@@ -38,7 +38,19 @@ class PlayerTeamSerializer(serializers.ModelSerializer):
 
 class BasePlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
+    email = serializers.EmailField(source='user.email')
     username = serializers.CharField(source='user.username')
+
+    def update(self, instance, validated_data):
+        user = validated_data.pop('user')
+
+        if user:
+            email = user.pop('email')
+            if email:
+                instance.user.email = email
+                instance.user.save()
+
+        return super(BasePlayerSerializer, self).update(instance, validated_data)
 
     @staticmethod
     def setup_eager_loading(queryset):
@@ -57,7 +69,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'username',
-            'user',
+            'email',
             'skill_bracket',
             'regions',
             'positions',
@@ -66,7 +78,6 @@ class BasePlayerSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
             'url',
-            'user',
             'username',
         )
 
