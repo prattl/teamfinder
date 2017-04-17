@@ -9,8 +9,8 @@ class PlayerQuerySet(models.QuerySet):
         return self.annotate(
             num_regions=Count('regions'),
             num_positions=Count('positions')
-        ).exclude(username='').filter(
-            username__isnull=False, skill_bracket__isnull=False, num_regions__gt=0, num_positions__gt=0
+        ).exclude(user__username='').filter(
+            user__username__isnull=False, skill_bracket__isnull=False, num_regions__gt=0, num_positions__gt=0
         )
 
 
@@ -30,7 +30,7 @@ class Player(AbstractBaseModel):
         ordering = ['username']
 
     def __repr__(self):
-        return "<{}: {}>".format(type(self).__name__, self.username)
+        return "<{}: {}>".format(type(self).__name__, self.user.username)
 
     def __str__(self):
         return self.username

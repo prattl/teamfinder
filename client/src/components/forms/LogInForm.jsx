@@ -18,8 +18,8 @@ const submit = (values, dispatch) => {
     })
 }
 
-const EmailInput = createInput('Email', 'email')
-const PasswordInput = createInput('Password', 'password')
+const EmailInput = createInput({ label: 'Email', type: 'email' })
+const PasswordInput = createInput({ label: 'Password', type: 'password' })
 
 class LogInForm extends Component {
 

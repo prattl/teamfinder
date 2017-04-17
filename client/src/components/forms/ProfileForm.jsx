@@ -36,12 +36,10 @@ const validate = values => {
     return errors
 }
 
-const UsernameInput = createInput({
-    label: 'Username',
-    disabled: true,
-})
 const EmailInput = createInput({
-    label: 'Email', type: 'email', helpText: 'Your email will not be shared with anyone.'
+    label: 'Email', type: 'email', helpText: 'Your email is private and will not be shared with anyone. We\'ll use ' +
+    'it to let you know when you\'ve been invited or accepted to a team. You can change your email preferences from ' +
+    'your settings.'
 })
 const RegionInput = createSelectInput('Region', RegionSelect)
 const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
@@ -54,9 +52,6 @@ class ProfileForm extends Component {
         return (
             <form onSubmit={handleSubmit}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
-                <div>
-                    <Field name='username' component={UsernameInput} />
-                </div>
                 <div>
                     <Field name='email' component={EmailInput} />
                 </div>

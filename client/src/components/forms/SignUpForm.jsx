@@ -34,9 +34,9 @@ const validate = values => {
     return errors
 }
 
-const EmailInput = createInput('Email', 'email')
-const PasswordInput = createInput('Password', 'password')
-const Password2Input = createInput('Repeat Password', 'password')
+const EmailInput = createInput({ label: 'Email', type: 'email' })
+const PasswordInput = createInput({ label: 'Password', type: 'password' })
+const Password2Input = createInput({ label: 'Repeat Password', type: 'password' })
 
 class SignUpForm extends Component {
 

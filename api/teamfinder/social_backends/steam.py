@@ -31,7 +31,9 @@ class SteamOpenId(OpenIdAuth):
                        'first_name': '',
                        'last_name': '',
                        'player_data': player,
-                       'steamid': steamid}
+                       'steamid': steamid,
+                       'avatar': player.get('avatar'),
+                       'avatarfull': player.get('avatarfull')}
         else:
             details = {}
         return details

@@ -40,6 +40,8 @@ class BasePlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
     email = serializers.EmailField(source='user.email')
     username = serializers.CharField(source='user.username')
+    avatar = serializers.CharField(source='user.avatar')
+    avatarfull = serializers.CharField(source='user.avatarfull')
 
     def update(self, instance, validated_data):
         user = validated_data.pop('user')
@@ -74,11 +76,15 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'regions',
             'positions',
             'teams',
+            'avatar',
+            'avatarfull',
         )
         read_only_fields = (
             'id',
             'url',
             'username',
+            'avatar',
+            'avatarfull',
         )
 
 

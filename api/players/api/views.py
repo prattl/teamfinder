@@ -23,7 +23,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         skill_bracket = self.request.query_params.get('skill_bracket')
 
         if keywords:
-            queryset = queryset.filter(username__icontains=keywords)
+            queryset = queryset.filter(user__username__icontains=keywords)
         if regions:
             queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
         if positions:

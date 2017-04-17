@@ -53,6 +53,8 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
     steamid = models.CharField('Steam ID', max_length=64, unique=True, null=True)
     username = models.CharField('username', max_length=150, null=True)
     email = models.EmailField(_('email address'), null=True, blank=True)
+    avatar = models.CharField('Avatar URL', max_length=256, null=True, blank=True)
+    avatarfull = models.CharField('Avatar URL (full)', max_length=256, null=True, blank=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     is_staff = models.BooleanField(
@@ -81,7 +83,6 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     def clean(self):
         pass
-        # setattr(self, self.USERNAME_FIELD, self.normalize_username(self.get_username()))
 
     def get_full_name(self):
         return self.email
@@ -94,7 +95,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
             send_email(subject, body, [self.email])
 
     def should_send_email(self, tag):
-        return self.user_email_preferences.should_send_email(tag)
+        return self.email and self.user_email_preferences.should_send_email(tag)
 
     def __str__(self):
         return str(self.username)
@@ -116,7 +117,7 @@ class UserEmailPreferences(AbstractBaseModel):
                                 related_name='user_email_preferences')
 
     def save(self, *args, **kwargs):
-        new_instance = not self.pk
+        new_instance = not UserEmailPreferences.objects.filter(pk=self.pk).exists()
         super(UserEmailPreferences, self).save(*args, **kwargs)
         if new_instance:
             self.create_default_preferences()

@@ -24,7 +24,7 @@ const validate = values => {
     return errors
 }
 
-const NameInput = createInput('Name')
+const NameInput = createInput({ label: 'Name' })
 const RegionInput = createSelectInput('Regions', RegionSelect)
 const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
 const PlayerPositionInput = createSelectInput('My Position', PositionSelect, false)

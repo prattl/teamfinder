@@ -20,9 +20,9 @@ export const createInput = ({ label='', type='text', disabled=false, helpText=nu
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
         <FormControl {...field.input} type={type} placeholder={field.placeholder} disabled={disabled}/>
-        {helpText && <HelpBlock>{helpText}</HelpBlock>}
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
+        {helpText && <HelpBlock>{helpText}</HelpBlock>}
     </FormGroup>
 )
 export const createTextArea = (label, rows=5) => (field) => (
