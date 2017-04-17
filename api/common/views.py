@@ -21,4 +21,4 @@ def deploy(request):
 
 def social_redirect(request):
     token, _ = Token.objects.get_or_create(user=request.user)
-    return redirect('http://localhost:3000/finish-steam/{}'.format(token.key))
+    return redirect('http://dotateamfinder.com/finish-steam/{}'.format(token.key))
