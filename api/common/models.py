@@ -402,3 +402,10 @@ class TeamMember(AbstractBaseModel):
 
     def __str__(self):
         return str(self.player)
+
+
+class EmailRecord(AbstractBaseModel):
+    to = models.TextField()
+    from_address = models.CharField(max_length=256)
+    subject = models.CharField(max_length=256)
+    text_content = models.TextField()
