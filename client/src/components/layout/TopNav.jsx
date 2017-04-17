@@ -70,7 +70,7 @@ class TopNav extends Component {
                                 </IndexLinkContainer>
                             </NavDropdown>
                         ) : (
-                            <NavItem href='http://localhost:8000/login/steam/?next=/social-redirect'>
+                            <NavItem href='https://dotateamfinder.com:8000/login/steam/?next=/social-redirect'>
                                 <i className='fa fa-steam'/>&nbsp;Sign in with Steam
                             </NavItem>
                         )}
