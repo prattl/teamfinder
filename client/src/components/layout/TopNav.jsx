@@ -20,10 +20,10 @@ const loggedInMenuLinks = [
     // { route: '/logout', label: 'Log Out' }
 ]
 
-const loggedOutMenuLinks = [
-    { route: '/login', label: 'Log In' },
-    { route: '/signup', label: 'Sign Up' }
-]
+// const loggedOutMenuLinks = [
+//     { route: '/login', label: 'Log In' },
+//     { route: '/signup', label: 'Sign Up' }
+// ]
 
 class TopNav extends Component {
 
@@ -37,7 +37,7 @@ class TopNav extends Component {
         const loggedIn = authToken && tokenVerified
         const totalNewItems = new_invitations + new_team_applications
 
-        const menuLinks = baseMenuLinks.concat(loggedIn ? loggedInMenuLinks : loggedOutMenuLinks)
+        const menuLinks = baseMenuLinks.concat(loggedIn ? loggedInMenuLinks : [])
 
         return (
             <Navbar staticTop={true}>
@@ -71,7 +71,7 @@ class TopNav extends Component {
                             </NavDropdown>
                         ) : (
                             <NavItem href='http://localhost:8000/login/steam/?next=/social-redirect'>
-                                Sign in with Steam
+                                <i className='fa fa-steam'/>&nbsp;Sign in with Steam
                             </NavItem>
                         )}
                     </Nav>
