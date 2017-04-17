@@ -1,0 +1,24 @@
+Hi {{ username }},
+
+I'd like to thank you for being one of the first to try out the Dota team finder website. We've been gathering a lot
+of useful feedback and I'd like to share some of the new updates we've made to the site:
+
+- Steam sign in has been added
+    - Unfortunately, signing in with Steam will create a brand new player profile. If you'd like to have your
+      previous profile moved over to your new Steam-enabled profile, just reply to this email and include your
+      Steam username.
+- Email notifications are sent when important things happen, like if you've been invited to a team or your
+  application has been accepted.
+- You can manage your email preferences from your settings (including if you'd like to receive updates like this one).
+
+Here are a few planed features still in the pipeline:
+
+- Improved player and team profiles
+    - Add interests (casual, competitive, battle cup, etc.) and bios
+- Send messages to other players, or send messages within your team
+- MMR verification
+
+Thanks again for giving the site a try, and stay tuned for more updates!
+
+Lenno
+https://dotateamfinder.com
