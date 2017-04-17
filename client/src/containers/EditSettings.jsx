@@ -31,7 +31,6 @@ class EditSettings extends Component {
                         <div>
                             <h2>Email Preferences</h2>
                             <EmailPreferencesForm initialValues={initialValues} />
-
                         </div>
                     ) : (<div>Error</div>)
                 )}
