@@ -22,10 +22,9 @@ def deploy(request):
 
 def social_redirect(request):
     token, _ = Token.objects.get_or_create(user=request.user)
-    return_url = '{protocol}://{domain}{port}/finish-steam/{token}'.format(
+    return_url = '{protocol}://{domain}/finish-steam/{token}'.format(
         protocol='http' if settings.DEBUG else 'https',
         domain=Site.objects.get_current().domain,
-        port=':3000' if settings.DEBUG else '',
         token=token.key
 
     )

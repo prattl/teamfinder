@@ -17,18 +17,15 @@ const baseMenuLinks = [
 const loggedInMenuLinks = [
     { route: '/profile', label: 'Edit Profile' },
     { route: '/teams/manage', label: 'My Teams', showItems: true },
-    // { route: '/logout', label: 'Log Out' }
 ]
 
-// const loggedOutMenuLinks = [
-//     { route: '/login', label: 'Log In' },
-//     { route: '/signup', label: 'Sign Up' }
-// ]
+const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
+    'https://dotateamfinder.com:8000' :
+    'http://localhost:8000'
 
 class TopNav extends Component {
 
     componentDidMount() {
-        console.log('TopNav mount')
         this.props.onLoad()
     }
 
@@ -70,7 +67,7 @@ class TopNav extends Component {
                                 </IndexLinkContainer>
                             </NavDropdown>
                         ) : (
-                            <NavItem href='https://dotateamfinder.com:8000/login/steam/?next=/social-redirect'>
+                            <NavItem href={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
                                 <i className='fa fa-steam'/>&nbsp;Sign in with Steam
                             </NavItem>
                         )}
