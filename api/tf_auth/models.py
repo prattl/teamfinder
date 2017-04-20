@@ -71,6 +71,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    last_login = models.DateTimeField(_('Last Login'), null=True, blank=True)
 
     objects = TFUserManager()
 

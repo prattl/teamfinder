@@ -33,4 +33,4 @@ class Player(AbstractBaseModel):
         return "<{}: {}>".format(type(self).__name__, self.user.username)
 
     def __str__(self):
-        return self.username
+        return self.user.username

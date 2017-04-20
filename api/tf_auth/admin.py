@@ -60,7 +60,7 @@ class TFUserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('steamid', 'username', 'email', 'is_staff')
+    list_display = ('steamid', 'username', 'email', 'is_staff', 'date_joined', 'last_login', )
     list_filter = ('is_staff',)
     fieldsets = (
         (None, {
@@ -82,7 +82,7 @@ class TFUserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')}
         ),
     )
-    search_fields = ('email',)
+    search_fields = ('email', 'username', 'steamid', )
     ordering = ('email',)
     filter_horizontal = ()
 
