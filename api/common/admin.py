@@ -2,6 +2,12 @@ from django.contrib import admin
 from . import models
 
 
+class EmailRecordAdmin(admin.ModelAdmin):
+    model = models.EmailRecord
+    list_display = ('subject', 'to', 'from_address', 'created', 'updated', )
+    search_fields = ('subject', 'to', 'from_address', 'text_content', )
+
+
 class RegionAdmin(admin.ModelAdmin):
     model = models.Region
     fields = ('id', 'name', )
@@ -22,6 +28,14 @@ class SkillBracketAdmin(admin.ModelAdmin):
     fields = ('id', 'name', )
 
 
+class TeamMemberAdminInline(admin.TabularInline):
+    model = models.TeamMember
+    fields = ('team', 'player', 'position', 'created', 'updated', )
+    readonly_fields = fields
+    extra = 0
+    show_change_link = True
+
+
 class TeamMemberAdmin(admin.ModelAdmin):
     model = models.TeamMember
     fields = ('id', 'created', 'updated', 'team', 'player', 'position', )
@@ -32,6 +46,32 @@ class TeamMemberAdmin(admin.ModelAdmin):
     search_fields = ('name', 'player__username', )
 
 
+class JoinableActionAdminInline(admin.TabularInline):
+    fields = ('player', 'team', 'position', 'status', 'updated', 'created', )
+    readonly_fields = fields
+    extra = 0
+    show_change_link = True
+
+
+class ApplicationAdminInline(JoinableActionAdminInline):
+    model = models.Application
+
+
+class InvitationAdminInline(JoinableActionAdminInline):
+    model = models.Invitation
+
+
+class PlayerInvitationAdminInline(InvitationAdminInline):
+    fk_name = 'player'
+
+
+class TeamInvitationAdminInline(InvitationAdminInline):
+    fk_name = 'team'
+
+
+admin.site.register(models.Application)
+admin.site.register(models.EmailRecord, EmailRecordAdmin)
+admin.site.register(models.Invitation)
 admin.site.register(models.Region, RegionAdmin)
 admin.site.register(models.Position, PositionAdmin)
 admin.site.register(models.SkillBracket, SkillBracketAdmin)

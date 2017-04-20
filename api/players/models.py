@@ -27,7 +27,7 @@ class Player(AbstractBaseModel):
     objects = PlayerQuerySet.as_manager()
 
     class Meta:
-        ordering = ['username']
+        ordering = ['user__username']
 
     def __repr__(self):
         return "<{}: {}>".format(type(self).__name__, self.user.username)

@@ -405,7 +405,11 @@ class TeamMember(AbstractBaseModel):
 
 
 class EmailRecord(AbstractBaseModel):
+    # TODO: Refactor `to` field to be a related field to TFUser
     to = models.TextField()
     from_address = models.CharField(max_length=256)
     subject = models.CharField(max_length=256)
     text_content = models.TextField()
+
+    def __str__(self):
+        return '{} sent to {}'.format(self.subject, self.to)
