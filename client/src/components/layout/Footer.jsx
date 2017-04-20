@@ -12,7 +12,7 @@ class Footer extends Component {
                 <Navbar>
                     <Navbar.Header className='visible-xs'>
                         <Navbar.Brand>
-                            <Link to='#'><i className='fa fa-github'/>&nbsp;View on Github</Link>
+                            <Link to='https://github.com/prattl/teamfinder'><i className='fa fa-github'/>&nbsp;View on Github</Link>
                         </Navbar.Brand>
                         <Navbar.Toggle />
                     </Navbar.Header>
@@ -26,7 +26,7 @@ class Footer extends Component {
                             {/*</LinkContainer>*/}
                         {/*</Nav>*/}
                         <Nav className='hidden-xs'>
-                            <NavItem eventKey={3} href='#'><i className='fa fa-github'/>&nbsp;View on Github</NavItem>
+                            <NavItem eventKey={3} href='https://github.com/prattl/teamfinder'><i className='fa fa-github'/>&nbsp;View on Github</NavItem>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
