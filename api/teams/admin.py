@@ -1,13 +1,28 @@
 from django.contrib import admin
-from . import models
+
+from common.admin import ApplicationAdminInline, TeamInvitationAdminInline, TeamMemberAdminInline
+from teams.models import Team
+
+
+class TeamAdminInline(admin.TabularInline):
+    model = Team
+    fields = ('name', 'players', 'skill_bracket', 'regions', 'available_positions', 'captain', 'created', )
+    readonly_fields = fields
+    extra = 0
+    show_change_link = True
 
 
 class TeamAdmin(admin.ModelAdmin):
-    model = models.Team
+    model = Team
     fields = ('id', 'created', 'updated', 'name', 'players', 'skill_bracket', 'regions', 'available_positions', 'captain', 'creator', )
     readonly_fields = ('id', 'players', 'created', 'updated', )
     list_display = ('name', 'captain', 'creator', 'skill_bracket', 'created', 'updated', )
     list_filter = ('skill_bracket', 'regions', 'available_positions', 'created', 'updated', )
+    inlines = (
+        TeamMemberAdminInline,
+        ApplicationAdminInline,
+        TeamInvitationAdminInline,
+    )
 
     def get_date_joined(self, obj):
         return obj.user.date_joined
@@ -15,4 +30,4 @@ class TeamAdmin(admin.ModelAdmin):
     get_date_joined.admin_order_field = 'user__date_joined'
 
 
-admin.site.register(models.Team, TeamAdmin)
+admin.site.register(Team, TeamAdmin)

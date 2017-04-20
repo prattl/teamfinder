@@ -1,9 +1,10 @@
-from common.models import AbstractBaseModel, EmailTag, UUIDModel
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from common.models import AbstractBaseModel, EmailTag, UUIDModel
 from players.models import Player
 from teamfinder.email import send_email
 
@@ -71,6 +72,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    last_login = models.DateTimeField(_('Last Login'), null=True, blank=True)
 
     objects = TFUserManager()
 
@@ -78,6 +80,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
     REQUIRED_FIELDS = ['username', 'email']
 
     class Meta:
+        ordering = ('username', )
         verbose_name = _('user')
         verbose_name_plural = _('users')
 

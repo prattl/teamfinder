@@ -2,6 +2,14 @@ from django.contrib import admin
 
 from tf_auth.admin import EmailPreferenceAdminInline
 from . import models
+from common.admin import ApplicationAdminInline, PlayerInvitationAdminInline, TeamMemberAdminInline
+from teams.admin import TeamAdminInline
+
+
+class TeamsCaptainOfInline(TeamAdminInline):
+    fk_name = 'captain'
+    verbose_name = 'Team Captain Of'
+    verbose_name_plural = 'Teams Captain Of'
 
 
 class PlayerAdmin(admin.ModelAdmin):
@@ -12,6 +20,12 @@ class PlayerAdmin(admin.ModelAdmin):
     list_filter = ('user__date_joined', 'skill_bracket', 'regions', 'positions', 'created', 'updated', )
     search_fields = ('user__username', )
     raw_id_fields = ('user', )
+    inlines = (
+        TeamsCaptainOfInline,
+        TeamMemberAdminInline,
+        ApplicationAdminInline,
+        PlayerInvitationAdminInline,
+    )
 
     def get_username(self, obj):
         return obj.user.username

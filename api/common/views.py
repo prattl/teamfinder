@@ -1,5 +1,6 @@
 import subprocess
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -21,4 +22,10 @@ def deploy(request):
 
 def social_redirect(request):
     token, _ = Token.objects.get_or_create(user=request.user)
-    return redirect('http://dotateamfinder.com/finish-steam/{}'.format(token.key))
+    return_url = '{protocol}://{domain}/finish-steam/{token}'.format(
+        protocol='http' if settings.DEBUG else 'https',
+        domain=Site.objects.get_current().domain,
+        token=token.key
+
+    )
+    return redirect(return_url)
