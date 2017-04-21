@@ -22,7 +22,9 @@ class TeamViewSet(viewsets.ModelViewSet):
         queryset = queryset.select_related(
             'skill_bracket',
             'captain',
+            'captain__user',
             'creator',
+            'creator__user',
         ).prefetch_related(
             'regions',
             'available_positions',
@@ -34,6 +36,7 @@ class TeamViewSet(viewsets.ModelViewSet):
             'creator__teams',
             'players__regions',
             'teammember_set__player',
+            'teammember_set__player__user',
             'teammember_set__player__regions',
             'teammember_set__player__positions',
             'teammember_set__player__teams',

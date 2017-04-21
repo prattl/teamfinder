@@ -10,13 +10,15 @@ class TeamPlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
     regions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     positions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
-    username = serializers.CharField(source='user.username')
+    username = serializers.CharField(source='user.username', read_only=True)
 
     @staticmethod
     def setup_eager_loading(queryset):
         queryset = queryset.prefetch_related(
             'positions',
             'regions',
+        ).select_related(
+            'user',
         )
         return queryset
 
@@ -52,30 +54,8 @@ class TeamSerializer(serializers.ModelSerializer):
     regions = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all(), many=True)
     available_positions = serializers.PrimaryKeyRelatedField(queryset=Position.objects.all(), many=True)
     team_members = PlayerMembershipSerializer(source='teammember_set', many=True, read_only=True)
-    # captain = TeamPlayerSerializer()
+    captain = TeamPlayerSerializer()
     creator = TeamPlayerSerializer(read_only=True)
-
-    @staticmethod
-    def setup_eager_loading(queryset):
-        queryset = queryset.select_related(
-            'skill_bracket',
-            'captain',
-            'creator',
-        ).prefetch_related(
-            'regions',
-            'available_positions',
-            'captain__regions',
-            'captain__positions',
-            'captain__teams',
-            'creator__regions',
-            'creator__positions',
-            'creator__teams',
-            'teammember_set__player',
-            'teammember_set__player__regions',
-            'teammember_set__player__positions',
-            'teammember_set__player__teams',
-        )
-        return queryset
 
     class Meta:
         model = Team
