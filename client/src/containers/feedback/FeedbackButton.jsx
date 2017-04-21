@@ -12,10 +12,10 @@ class FeedbackButton extends Component {
 
     render() {
         const { onClick, inline } = this.props
+        const props = inline ? { bsSize: 'xs' } : {}
         return (
             <Button id='feedback-button' className={!inline && 'fixed'}
-                    bsStyle='warning' bsSize={inline ? 'xs' : 'lg'}
-                    onClick={() => onClick()}>
+                    bsStyle='warning' onClick={() => onClick()} {...props}>
                 <strong>Submit Feedback</strong> <i>(alpha)</i>
             </Button>
         )
