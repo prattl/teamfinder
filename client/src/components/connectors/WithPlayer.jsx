@@ -31,10 +31,23 @@ export const withPlayer = mapPropsToId => WrappedComponent => {
             this.state = {
                 ConnectedComponent: null
             }
+            this.updateConnectedComponent = this.updateConnectedComponent.bind(this)
+        }
+
+        updateConnectedComponent() {
+            this.setState({ ConnectedComponent: _withPlayer(mapPropsToId(this.props))(WrappedComponent)})
         }
 
         componentWillMount() {
-            this.setState({ ConnectedComponent: _withPlayer(mapPropsToId(this.props))(WrappedComponent)})
+            this.updateConnectedComponent()
+        }
+
+        componentDidUpdate(prevProps) {
+            const { params: { id } } = this.props
+            const { params: { id: prevId } } = prevProps
+            if (id !== prevId) {
+                this.updateConnectedComponent()
+            }
         }
 
         render() {
