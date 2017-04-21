@@ -10,6 +10,7 @@ class TeamPlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
     regions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     positions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    username = serializers.CharField(source='user.username')
 
     @staticmethod
     def setup_eager_loading(queryset):
