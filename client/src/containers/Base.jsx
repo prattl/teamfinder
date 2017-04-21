@@ -15,7 +15,7 @@ class Base extends Component {
             <div id='page-wrapper'>
                 <Helmet>
                     <title>Dota 2 Team Finder</title>
-                    <meta name="description" content="Find your next Dota 2 team!" />
+                    <meta name="description" content="The Dota Team Finder is the easiest way to find your next Dota team." />
                 </Helmet>
 
                 <TopNav loggedIn={false} location={this.props.location.pathname}/>
