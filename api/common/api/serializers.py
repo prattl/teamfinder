@@ -338,6 +338,7 @@ class MembershipSerializer(serializers.ModelSerializer):
         queryset = queryset.select_related(
             'team',
             'player',
+            'player__user',
             'position',
         )
         return queryset
