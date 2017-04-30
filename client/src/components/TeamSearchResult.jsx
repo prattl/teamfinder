@@ -12,6 +12,10 @@ import { FixtureDisplay, Loading } from 'utils'
 import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, SkillBracketIcon } from 'utils/components/icons'
 import TeamApplicationForm from 'components/forms/TeamApplicationForm'
 
+const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
+    'https://dotateamfinder.com:8000' :
+    'http://localhost:8000'
+
 class TeamSearchResult extends Component {
 
     static propTypes = {
@@ -51,13 +55,12 @@ class TeamSearchResult extends Component {
                 </Modal.Header>
                 <Modal.Body>
                     <p>
-                        You need to sign in and create a profile before you can apply to teams.
+                        You need to sign in before you can apply to teams.
                     </p>
                     <p>
-                        <Link to='signup'>Sign up</Link> or <Link to='login'>Log in</Link>
-                    </p>
-                    <p>
-                        <i>Steam Sign In is coming soon!</i>
+                        <Link to={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
+                            <i className='fa fa-steam'/>&nbsp;Sign in with Steam
+                        </Link>
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
