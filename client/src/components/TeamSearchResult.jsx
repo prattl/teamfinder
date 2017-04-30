@@ -58,9 +58,9 @@ class TeamSearchResult extends Component {
                         You need to sign in before you can apply to teams.
                     </p>
                     <p>
-                        <Link to={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
+                        <a href={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
                             <i className='fa fa-steam'/>&nbsp;Sign in with Steam
-                        </Link>
+                        </a>
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
