@@ -44,7 +44,7 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, username, regions, positions, skill_bracket, teams, player } = this.props
+        const { id, fixtures, avatarfull, username, regions, positions, skill_bracket, teams } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -54,7 +54,7 @@ class PlayerSearchResult extends Component {
                     lastUpdated ? (
                         <Row>
                             <Col xs={4} sm={3}>
-                                <Image thumbnail src={player.avatarfull} />
+                                <Image thumbnail src={avatarfull} />
                                 <div className='visible-xs' style={{ paddingTop: '1rem' }}>
                                     {this.renderInviteButton(true)}
                                 </div>
