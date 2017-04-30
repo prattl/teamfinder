@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 
-import { Col, Row } from 'react-bootstrap'
+import { Col, Image, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay } from 'utils'
 import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
@@ -31,19 +31,27 @@ class PlayerProfile extends Component {
                 </Helmet>
                 <h1>Player Profile</h1>
                 <div>
-                    <h2>{player.username}</h2>
-                    <FixtureRow label='Regions:'>
-                        <RegionIcon fixedWidth={true}/>&nbsp;
-                        <FixtureDisplay value={player.regions} fixture={regions}/>
-                    </FixtureRow>
-                    <FixtureRow label='Skill Bracket:'>
-                        <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                        <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
-                    </FixtureRow>
-                    <FixtureRow label='Positions:'>
-                        <PositionIcon fixedWidth={true}/>&nbsp;
-                        <FixtureDisplay value={player.positions} fixture={positions}/>
-                    </FixtureRow>
+                    <Row>
+                        <Col xs={4} sm={3}>
+                            <Image thumbnail src={player.avatarfull} />
+                        </Col>
+                        <Col xs={8} sm={9}>
+                            <h2 style={{ marginTop: 0 }}>{player.username}</h2>
+                            <FixtureRow label='Regions:'>
+                                <RegionIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={player.regions} fixture={regions}/>
+                            </FixtureRow>
+                            <FixtureRow label='Skill Bracket:'>
+                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
+                            </FixtureRow>
+                            <FixtureRow label='Positions:'>
+                                <PositionIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={player.positions} fixture={positions}/>
+                            </FixtureRow>
+                        </Col>
+                    </Row>
+
                     <h3>Teams</h3>
                     {player.teams && player.teams.map(team => (
                         <Row key={`row-player-${player.id}-team-${team.id}`}>

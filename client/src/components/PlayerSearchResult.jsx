@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { Col, DropdownButton, Image, MenuItem, Media, Row } from 'react-bootstrap'
+import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
