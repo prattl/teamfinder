@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import moment from 'moment'
 
 import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
@@ -12,6 +13,7 @@ import { tryInviteToTeam } from 'actions/playerSearch'
 class PlayerSearchResult extends Component {
 
     static propTypes = {
+        // last_login: PropTypes.string,
         username: PropTypes.string.isRequired,
         regions: PropTypes.array,
         positions: PropTypes.array,
@@ -44,7 +46,7 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, avatarfull, username, regions, positions, skill_bracket, teams } = this.props
+        const { id, fixtures, avatarfull, last_login, username, regions, positions, skill_bracket, teams } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -55,6 +57,7 @@ class PlayerSearchResult extends Component {
                         <Row>
                             <Col xs={4} sm={3}>
                                 <Image thumbnail src={avatarfull} />
+                                <div className='text-center'>{moment(last_login).format('L')}</div>
                                 <div className='visible-xs' style={{ paddingTop: '1rem' }}>
                                     {this.renderInviteButton(true)}
                                 </div>

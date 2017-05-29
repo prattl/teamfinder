@@ -42,6 +42,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
     avatar = serializers.CharField(source='user.avatar')
     avatarfull = serializers.CharField(source='user.avatarfull')
+    last_login = serializers.CharField(source='user.last_login')
 
     def update(self, instance, validated_data):
         user = validated_data.pop('user')
@@ -72,6 +73,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'url',
             'username',
             'email',
+            'last_login',
             'skill_bracket',
             'regions',
             'positions',
@@ -83,6 +85,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'username',
+            'last_login',
             'avatar',
             'avatarfull',
         )
