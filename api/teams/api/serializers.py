@@ -69,12 +69,14 @@ class TeamSerializer(serializers.ModelSerializer):
             'team_members',
             'captain',
             'creator',
+            'updated',
         )
         read_only_fields = (
             'id',
             'url',
             'team_members',
             'creator',
+            'updated',
         )
 
 

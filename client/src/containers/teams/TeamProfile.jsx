@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
+import moment from 'moment'
 
 import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
@@ -71,23 +72,26 @@ class TeamProfile extends Component {
                                 </div>
                                 }
                                 <div>
-                                <PlayersIcon fixedWidth={true}/>&nbsp;
-                                {team.team.team_members.map(teamMember => (
-                                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
-                                         key={`team-member-${teamMember.id}`}>
-                                        <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
-                                            <Label>
-                                                {team.captain === teamMember.player.id && (
-                                                    <span><CaptainIcon />&nbsp;</span>
-                                                )}
-                                                {teamMember.player.username}
-                                                {teamMember.position && `- ${positions.items[teamMember.position].name}`}
-                                            </Label>
-                                        </Link>
-                                    </div>
+                                    <PlayersIcon fixedWidth={true}/>&nbsp;
+                                    {team.team.team_members.map(teamMember => (
+                                        <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
+                                             key={`team-member-${teamMember.id}`}>
+                                            <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
+                                                <Label>
+                                                    {team.captain === teamMember.player.id && (
+                                                        <span><CaptainIcon />&nbsp;</span>
+                                                    )}
+                                                    {teamMember.player.username}
+                                                    {teamMember.position && `- ${positions.items[teamMember.position].name}`}
+                                                </Label>
+                                            </Link>
+                                        </div>
 
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                                <div style={{ marginTop: '1rem' }}>
+                                    Last updated {moment(team.team.updated).format('L')}
+                                </div>
                             </div>
                         </div>
                     ) : <div>Error loading team</div>

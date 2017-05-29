@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
+import moment from 'moment'
 
 import { Col, Image, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
@@ -34,6 +35,7 @@ class PlayerProfile extends Component {
                     <Row>
                         <Col xs={4} sm={3}>
                             <Image thumbnail src={player.avatarfull} />
+                            <div style={{ marginTop: '1rem' }}>Last login: {moment(player.last_login).format('L')}</div>
                         </Col>
                         <Col xs={8} sm={9}>
                             <h2 style={{ marginTop: 0 }}>{player.username}</h2>

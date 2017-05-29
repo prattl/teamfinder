@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { submit } from 'redux-form'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 
@@ -74,7 +75,7 @@ class TeamSearchResult extends Component {
 
     render() {
         const { available_positions, captain, id, name, regions, skill_bracket, team_members, fixtures, tryApplyToTeam,
-            player: { teamApplyingTo } } = this.props
+            player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -126,6 +127,9 @@ class TeamSearchResult extends Component {
                                     </div>
 
                                 ))}
+                            </div>
+                            <div style={{ marginTop: '1rem' }}>
+                                Last updated {moment(updated).format('L')}
                             </div>
                         </div>
                     ) : <p>Error, please try again.</p>
