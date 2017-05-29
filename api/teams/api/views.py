@@ -85,7 +85,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         if skill_bracket:
             queryset = queryset.filter(skill_bracket_id=skill_bracket)
 
-        return queryset
+        return queryset.order_by('-updated')
 
     @detail_route(permission_classes=(permissions.IsAuthenticated, ), methods=('GET', ))
     def memberships(self, request, pk=None):
