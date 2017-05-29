@@ -23,9 +23,7 @@ export default (
     <Route path=''>
         <Route path='/' component={Base}>
             <IndexRoute component={Index} />
-            <Route path='login' component={LogIn}/>
             <Route path='login-required' component={props => <LogIn alertRequired={true} {...props} />}/>
-            <Route path='signup' component={SignUp}/>
             <Route path='logout' component={LogOut}/>
             <Route path='settings' component={EditSettings}/>
             <Route path='profile' component={EditProfile}/>
