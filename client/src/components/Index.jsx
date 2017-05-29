@@ -58,7 +58,7 @@ class Index extends Component {
 
                 <h3>Alpha Release</h3>
                 <p>
-                    This is the alpha release of the Dota 2 teamfinder. Feedback is greatly appreciated - you can
+                    This is the alpha release of the Dota 2 Team Finder. Feedback is greatly appreciated - you can
                     use the <FeedbackButton inline={true} /> button to submit feedback on any page.
                 </p>
                 <p>
@@ -74,6 +74,8 @@ class Index extends Component {
                     <FeatureListItem complete={false}>
                         Add player and team interests (competitive, casual, battle cup, etc.)
                     </FeatureListItem>
+                    <FeatureListItem>Schedule team events</FeatureListItem>
+                    <FeatureListItem>Scrim against other teams</FeatureListItem>
                 </ul>
             </div>
         )
