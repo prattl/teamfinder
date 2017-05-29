@@ -3,6 +3,5 @@
 {% block content %}
 Hi {{ username }},
 
-We just wanted to let you know that your application to {{ team }} was not accepted. There are plenty of other
-teams looking for players like you though! Try searching for other teams to apply to: {{ team_search_link }}
+We just wanted to let you know that your application to {{ team }} was not accepted. There are plenty of other teams looking for players like you though! Try searching for other teams to apply to: {{ team_search_link }}
 {% endblock %}

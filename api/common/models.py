@@ -208,8 +208,8 @@ class Application(JoinableAction, EmailMixin):
 
     def send_application_created_email(self):
         email_body = render_to_string('email/application_created.txt', {
-            'username': self.team.captain.username,
-            'player': self.player.username,
+            'username': self.team.captain.user.username,
+            'player': self.player.user.username,
             'team': self.team.name,
             'team_link': self.create_url('teams/manage/{}'.format(
                 self.team.id
@@ -231,7 +231,7 @@ class Application(JoinableAction, EmailMixin):
 
     def send_application_accepted_email(self):
         email_body = render_to_string('email/application_accepted.txt', {
-            'username': self.player.username,
+            'username': self.player.user.username,
             'team': self.team.name,
             'team_link': self.create_url('teams/manage/{}'.format(
                 self.team.id
@@ -246,7 +246,7 @@ class Application(JoinableAction, EmailMixin):
 
     def send_application_rejected_email(self):
         email_body = render_to_string('email/application_rejected.txt', {
-            'username': self.player.username,
+            'username': self.player.user.username,
             'team': self.team.name,
             'team_search_link': self.create_url('teams')
         })
@@ -301,8 +301,8 @@ class Invitation(JoinableAction, EmailMixin):
 
     def send_invitation_created_email(self):
         email_body = render_to_string('email/invitation_created.txt', {
-            'username': self.player.username,
-            'captain': self.team.captain.username,
+            'username': self.player.user.username,
+            'captain': self.team.captain.user.username,
             'team': self.team.name,
             'teams_link': self.create_url('teams/manage')
         })
@@ -322,8 +322,8 @@ class Invitation(JoinableAction, EmailMixin):
 
     def send_invitation_accepted_email(self):
         email_body = render_to_string('email/invitation_accepted.txt', {
-            'username': self.team.captain.username,
-            'player': self.player.username,
+            'username': self.team.captain.user.username,
+            'player': self.player.user.username,
             'team': self.team.name,
             'invite_date': self.created.strftime('%-d %B %Y'),
             'team_link': self.create_url('teams/manage/{}'.format(self.team.id))
@@ -337,8 +337,8 @@ class Invitation(JoinableAction, EmailMixin):
 
     def send_invitation_rejected_email(self):
         email_body = render_to_string('email/invitation_rejected.txt', {
-            'username': self.team.captain.username,
-            'player': self.player.username,
+            'username': self.team.captain.user.username,
+            'player': self.player.user.username,
             'team': self.team.name,
             'invite_date': self.created.strftime('%-d %B %Y'),
             'player_search_link': self.create_url('players')

@@ -3,6 +3,5 @@
 {% block content %}
 Hi {{ username }},
 
-Good news -- your invitation for {{ player }} to join {{ team }} has been accepted! You invited
-{{ player }} on {{ invite_date }}. You can manage your team members here: {{ team_link }}
+Good news -- your invitation for {{ player }} to join {{ team }} has been accepted! You invited {{ player }} on {{ invite_date }}. You can manage your team members here: {{ team_link }}
 {% endblock %}

@@ -64,10 +64,12 @@ def testdata():
         'Camie',
         'Elly',
     ]
-    
-    for name in names:
+
+    for i, name in enumerate(names):
         print('Creating user for {}'.format(name))
         user = User.objects.create_user(first_name=name,
+                                        username=name,
+                                        steamid=100+i,
                                         email='lenny+test-{}@teamfinder.com'.format(name),
                                         password='123')
         player = user.player

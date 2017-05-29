@@ -3,6 +3,5 @@
 {% block content %}
 Hi {{ username }},
 
-Good news -- you have been invited by {{ captain }} to join {{ team }}! You can view your invitations
-here: {{ teams_link }}
+Good news -- you've been invited to join a team on dotateamfinder.com! {{ captain }} has invited you to join {{ team }}. You can view your invitations here: {{ teams_link }}
 {% endblock %}
