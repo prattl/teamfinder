@@ -17,8 +17,6 @@ import PlayerSearch from 'components/PlayerSearch'
 import TeamProfile from 'containers/teams/TeamProfile'
 import TeamSearch from 'components/TeamSearch'
 
-import SignUp from 'components/auth/SignUp'
-
 export default (
     <Route path=''>
         <Route path='/' component={Base}>

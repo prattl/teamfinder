@@ -14,7 +14,7 @@ const _withPlayer = playerId => (WrappedComponent) => {
         render() {
             const { players } = this.props
             const player = players[playerId] || {}
-            return <WrappedComponent player={player} {...this.props} />
+            return <WrappedComponent selectedPlayer={player} {...this.props} />
         }
 
     }

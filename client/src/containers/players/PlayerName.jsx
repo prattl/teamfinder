@@ -9,8 +9,8 @@ class PlayerName extends Component {
     }
 
     render() {
-        const { player } = this.props
-        return <span>{player.username}</span>
+        const { selectedPlayer } = this.props
+        return <span>{selectedPlayer.username}</span>
     }
 
 }
