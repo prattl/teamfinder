@@ -25,7 +25,7 @@ const FriendButton = ({ friends, steamId, ownSteamId }) => {
     let disabled = false
     let iconName = 'steam'
     let buttonText = 'Add friend on Steam'
-    
+
     if (ownSteamId === steamId) {
         disabled = true
     } else if (friends && friends.includes(steamId)) {
@@ -46,7 +46,6 @@ class PlayerProfile extends Component {
 
     render() {
         const { selectedPlayer: player, player: ownPlayer, fixtures: { regions, positions, skillBrackets } } = this.props
-        console.log('PlayerProfile', this.props)
         return (
             <div>
                 <Helmet>
