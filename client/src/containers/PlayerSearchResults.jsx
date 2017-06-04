@@ -97,7 +97,7 @@ class PlayerSearchResults extends PureComponent {
                         <div>
                             <Row>
                                 {results.map(result => (
-                                    <Col sm={6} key={result.id}>
+                                    <Col sm={12} key={result.id}>
                                         <PlayerSearchResult {...result} player={player} />
                                     </Col>
                                 ))}

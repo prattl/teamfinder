@@ -55,14 +55,13 @@ class PlayerSearchResult extends Component {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <Row>
-                            <Col xs={4} sm={3}>
+                            <Col xs={4} sm={2}>
                                 <Image thumbnail src={avatarfull} />
-                                <div className='text-center'>{moment(last_login).format('L')}</div>
                                 <div className='visible-xs' style={{ paddingTop: '1rem' }}>
                                     {this.renderInviteButton(true)}
                                 </div>
                             </Col>
-                            <Col xs={8} sm={9}>
+                            <Col xs={8} sm={10}>
                                 <span className='pull-right hidden-xs'>
                                     {this.renderInviteButton()}
                                 </span>
@@ -82,6 +81,10 @@ class PlayerSearchResult extends Component {
                                 <div>
                                     <PositionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={positions} fixture={fixtures.positions}/>
+                                </div>
+                                <div>
+                                    <i className='fa fa-fw fa-clock-o' />&nbsp;
+                                    Last Login: {moment(last_login).format('L')}
                                 </div>
                                 <div style={{ marginTop: '1rem' }}>
                                     {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}

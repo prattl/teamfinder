@@ -15,7 +15,7 @@ const FixtureRow = ({ label, children }) => (
         <Col sm={2} md={2} lg={2} className='hidden-xs'>
             {label}
         </Col>
-        <Col xs={12} sm={6} md={4} lg={3}>
+        <Col xs={12} sm={10} md={10} lg={10}>
             {children}
         </Col>
     </Row>
