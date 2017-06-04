@@ -21,7 +21,7 @@ const FixtureRow = ({ label, children }) => (
     </Row>
 )
 
-const FriendButton = ({ friends, steamId, ownSteamId }) => {
+const FriendButton = ({ friends, steamId, ownSteamId, onClick }) => {
     let disabled = false
     let iconName = 'steam'
     let buttonText = 'Add friend on Steam'
@@ -36,7 +36,7 @@ const FriendButton = ({ friends, steamId, ownSteamId }) => {
 
     return (
         <Button bsStyle='default' href={`steam://friends/add/${steamId}/`}
-                disabled={disabled}>
+                disabled={disabled} onClick={onClick}>
             <i className={`fa fa-${iconName}`}/>&nbsp;{buttonText}
         </Button>
     )
@@ -44,8 +44,27 @@ const FriendButton = ({ friends, steamId, ownSteamId }) => {
 
 class PlayerProfile extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            addedFriend: false
+        }
+    }
+
+    handleAddFriendClick(e) {
+        console.log(e)
+        this.setState({ addedFriend: true })
+    }
+
     render() {
-        const { selectedPlayer: player, player: ownPlayer, fixtures: { regions, positions, skillBrackets } } = this.props
+        const { selectedPlayer: player, player: ownPlayer,
+            fixtures: { regions, positions, skillBrackets } } = this.props
+        const { addedFriend } = this.state
+
+        if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
+            ownPlayer.steam_friends.push(player.steamid)
+        }
+
         return (
             <div>
                 <Helmet>
@@ -59,7 +78,9 @@ class PlayerProfile extends Component {
                             <Image thumbnail src={player.avatarfull} />
                             <div style={{ marginTop: '1rem' }}>
                                 <FriendButton friends={ownPlayer.steam_friends}
-                                              steamId={player.steamid} ownSteamId={ownPlayer.steamid} />
+                                              steamId={player.steamid}
+                                              ownSteamId={ownPlayer.steamid}
+                                              onClick={e => this.handleAddFriendClick(e)} />
                             </div>
                         </Col>
                         <Col xs={8} sm={9}>
@@ -76,8 +97,7 @@ class PlayerProfile extends Component {
                                 <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.positions} fixture={positions}/>
                             </FixtureRow>
-                            <div style={{ marginTop: '1rem' }}></div>
-
+                            <div style={{ marginTop: '1rem' }} />
                             <FixtureRow label='Last login:'>
                                 <i className='fa fa-fw fa-clock-o' />&nbsp;
                                 <span>{moment(player.last_login).format('L')}</span>
