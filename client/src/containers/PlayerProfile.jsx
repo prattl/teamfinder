@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import moment from 'moment'
 
-import { Button, Col, Image, Row } from 'react-bootstrap'
+import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay } from 'utils'
 import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
@@ -42,24 +42,51 @@ const FriendButton = ({ friends, steamId, ownSteamId, onClick }) => {
     )
 }
 
+const FriendAddedModal = ({ show, onClose, playerName }) => (
+    <Modal show={show} onHide={onClose} backdrop='static'>
+        <Modal.Header closeButton>
+            <Modal.Title>Friend Request Sent</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>
+                If you have Steam installed, a friend request has been sent
+                to {playerName}. <a href='steam://open/friends/'>Click here</a> to open your Steam friends to
+                view the invitation.
+            </p>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button bsStyle='success' onClick={onClose}>Ok</Button>
+        </Modal.Footer>
+    </Modal>
+)
+
 class PlayerProfile extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            addedFriend: false
+            addedFriend: false,
+            showAddedModal: false,
         }
     }
 
     handleAddFriendClick(e) {
-        console.log(e)
-        this.setState({ addedFriend: true })
+        this.setState({
+            addedFriend: true,
+            showAddedModal: true,
+        })
+    }
+
+    handleFriendAddedOkClick(e) {
+        this.setState({
+            showAddedModal: false,
+        })
     }
 
     render() {
         const { selectedPlayer: player, player: ownPlayer,
             fixtures: { regions, positions, skillBrackets } } = this.props
-        const { addedFriend } = this.state
+        const { addedFriend, showAddedModal } = this.state
 
         if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
             ownPlayer.steam_friends.push(player.steamid)
@@ -71,6 +98,9 @@ class PlayerProfile extends Component {
                     <title>{`${player.username} - Player Profile | Dota 2 Team Finder`}</title>
                     <meta name="description" content={`View ${player.username}'s profile on Dota 2 team finder.`} />
                 </Helmet>
+                <FriendAddedModal show={showAddedModal}
+                                  playerName={player.username}
+                                  onClose={e => this.handleFriendAddedOkClick(e)} />
                 <h1>Player Profile</h1>
                 <div>
                     <Row>
