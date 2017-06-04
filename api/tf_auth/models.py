@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -52,6 +53,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
     Email and password are required. Other fields are optional.
     """
     steamid = models.CharField('Steam ID', max_length=64, unique=True, null=True)
+    steam_friends = ArrayField(base_field=models.CharField(max_length=64), blank=True, default=[])
     username = models.CharField('username', max_length=150, null=True)
     email = models.EmailField(_('email address'), null=True, blank=True)
     avatar = models.CharField('Avatar URL', max_length=256, null=True, blank=True)

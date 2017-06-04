@@ -30,7 +30,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
         if skill_bracket:
             queryset = queryset.filter(skill_bracket_id=skill_bracket)
-        return queryset.order_by('user__last_login')
+        return queryset.order_by('-user__last_login')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset()).have_complete_profile()

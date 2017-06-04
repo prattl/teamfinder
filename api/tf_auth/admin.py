@@ -77,7 +77,7 @@ class TFUserAdmin(BaseUserAdmin):
             'fields': ('steamid', 'username', 'email', 'password', 'date_joined',)
         }),
         ('Player', {
-            'fields': ('get_player', )
+            'fields': ('get_player', 'steam_friends', )
         }),
         ('Avatars', {
             'fields': ('avatar', 'avatarfull', )
