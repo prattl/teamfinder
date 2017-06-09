@@ -35,7 +35,7 @@ export const FixtureDisplay = ({ value, fixture }) => (
 )
 
 export const playerIsCaptain = (player, team) => (
-    player.id === team.captain
+    player.id === team.captain.id
 )
 
 export const playerIsOnTeam = (player, team) => (
