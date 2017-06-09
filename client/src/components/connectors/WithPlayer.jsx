@@ -43,11 +43,16 @@ export const withPlayer = mapPropsToId => WrappedComponent => {
         }
 
         componentDidUpdate(prevProps) {
-            const { params: { id } } = this.props
-            const { params: { id: prevId } } = prevProps
-            if (id !== prevId) {
-                this.updateConnectedComponent()
+            const { params } = this.props
+            const { params: prevParams } = prevProps
+            if (params && prevParams) {
+                const { id } = params
+                const { id: prevId } = prevParams
+                if (id !== prevId) {
+                    this.updateConnectedComponent()
+                }
             }
+
         }
 
         render() {
