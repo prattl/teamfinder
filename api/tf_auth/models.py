@@ -80,7 +80,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     USERNAME_FIELD = 'steamid'
     REQUIRED_FIELDS = ['username', 'email']
-    STEAM32_MODIFIER = 76561197992765754
+    STEAM32_MODIFIER = 76561197960265728
 
     class Meta:
         ordering = ('username', )

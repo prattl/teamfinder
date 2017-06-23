@@ -78,7 +78,6 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'last_login',
-            'skill_bracket',
             'regions',
             'positions',
             'teams',
