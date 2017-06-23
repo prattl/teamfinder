@@ -10,14 +10,15 @@ class PlayerQuerySet(models.QuerySet):
             num_regions=Count('regions'),
             num_positions=Count('positions')
         ).exclude(user__username='').filter(
-            user__username__isnull=False, skill_bracket__isnull=False, num_regions__gt=0, num_positions__gt=0
+            user__username__isnull=False, num_regions__gt=0, num_positions__gt=0
         )
 
 
 class Player(AbstractBaseModel):
     username = models.CharField(max_length=255)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    deprecated_skill_bracket = models.ForeignKey('common.SkillBracket', null=True, blank=True, on_delete=models.SET_NULL)
+    deprecated_skill_bracket = models.ForeignKey('common.SkillBracket', null=True, blank=True,
+                                                 on_delete=models.SET_NULL)
     regions = models.ManyToManyField('common.Region', related_name='players', blank=True)
     positions = models.ManyToManyField('common.Position', related_name='players', blank=True)
 

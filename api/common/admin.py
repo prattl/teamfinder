@@ -22,12 +22,6 @@ class PositionAdmin(admin.ModelAdmin):
     list_filter = ('secondary', )
 
 
-class SkillBracketAdmin(admin.ModelAdmin):
-    model = models.SkillBracket
-    readonly_fields = ('id', )
-    fields = ('id', 'name', )
-
-
 class TeamMemberAdminInline(admin.TabularInline):
     model = models.TeamMember
     fields = ('team', 'player', 'position', 'created', 'updated', )
@@ -74,5 +68,4 @@ admin.site.register(models.EmailRecord, EmailRecordAdmin)
 admin.site.register(models.Invitation)
 admin.site.register(models.Region, RegionAdmin)
 admin.site.register(models.Position, PositionAdmin)
-admin.site.register(models.SkillBracket, SkillBracketAdmin)
 admin.site.register(models.TeamMember, TeamMemberAdmin)

@@ -1,10 +1,8 @@
 from common.models import (
     Application,
-    EmailTag,
     Invitation,
     Position,
     Region,
-    SkillBracket,
     Status,
     TeamMember,
 )
@@ -49,23 +47,6 @@ class PositionSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'secondary',
-            'url',
-        )
-
-
-class SkillBracketSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='skillbracket-detail')
-
-    class Meta:
-        model = SkillBracket
-        fields = (
-            'id',
-            'name',
-            'url',
-        )
-        read_only_fields = (
-            'id',
-            'name',
             'url',
         )
 

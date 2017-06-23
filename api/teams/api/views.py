@@ -1,7 +1,5 @@
 from common.api.permissions import IsStaffOrTeamCaptain
-# from common.api.serializers import PlayerMembershipSerializer
-from common.models import Position, SkillBracket, TeamMember, Region
-# from teamfinder.api.serializers import PlayerMembershipSerializer, TeamSerializer
+from common.models import Position, TeamMember, Region
 from teams.api.serializers import EditableFlatTeamSerializer, TeamSerializer, PlayerMembershipSerializer
 from teams.models import Team
 from rest_framework import permissions, status, viewsets
@@ -20,7 +18,6 @@ class TeamViewSet(viewsets.ModelViewSet):
     @staticmethod
     def setup_eager_loading(queryset):
         queryset = queryset.select_related(
-            'skill_bracket',
             'captain',
             'captain__user',
             'creator',
@@ -74,7 +71,6 @@ class TeamViewSet(viewsets.ModelViewSet):
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
         available_positions = self.request.query_params.getlist('available_positions[]')
-        skill_bracket = self.request.query_params.get('skill_bracket')
 
         if keywords:
             queryset = queryset.filter(name__icontains=keywords)
@@ -82,8 +78,6 @@ class TeamViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
         if available_positions:
             queryset = queryset.filter(available_positions__in=Position.objects.filter(pk__in=available_positions))
-        if skill_bracket:
-            queryset = queryset.filter(skill_bracket_id=skill_bracket)
 
         return queryset.order_by('-updated')
 
