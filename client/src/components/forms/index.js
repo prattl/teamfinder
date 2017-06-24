@@ -116,11 +116,11 @@ class SelectWrapper extends Component {
 
     render() {
         const { input, ...otherProps } = this.props
-        return <Select {...input}
+        return <div className='form-group'><Select {...input}
                        onBlurResetsInput={false}
                        onBlur={this.handleBlur}
                        onChange={v => this.handleChange(v)}
-                       {...otherProps} />
+                       {...otherProps} /></div>
     }
 
 }
