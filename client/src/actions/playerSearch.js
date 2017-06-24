@@ -20,10 +20,19 @@ export default actions
 
 export const requestPlayerSearch = (values) => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_PLAYER_SEARCH)())
-    const { keywords, regions, positions } = values
-    let url = createUrl(`/api/players/?keywords=${keywords}`)  // TODO: MMR param
+    const { include_estimated_mmr, keywords, regions, positions, min_mmr, max_mmr } = values
+    let url = createUrl(`/api/players/?keywords=${keywords}`)
     regions.forEach(region => url += `&regions[]=${region}`)
     positions.forEach(position => url += `&positions[]=${position}`)
+    if (min_mmr) {
+        url += `&min_mmr=${min_mmr}`
+    }
+    if (max_mmr) {
+        url += `&max_mmr=${max_mmr}`
+    }
+    if (include_estimated_mmr) {
+        url += '&include_estimated_mmr=true'
+    }
     return GET(url).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving player search results.')
         dispatch(createAction(actions.RECEIVE_PLAYER_SEARCH, null, metaGenerator)(payload))

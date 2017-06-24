@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { Button, Label } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
-import { FixtureDisplay, Loading, playerIsOnTeam } from 'utils'
+import { FixtureDisplay, Loading, TeamMMRDisplay, playerIsOnTeam } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
@@ -46,7 +46,6 @@ class TeamSnippet extends Component {
                                 </h4>
                                 <span className='pull-right'>
                                     <div className='text-right'>
-
                                         <i className={`fa fa-${team.available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
                                             &nbsp;Recruiting
                                     </div>
@@ -57,21 +56,21 @@ class TeamSnippet extends Component {
                                 <div style={{ clear: 'both' }}/>
                             </div>
 
-                            <div>
+                            <div style={{ marginBottom: '0.5rem' }}>
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={team.regions} fixture={regions}/>
                             </div>
-                            {/*<div>*/}
-                                {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
-                                {/*<FixtureDisplay value={team.average_mmr}/>*/}
-                            {/*</div>*/}
+                            <div style={{ marginBottom: '0.5rem' }}>
+                                <MMRIcon fixedWidth={true}/>&nbsp;
+                                <TeamMMRDisplay mmr={team.mmr_average}/>
+                            </div>
                             {team.available_positions.length > 0 &&
-                                <div>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                     <FixtureDisplay value={team.available_positions} fixture={positions}/>
                                 </div>
                             }
-                            <div>
+                            <div style={{ marginBottom: '0.5rem' }}>
                                 <PlayersIcon fixedWidth={true}/>&nbsp;
                                 {team.team_members.map(teamMember => (
                                     <div style={{ display: 'inline-block', marginRight: '0.5rem' }}

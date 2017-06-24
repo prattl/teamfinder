@@ -9,7 +9,7 @@ import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { Label, Button, Modal } from 'react-bootstrap'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, MMRIcon } from 'utils/components/icons'
 import TeamApplicationForm from 'components/forms/TeamApplicationForm'
 
@@ -74,7 +74,7 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, id, name, regions, team_members, fixtures, tryApplyToTeam,
+        const { available_positions, captain, id, name, regions, team_members, fixtures, tryApplyToTeam, mmr_average,
             player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
@@ -101,10 +101,10 @@ class TeamSearchResult extends Component {
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                             </div>
-                            {/*<div>*/}
-                                {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
-                                {/*<FixtureDisplay value={mmr}/>*/}
-                            {/*</div>*/}
+                            <div style={{ marginBottom: '0.5rem' }}>
+                                <MMRIcon fixedWidth={true}/>&nbsp;
+                                <TeamMMRDisplay mmr={mmr_average}/>
+                            </div>
                             <div style={{ marginBottom: '0.5rem' }}>
                                 <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                 <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>

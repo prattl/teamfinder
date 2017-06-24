@@ -40,13 +40,21 @@ class Player(AbstractBaseModel):
             new_player = False
 
         super(Player, self).save(*args, **kwargs)
-        
+
         if new_player:
             self.update_mmr()
 
     def update_mmr(self):
         from .tasks import update_player_mmr
         update_player_mmr(self.pk)
+
+    @property
+    def most_accurate_mmr(self):
+        if self.mmr:
+            return self.mmr
+        elif self.mmr_estimate:
+            return self.mmr_estimate
+        return -1
 
     class Meta:
         ordering = ['user__username']

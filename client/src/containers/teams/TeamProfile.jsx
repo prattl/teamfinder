@@ -7,31 +7,20 @@ import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 
 class TeamProfile extends Component {
 
     componentDidMount() {
         this.props.dispatch(requestTeam(this.props.params.id))
-        // console.log("PARAMS: ", this.props.params)
     }
 
     render() {
         const { params: { id }, teams: { teams } } = this.props
-
-        // const id = this.props.params.id
-        // const { teams } = this.props.teams
-        // if teams[id] is undefined or empty
         const team = teams[id] || {}
         const isLoading = team.isLoading
         const lastUpdated = team.lastUpdated
-
-        // or ...
-        // const teams = this.props.teams
-        // const team = teams.team
-        // const isLoading = teams.isLoading
-        // const lastUpdated = teams.lastUpdated
 
         const { fixtures: { regions, positions } } = this.props
 
@@ -61,15 +50,15 @@ class TeamProfile extends Component {
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={team.team.regions} fixture={regions}/>
                                 </div>
-                                {/*<div>*/}
-                                    {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
-                                    {/*<FixtureDisplay value={team.team.average_mmr}/>*/}
-                                {/*</div>*/}
-                                {team.team.available_positions.length > 0 &&
                                 <div style={{ marginBottom: '1rem' }}>
-                                    <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
-                                    <FixtureDisplay value={team.team.available_positions} fixture={positions}/>
+                                    <MMRIcon fixedWidth={true}/>&nbsp;
+                                    <TeamMMRDisplay mmr={team.team.mmr_average}/>
                                 </div>
+                                {team.team.available_positions.length > 0 &&
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
+                                        <FixtureDisplay value={team.team.available_positions} fixture={positions}/>
+                                    </div>
                                 }
                                 <div>
                                     <PlayersIcon fixedWidth={true}/>&nbsp;

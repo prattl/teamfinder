@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from common.api.permissions import IsStaffOrTargetPlayer
 from common.models import Region, Position, Application, Invitation, Status
 from players.models import Player
@@ -20,6 +22,9 @@ class PlayerViewSet(viewsets.ModelViewSet):
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
         positions = self.request.query_params.getlist('positions[]')
+        min_mmr = self.request.query_params.get('min_mmr')
+        max_mmr = self.request.query_params.get('max_mmr')
+        include_estimated_mmr = self.request.query_params.get('include_estimated_mmr')
 
         if keywords:
             queryset = queryset.filter(user__username__icontains=keywords)
@@ -27,6 +32,22 @@ class PlayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
         if positions:
             queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
+
+        if min_mmr:
+            min_mmr_query = Q(mmr__gte=min_mmr)
+            if include_estimated_mmr:
+                query = Q(mmr__isnull=True, mmr_estimate__gte=min_mmr) | min_mmr_query
+            else:
+                query = min_mmr_query
+            queryset = queryset.filter(query)
+        if max_mmr:
+            max_mmr_query = Q(mmr__lte=max_mmr)
+            if include_estimated_mmr:
+                query = Q(mmr__isnull=True, mmr_estimate__lte=max_mmr) | max_mmr_query
+            else:
+                query = max_mmr_query
+            queryset = queryset.filter(query)
+
         return queryset.order_by('-user__last_login')
 
     def list(self, request, *args, **kwargs):
