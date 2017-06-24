@@ -1,6 +1,5 @@
 import random
-from common.models import Position, Region, SkillBracket
-from common.api.tests import BaseTestCases
+from common.models import Position, Region
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from rest_framework import status
@@ -74,7 +73,6 @@ def testdata():
                                         password='123')
         player = user.player
         player.username = name.lower()
-        player.skill_bracket = SkillBracket.objects.order_by('?').first()
         for i in range(0, random.randint(1, 3)):
             player.regions.add(Region.objects.order_by('?').first())
         for i in range(0, random.randint(1, 3)):
@@ -112,7 +110,6 @@ class PlayerSerializerTests(BasePlayerTests):
 
         self.assertEqual(serializer.data, {'id': str(self.player.id),
                                            'username': str(self.player.username),
-                                           'skill_bracket': self.player.skill_bracket,
                                            'positions': list(self.player.positions.all()),
                                            'teams': list(self.player.teams.all()),
                                            'regions': list(self.player.regions.all()),
@@ -390,7 +387,6 @@ class AuthenticatedSelfPlayerDetailViewTests(AuthenticatedBasePlayerTests):
             'user': self.authenticated_user.pk,
             'username': 'new_username',
             'regions': [],
-            'skill_bracket': None,
             'teams': []
         }
         response = self.client.put(self.url, data)
@@ -481,7 +477,6 @@ class AuthenticatedSelfPlayerDetailViewSetTests(AuthenticatedBasePlayerTests,
         data = {
             'positions': [],
             'regions': [],
-            'skill_bracket': SkillBracket.objects.first().id,
             'teams': [],
             'username': 'new_username',
         }
@@ -489,7 +484,6 @@ class AuthenticatedSelfPlayerDetailViewSetTests(AuthenticatedBasePlayerTests,
         self.assertEqual(response.data['id'], str(self.authenticated_player.id))
         self.assertEqual(response.data['username'], 'new_username')
         self.assertEqual(response.data['positions'], [])
-        self.assertEqual(response.data['skill_bracket'], SkillBracket.objects.first().id)
         data = {}
         response = self.client.put(self.authenticated_detail_url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

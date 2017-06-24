@@ -1,12 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from common.models import (
-    Application,
-    ApplicationStatusHistory,
     CreatableModel,
     Position,
     Region,
-    SkillBracket,
     TeamMember,
     UpdateableModel,
 )
@@ -27,14 +24,6 @@ class ModelTests(TestCase):
     def test_UpdateableModel(self, instance=UpdateableModel()):
         self.assertIsInstance(instance.updated, type(None))
         self.assertAbstractModelSaveRaises(instance)
-
-    def test_SkillBracket(self):
-        self.assertEqual(SkillBracket.objects.count(), 10)
-        self.assertTrue(SkillBracket.objects.first().name < SkillBracket.objects.last().name)
-        skill_bracket = SkillBracket.objects.first()
-        self.assertTrue(type(skill_bracket).__name__ in repr(skill_bracket))
-        self.assertTrue(skill_bracket.name in repr(skill_bracket))
-        self.assertTrue(skill_bracket.name in str(skill_bracket))
 
     def test_Region(self):
         self.assertEqual(Region.objects.count(), 12)

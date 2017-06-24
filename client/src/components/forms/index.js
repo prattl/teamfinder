@@ -141,22 +141,6 @@ let RegionSelect = props => {
 
 RegionSelect = withAllFixtures(RegionSelect)
 
-let SkillBracketSelect = props => {
-    const { input, multi=false, fixtures: { skillBrackets: { items, isLoading, lastUpdated } } } = props
-    const options = Object.keys(items).map(itemId => ({
-        value: itemId, label: items[itemId].name
-    }))
-    return (!isLoading && lastUpdated) ? (
-        <SelectWrapper input={input}
-                       multi={multi}
-                       matchProp='label'
-                       placeholder='Skill Bracket'
-                       options={options} />
-        ): null
-}
-
-SkillBracketSelect = withAllFixtures(SkillBracketSelect)
-
 let PositionSelect = props => {
     const { input, multi=true, fixtures: { positions: { items, isLoading, lastUpdated } } } = props
     const primaryOptions = Object.keys(items).filter(itemId => !items[itemId].secondary).map(itemId => ({
@@ -183,7 +167,6 @@ PositionSelect = withAllFixtures(PositionSelect)
 
 export {
     RegionSelect,
-    SkillBracketSelect,
     PositionSelect,
     SinglePositionSelect
 }

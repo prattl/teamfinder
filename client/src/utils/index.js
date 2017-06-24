@@ -1,4 +1,5 @@
 import React from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 // TODO: This should all be organized somehow...
 
@@ -33,6 +34,31 @@ export const FixtureDisplay = ({ value, fixture }) => (
         </span>
     ) : null
 )
+
+const estimatedMMRTooltip = (
+    <Tooltip id='estimated-mmr-tooltip'>This is the player's estimated MMR.</Tooltip>
+)
+
+const noMMRTooltip = (
+    <Tooltip id='no-mmr-tooltip'>This player has chosen to keep their MMR hidden from their Steam profile.</Tooltip>
+)
+
+export const MMRDisplay = ({ mmr, mmrEstimate }) => {
+    if (mmr) {
+        return <span>{mmr}</span>
+    } else if (mmrEstimate) {
+        return <span>~{mmrEstimate}&nbsp;
+            <OverlayTrigger placement='top' overlay={estimatedMMRTooltip}>
+                <i className='fa fa-info-circle' />
+            </OverlayTrigger>
+        </span>
+    }
+    return <span>
+        <OverlayTrigger placement='top' overlay={noMMRTooltip}>
+            <i className='fa fa-eye-slash' />
+        </OverlayTrigger>
+    </span>
+}
 
 export const playerIsCaptain = (player, team) => (
     player.id === team.captain.id

@@ -12,7 +12,6 @@ const initialFixtureState = endpoint => ({
 const initialState = {
     positions: initialFixtureState('/api/positions/'),
     regions: initialFixtureState('/api/regions/'),
-    skillBrackets: initialFixtureState('/api/skill_brackets/')
 }
 
 const fixtures = handleActions({

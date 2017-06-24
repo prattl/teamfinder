@@ -1,14 +1,12 @@
-from common.models import Position, Region, SkillBracket, TeamMember
+from common.models import Position, Region, TeamMember
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import resolve
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.reverse import reverse
 from rest_framework.test import APIRequestFactory, APITestCase
 from teams.models import Team
 from tf_auth.models import TFUser
-from . import permissions, serializers, views
-from .serializers import MembershipSerializer, PositionSerializer, RegionSerializer, SkillBracketSerializer
+from .serializers import MembershipSerializer, PositionSerializer, RegionSerializer
 
 User = get_user_model()
 
@@ -50,17 +48,6 @@ class CommonApiSerializerTests(APITestCase):
                                            'secondary': False,
                                            'url': absolute_url})
 
-    def test_SkillBracketSerializer(self):
-        name = 'Test Skill Bracket'
-        skill_bracket = SkillBracket.objects.create(name=name)
-        url = reverse('skillbracket-detail', (skill_bracket.id, ))
-        request = self.factory.get(url)
-        absolute_url = request.build_absolute_uri()
-        serializer = SkillBracketSerializer(instance=skill_bracket, context={'request': request})
-        self.assertEqual(serializer.data, {'id': str(skill_bracket.id),
-                                           'name': name,
-                                           'url': absolute_url})
-
     def test_MembershipSerializer(self):
         user = TFUser.objects.create_user('lenny+tftests@prattdev.net', '12345678')
         player = user.player
@@ -100,7 +87,7 @@ class BaseTestCases:
 
 class CommonModelTests:
     """
-    Test cases for HTTP methods against the common models (Position, Region, and SkillBracket)
+    Test cases for HTTP methods against the common models (Position and Region)
     """
     class UnauthenticatedListViewTests(APITestCase):
         url = ''
@@ -189,14 +176,6 @@ class UnauthenticatedRegionDetailViewTests(CommonModelTests.UnauthenticatedDetai
     url = reverse('region-detail', (Region.objects.first().pk, ))
 
 
-class UnauthenticatedSkillBracketListViewTests(CommonModelTests.UnauthenticatedListViewTests):
-    url = reverse('skillbracket-list')
-
-
-class UnauthenticatedSkillBracketDetailViewTests(CommonModelTests.UnauthenticatedDetailViewTests):
-    url = reverse('skillbracket-detail', (SkillBracket.objects.first().pk, ))
-
-
 class AuthenticatedPositionListViewTests(BaseTestCases.AuthenticatedTests,
                                          CommonModelTests.UnauthenticatedListViewTests):
     url = reverse('position-list')
@@ -217,56 +196,7 @@ class AuthenticatedRegionDetailViewTests(BaseTestCases.AuthenticatedTests,
     url = reverse('region-detail', (Region.objects.first().pk, ))
 
 
-class AuthenticatedSkillBracketListViewTests(BaseTestCases.AuthenticatedTests,
-                                             CommonModelTests.UnauthenticatedListViewTests):
-    url = reverse('skillbracket-list')
-
-
-class AuthenticatedSkillBracketDetailViewTests(BaseTestCases.AuthenticatedTests,
-                                               CommonModelTests.UnauthenticatedDetailViewTests):
-    url = reverse('skillbracket-detail', (SkillBracket.objects.first().pk, ))
-
-
 # Viewset test cases
-class UnauthenticatedSkillBracketListViewSetTests(APITestCase):
-    url = reverse('skillbracket-list')
-
-    def test_head(self):
-        response = self.client.head(self.url)
-        self.assertEqual(response.data['count'], SkillBracket.objects.count())
-
-    def test_options(self):
-        response = self.client.options(self.url)
-        self.assertEqual(response.data['name'], 'Skill Bracket List')
-        self.assertTrue('application/json' in response.data['renders'])
-
-    def test_get(self):
-        response = self.client.get(self.url)
-        self.assertEqual(response.data['count'], SkillBracket.objects.count())
-
-
-class UnauthenticatedSkillBracketDetailViewSetTests(APITestCase):
-    skill_bracket = SkillBracket.objects.first()
-    url = reverse('skillbracket-detail', (skill_bracket.pk, ))
-
-    def assertDataEqualsInstance(self, data):
-        self.assertEqual(data['id'], str(self.skill_bracket.id))
-        self.assertEqual(data['name'], str(self.skill_bracket.name))
-
-    def test_head(self):
-        response = self.client.head(self.url)
-        self.assertDataEqualsInstance(response.data)
-
-    def test_options(self):
-        response = self.client.options(self.url)
-        self.assertEqual(response.data['name'], 'Skill Bracket Instance')
-        self.assertTrue('application/json' in response.data['renders'])
-
-    def test_get(self):
-        response = self.client.get(self.url)
-        self.assertDataEqualsInstance(response.data)
-
-
 class UnauthenticatedRegionListViewSetTests(APITestCase):
     url = reverse('region-list')
 
@@ -343,16 +273,6 @@ class UnauthenticatedPositionDetailViewSetTests(APITestCase):
     def test_get(self):
         response = self.client.get(self.url)
         self.assertDataEqualsInstance(response.data)
-
-
-class AuthenticatedSkillBracketListViewSetTests(BaseTestCases.AuthenticatedTests,
-                                                UnauthenticatedSkillBracketListViewSetTests):
-    pass
-
-
-class AuthenticatedSkillBracketDetailViewSetTests(BaseTestCases.AuthenticatedTests,
-                                                  UnauthenticatedSkillBracketDetailViewSetTests):
-    pass
 
 
 class AuthenticatedRegionListViewSetTests(BaseTestCases.AuthenticatedTests,

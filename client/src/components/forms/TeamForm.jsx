@@ -4,11 +4,11 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
+import { createInput, createSelectInput, RegionSelect, PositionSelect } from 'components/forms'
 
 const validate = values => {
     const errors = {}
-    const fields = ['name', 'regions', 'skill_bracket', 'player_position', 'available_positions']
+    const fields = ['name', 'regions', 'player_position', 'available_positions']
     const multiSelectFields = ['regions', 'available_positions']
     fields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
@@ -26,7 +26,6 @@ const validate = values => {
 
 const NameInput = createInput({ label: 'Name' })
 const RegionInput = createSelectInput('Regions', RegionSelect)
-const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
 const PlayerPositionInput = createSelectInput('My Position', PositionSelect, false)
 const AvailablePositionInput = createSelectInput('Available Positions', PositionSelect)
 
@@ -71,9 +70,6 @@ class TeamForm extends Component {
                 </div>
                 <div>
                     <Field name='regions' component={RegionInput} />
-                </div>
-                <div>
-                    <Field name='skill_bracket' component={SkillBracketInput} />
                 </div>
                 {showPlayerPosition && (
                     <div>

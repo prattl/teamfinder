@@ -20,7 +20,6 @@ class PlayerViewSet(viewsets.ModelViewSet):
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
         positions = self.request.query_params.getlist('positions[]')
-        skill_bracket = self.request.query_params.get('skill_bracket')
 
         if keywords:
             queryset = queryset.filter(user__username__icontains=keywords)
@@ -28,8 +27,6 @@ class PlayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(regions__in=Region.objects.filter(pk__in=regions))
         if positions:
             queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
-        if skill_bracket:
-            queryset = queryset.filter(skill_bracket_id=skill_bracket)
         return queryset.order_by('-user__last_login')
 
     def list(self, request, *args, **kwargs):

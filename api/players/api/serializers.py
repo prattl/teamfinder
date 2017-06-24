@@ -1,4 +1,3 @@
-from common.models import Position, Region
 from players.models import Player
 from rest_framework import serializers
 from teams.models import Team
@@ -78,12 +77,14 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'username',
             'email',
             'last_login',
-            'skill_bracket',
             'regions',
             'positions',
             'teams',
             'avatar',
             'avatarfull',
+            'mmr',
+            'mmr_estimate',
+            'mmr_last_updated',
         )
         read_only_fields = (
             'id',
@@ -94,6 +95,9 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'last_login',
             'avatar',
             'avatarfull',
+            'mmr',
+            'mmr_estimate',
+            'mmr_last_updated',
         )
 
 

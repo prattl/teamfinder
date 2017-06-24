@@ -1,12 +1,12 @@
 import random
-from common.models import Position, Region, SkillBracket, TeamMember
+from common.models import Position, Region, TeamMember
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from players.models import Player
 from teams.models import Team
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory, APITestCase
+from rest_framework.test import APITestCase
 
 User = get_user_model()
 
@@ -18,7 +18,6 @@ def testdata():
             name='Team {}'.format(i),
             captain=captain,
             creator=captain,
-            skill_bracket=SkillBracket.objects.order_by('?').first()
         )
         for j in range(0, random.randint(1, 3)):
             team.regions.add(Region.objects.order_by('?').first())

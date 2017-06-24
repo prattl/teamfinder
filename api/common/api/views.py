@@ -3,7 +3,6 @@ from common.models import (
     Invitation,
     Position,
     Region,
-    SkillBracket,
     TeamMember,
 )
 from django.contrib.auth import get_user_model
@@ -29,17 +28,11 @@ from .serializers import (
     ReadOnlyApplicationSerializer,
     ReadOnlyInvitationSerializer,
     RegionSerializer,
-    SkillBracketSerializer,
     MembershipSerializer,
     UserEmailPreferencesSerializer,
 )
 
 User = get_user_model()
-
-
-class SkillBracketViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = SkillBracket.objects.all()
-    serializer_class = SkillBracketSerializer
 
 
 class RegionViewSet(viewsets.ReadOnlyModelViewSet):

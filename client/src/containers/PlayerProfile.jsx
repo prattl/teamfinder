@@ -4,8 +4,8 @@ import moment from 'moment'
 
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { FixtureDisplay } from 'utils'
-import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { FixtureDisplay, MMRDisplay } from 'utils'
+import { RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -85,7 +85,7 @@ class PlayerProfile extends Component {
 
     render() {
         const { selectedPlayer: player, player: ownPlayer,
-            fixtures: { regions, positions, skillBrackets } } = this.props
+            fixtures: { regions, positions } } = this.props
         const { addedFriend, showAddedModal } = this.state
 
         if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
@@ -107,6 +107,12 @@ class PlayerProfile extends Component {
                         <Col xs={4} sm={3}>
                             <Image thumbnail src={player.avatarfull} />
                             <div style={{ marginTop: '1rem' }}>
+                                <a href={`http://steamcommunity.com/profiles/${player.steamid}`}
+                                   target='_blank'>
+                                    View Steam Profile
+                                </a>
+                            </div>
+                            <div style={{ marginTop: '1rem' }}>
                                 <FriendButton friends={ownPlayer.steam_friends}
                                               steamId={player.steamid}
                                               ownSteamId={ownPlayer.steamid}
@@ -119,9 +125,9 @@ class PlayerProfile extends Component {
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.regions} fixture={regions}/>
                             </FixtureRow>
-                            <FixtureRow label='Skill Bracket:'>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
+                            <FixtureRow label='MMR:'>
+                                <MMRIcon fixedWidth={true}/>&nbsp;
+                                <MMRDisplay mmr={player.mmr} mmrEstimate={player.mmr_estimate} />
                             </FixtureRow>
                             <FixtureRow label='Positions:'>
                                 <PositionIcon fixedWidth={true}/>&nbsp;

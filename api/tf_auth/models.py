@@ -80,6 +80,7 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     USERNAME_FIELD = 'steamid'
     REQUIRED_FIELDS = ['username', 'email']
+    STEAM32_MODIFIER = 76561197960265728
 
     class Meta:
         ordering = ('username', )
@@ -101,6 +102,10 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 
     def should_send_email(self, tag):
         return self.email and self.user_email_preferences.should_send_email(tag)
+
+    @property
+    def steamid32(self):
+        return int(self.steamid) - self.STEAM32_MODIFIER
 
     def __str__(self):
         return str(self.username)

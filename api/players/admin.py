@@ -14,10 +14,21 @@ class TeamsCaptainOfInline(TeamAdminInline):
 
 class PlayerAdmin(admin.ModelAdmin):
     model = models.Player
-    fields = ('id', 'created', 'updated', 'get_username', 'user', 'skill_bracket', 'regions', 'positions', )
+    fieldsets = (
+        (None, {
+            'fields': ('id', 'get_username', 'user', 'created', 'updated', ),
+        }),
+        ('Metadata', {
+            'fields': ('deprecated_skill_bracket', 'regions', 'positions', ),
+        }),
+        ('MMR', {
+            'fields': ('mmr', 'mmr_estimate', 'mmr_last_updated', ),
+        }),
+    )
     readonly_fields = ('id', 'created', 'updated', 'get_username', )
-    list_display = ('get_user_email', 'get_username', 'skill_bracket', 'get_date_joined', 'created', 'updated', )
-    list_filter = ('user__date_joined', 'skill_bracket', 'regions', 'positions', 'created', 'updated', )
+    list_display = ('get_user_email', 'get_username', 'deprecated_skill_bracket', 'mmr', 'mmr_estimate',
+                    'get_date_joined', 'created', 'updated', )
+    list_filter = ('user__date_joined', 'deprecated_skill_bracket', 'regions', 'positions', 'created', 'updated', )
     search_fields = ('user__username', )
     raw_id_fields = ('user', )
     inlines = (
