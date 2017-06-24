@@ -181,8 +181,25 @@ let InterestSelect = props => {
 
 InterestSelect = withAllFixtures(InterestSelect)
 
+let LanguageSelect = props => {
+    const { input, multi=true, fixtures: { languages: { items, isLoading, lastUpdated } } } = props
+    const options = Object.keys(items).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    return (!isLoading && lastUpdated) ? (
+        <SelectWrapper input={input}
+                       multi={multi}
+                       matchProp='label'
+                       placeholder='Languages'
+                       options={options} />
+        ) : null
+}
+
+LanguageSelect = withAllFixtures(LanguageSelect)
+
 export {
     InterestSelect,
+    LanguageSelect,
     RegionSelect,
     PositionSelect,
     SinglePositionSelect

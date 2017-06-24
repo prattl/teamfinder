@@ -11,6 +11,7 @@ const initialFixtureState = endpoint => ({
 
 const initialState = {
     interests: initialFixtureState('/api/interests/'),
+    languages: initialFixtureState('/api/languages/'),
     positions: initialFixtureState('/api/positions/'),
     regions: initialFixtureState('/api/regions/'),
 }

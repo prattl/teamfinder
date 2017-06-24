@@ -16,10 +16,11 @@ export default actions
 
 export const requestTeamSearch = (values) => (dispatch, getStates) => {
     dispatch(createAction(actions.REQUEST_TEAM_SEARCH)())
-    const { keywords, interests, regions, positions } = values
+    const { keywords, interests, languages, regions, positions } = values
     let url = createUrl(`/api/teams/?keywords=${keywords}`)
     regions.forEach(region => url += `&regions[]=${region}`)
     interests.forEach(interest => url += `&interests[]=${interest}`)
+    languages.forEach(language => url += `&languages[]=${language}`)
     positions.forEach(position => url += `&available_positions[]=${position}`)
     return GET(url).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving teams search results.')

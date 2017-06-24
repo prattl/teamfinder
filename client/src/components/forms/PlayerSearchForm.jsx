@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { playerSubmit } from 'components/forms/SearchForm'
-import { createInput, InterestSelect, RegionSelect, PositionSelect } from 'components/forms'
+import { createInput, InterestSelect, LanguageSelect, RegionSelect, PositionSelect } from 'components/forms'
 import { EstimatedMMRHelpIcon } from 'utils'
 
 const KeywordsInput = createInput()
@@ -45,7 +45,10 @@ class PlayerSearchForm extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col sm={4} smOffset={4} className='text-center'>
+                    <Col sm={4}>
+                        <Field name='languages' component={LanguageSelect} />
+                    </Col>
+                    <Col sm={4}>
                         <Button type='submit' disabled={submitting}>
                             <i className='fa fa-search'/>&nbsp;Submit
                         </Button>
@@ -62,6 +65,7 @@ PlayerSearchForm = reduxForm({
     initialValues: {
         keywords: '',
         interests: [],
+        languages: [],
         regions: [],
         positions: [],
         min_mmr: null,

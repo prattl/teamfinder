@@ -30,6 +30,7 @@ class EditProfile extends Component {
         const initialValues = player ? ({
             email: player.email,
             interests: player.interests,
+            languages: player.languages,
             positions: player.positions,
             regions: player.regions
         }) : {}

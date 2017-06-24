@@ -7,7 +7,7 @@ import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading, MMRDisplay } from 'utils'
-import { CaptainIcon, InterestIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
+import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import { tryInviteToTeam } from 'actions/playerSearch'
 
 class PlayerSearchResult extends Component {
@@ -45,7 +45,7 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, avatarfull, last_login, username, interests, regions, positions, teams, mmr,
+        const { id, fixtures, avatarfull, last_login, username, interests, languages, regions, positions, teams, mmr,
             mmr_estimate } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
@@ -88,6 +88,10 @@ class PlayerSearchResult extends Component {
                                         <FixtureDisplay value={interests} fixture={fixtures.interests}/>
                                     </div>
                                 )}
+                                <div style={{ marginBottom: '0.5rem' }}>
+                                    <LanguageIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={languages} fixture={fixtures.languages}/>
+                                </div>
                                 <div>
                                     <i className='fa fa-fw fa-clock-o' />&nbsp;
                                     Active {moment(last_login).fromNow()}

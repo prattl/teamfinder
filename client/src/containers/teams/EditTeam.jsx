@@ -14,6 +14,7 @@ class EditTeam extends Component {
             name: team.name,
             available_positions: team.available_positions,
             interests: team.interests,
+            languages: team.languages,
             regions: team.regions
         }) : {}
         return (

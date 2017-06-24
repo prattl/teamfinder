@@ -8,7 +8,8 @@ import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
-import { CaptainIcon, InterestIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
+import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PlayersIcon, PositionIcon,
+    MMRIcon } from 'utils/components/icons'
 
 class TeamProfile extends Component {
 
@@ -22,7 +23,7 @@ class TeamProfile extends Component {
         const isLoading = team.isLoading
         const lastUpdated = team.lastUpdated
 
-        const { fixtures: { interests, regions, positions } } = this.props
+        const { fixtures: { interests, languages, regions, positions } } = this.props
 
         return (
             <div>
@@ -66,6 +67,10 @@ class TeamProfile extends Component {
                                         <FixtureDisplay value={team.team.interests} fixture={interests}/>
                                     </div>
                                 }
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <LanguageIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={team.team.languages} fixture={languages}/>
+                                </div>
                                 <div>
                                     <PlayersIcon fixedWidth={true}/>&nbsp;
                                     {team.team.team_members.map(teamMember => (

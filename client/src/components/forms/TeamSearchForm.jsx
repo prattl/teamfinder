@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { teamSubmit } from 'components/forms/SearchForm'
-import { createInput, InterestSelect, RegionSelect, PositionSelect } from 'components/forms'
+import { createInput, InterestSelect, LanguageSelect, RegionSelect, PositionSelect } from 'components/forms'
 
 const KeywordsInput = createInput()
 
@@ -28,6 +28,9 @@ class TeamSearchForm extends Component {
                         <Field name='interests' component={InterestSelect} />
                     </Col>
                     <Col sm={4}>
+                        <Field name='languages' component={LanguageSelect} />
+                    </Col>
+                    <Col sm={4}>
                         <Button type='submit' disabled={submitting}>
                             <i className='fa fa-search'/>&nbsp;Submit
                         </Button>
@@ -44,6 +47,7 @@ TeamSearchForm = reduxForm({
     initialValues: {
         keywords: '',
         interests: [],
+        languages: [],
         regions: [],
         positions: [],
     },

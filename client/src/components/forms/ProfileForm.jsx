@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, InterestSelect, RegionSelect,
+import { createInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
     PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
@@ -43,6 +43,7 @@ const EmailInput = createInput({
     'your settings.'
 })
 const InterestInput = createSelectInput('Interests', InterestSelect)
+const LanguageInput = createSelectInput('Languages', LanguageSelect)
 const RegionInput = createSelectInput('Regions', RegionSelect)
 const PositionInput = createSelectInput('Positions', PositionSelect)
 
@@ -64,6 +65,9 @@ class ProfileForm extends Component {
                 </div>
                 <div>
                     <Field name='interests' component={InterestInput} />
+                </div>
+                <div>
+                    <Field name='languages' component={LanguageInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>

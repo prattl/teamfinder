@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, MMRDisplay } from 'utils'
-import { InterestIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
+import { InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -85,7 +85,7 @@ class PlayerProfile extends Component {
 
     render() {
         const { selectedPlayer: player, player: ownPlayer,
-            fixtures: { interests, regions, positions } } = this.props
+            fixtures: { interests, languages, regions, positions } } = this.props
         const { addedFriend, showAddedModal } = this.state
 
         if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
@@ -133,12 +133,16 @@ class PlayerProfile extends Component {
                                 <PositionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.positions} fixture={positions}/>
                             </FixtureRow>
-                            {player.interests.length > 0 && (
+                            {player.interests && player.interests.length > 0 && (
                                 <FixtureRow label='Interests:'>
                                     <InterestIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={player.interests} fixture={interests}/>
                                 </FixtureRow>
                             )}
+                            <FixtureRow label='Languages:'>
+                                <LanguageIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={player.languages} fixture={languages}/>
+                            </FixtureRow>
                             <div style={{ marginTop: '1rem' }} />
                             <FixtureRow label='Last login:'>
                                 <i className='fa fa-fw fa-clock-o' />&nbsp;
