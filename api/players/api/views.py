@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from common.api.permissions import IsStaffOrTargetPlayer
-from common.models import Interest, Region, Position, Application, Status
+from common.models import Interest, Language, Region, Position, Application, Status
 from players.models import Player
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import list_route
@@ -23,6 +23,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         regions = self.request.query_params.getlist('regions[]')
         positions = self.request.query_params.getlist('positions[]')
         interests = self.request.query_params.getlist('interests[]')
+        languages = self.request.query_params.getlist('languages[]')
         min_mmr = self.request.query_params.get('min_mmr')
         max_mmr = self.request.query_params.get('max_mmr')
         include_estimated_mmr = self.request.query_params.get('include_estimated_mmr')
@@ -35,6 +36,8 @@ class PlayerViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(positions__in=Position.objects.filter(pk__in=positions))
         if interests:
             queryset = queryset.filter(interests__in=Interest.objects.filter(pk__in=interests))
+        if languages:
+            queryset = queryset.filter(languages__in=Language.objects.filter(pk__in=languages))
 
         if min_mmr:
             min_mmr_query = Q(mmr__gte=min_mmr)

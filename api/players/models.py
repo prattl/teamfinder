@@ -22,6 +22,7 @@ class Player(AbstractBaseModel):
     regions = models.ManyToManyField('common.Region', related_name='players', blank=True)
     positions = models.ManyToManyField('common.Position', related_name='players', blank=True)
     interests = models.ManyToManyField('common.Interest', related_name='players', blank=True)
+    languages = models.ManyToManyField('common.Language', related_name='players', blank=True)
 
     mmr = models.IntegerField(null=True, blank=True)
     mmr_estimate = models.IntegerField(null=True, blank=True)

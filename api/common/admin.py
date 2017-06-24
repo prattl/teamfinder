@@ -14,6 +14,18 @@ class RegionAdmin(admin.ModelAdmin):
     readonly_fields = ('id', )
 
 
+class InterestAdmin(admin.ModelAdmin):
+    model = models.Interest
+    fields = ('id', 'name', )
+    readonly_fields = ('id', )
+
+
+class LanguageAdmin(admin.ModelAdmin):
+    model = models.Language
+    fields = ('id', 'name', )
+    readonly_fields = ('id', )
+
+
 class PositionAdmin(admin.ModelAdmin):
     model = models.Position
     fields = ('id', 'name', 'secondary', )
@@ -66,6 +78,8 @@ class TeamInvitationAdminInline(InvitationAdminInline):
 admin.site.register(models.Application)
 admin.site.register(models.EmailRecord, EmailRecordAdmin)
 admin.site.register(models.Invitation)
+admin.site.register(models.Interest, InterestAdmin)
+admin.site.register(models.Language, LanguageAdmin)
 admin.site.register(models.Region, RegionAdmin)
 admin.site.register(models.Position, PositionAdmin)
 admin.site.register(models.TeamMember, TeamMemberAdmin)

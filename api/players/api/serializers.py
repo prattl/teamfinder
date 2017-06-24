@@ -59,6 +59,8 @@ class BasePlayerSerializer(serializers.ModelSerializer):
     @staticmethod
     def setup_eager_loading(queryset):
         queryset = queryset.prefetch_related(
+            'interests',
+            'languages',
             'positions',
             'regions',
             'teams',
@@ -80,6 +82,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'regions',
             'positions',
             'interests',
+            'languages',
             'teams',
             'avatar',
             'avatarfull',
@@ -110,6 +113,7 @@ class PlayerSerializer(BasePlayerSerializer):
     regions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     positions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     interests = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    languages = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     teams = PlayerTeamSerializer(read_only=True, many=True)
 
 

@@ -2,6 +2,7 @@ from common.models import (
     Application,
     Interest,
     Invitation,
+    Language,
     Position,
     Region,
     TeamMember,
@@ -24,6 +25,7 @@ from .serializers import (
     EditMembershipAsCaptainSerializer,
     InterestSerializer,
     InvitationSerializer,
+    LanguageSerializer,
     PositionSerializer,
     ReadOnlyApplicationSerializer,
     ReadOnlyInvitationSerializer,
@@ -48,6 +50,11 @@ class PositionViewSet(viewsets.ReadOnlyModelViewSet):
 class InterestViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Interest.objects.all()
     serializer_class = InterestSerializer
+
+
+class LanguageViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
 
 
 class JoinableEventViewSet(viewsets.ModelViewSet):

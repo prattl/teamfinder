@@ -94,6 +94,10 @@ class Interest(Fixture):
     pass
 
 
+class Language(Fixture):
+    pass
+
+
 class Status:
     NONE = 0
     PENDING = 1

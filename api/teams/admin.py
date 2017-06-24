@@ -6,7 +6,7 @@ from teams.models import Team
 
 class TeamAdminInline(admin.TabularInline):
     model = Team
-    fields = ('name', 'players', 'regions', 'available_positions', 'captain', 'created', )
+    fields = ('name', 'players', 'regions', 'available_positions', 'interests', 'languages', 'captain', 'created', )
     readonly_fields = fields
     extra = 0
     show_change_link = True
@@ -14,10 +14,11 @@ class TeamAdminInline(admin.TabularInline):
 
 class TeamAdmin(admin.ModelAdmin):
     model = Team
-    fields = ('id', 'created', 'updated', 'name', 'players', 'regions', 'available_positions', 'captain', 'creator', )
+    fields = ('id', 'created', 'updated', 'name', 'players', 'regions', 'available_positions', 'interests',
+              'languages', 'captain', 'creator', )
     readonly_fields = ('id', 'players', 'created', 'updated', )
     list_display = ('name', 'captain', 'creator', 'created', 'updated', )
-    list_filter = ('regions', 'available_positions', 'created', 'updated', )
+    list_filter = ('regions', 'available_positions', 'interests', 'languages', 'created', 'updated', )
     inlines = (
         TeamMemberAdminInline,
         ApplicationAdminInline,

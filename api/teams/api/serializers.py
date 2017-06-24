@@ -1,5 +1,5 @@
 from common.api.serializers import MembershipSerializer
-from common.models import Interest, Position, Region
+from common.models import Interest, Language, Position, Region
 from players.models import Player
 from teams.models import Team
 from rest_framework import serializers
@@ -52,6 +52,7 @@ class TeamSerializer(serializers.ModelSerializer):
     regions = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all(), many=True)
     available_positions = serializers.PrimaryKeyRelatedField(queryset=Position.objects.all(), many=True)
     interests = serializers.PrimaryKeyRelatedField(queryset=Interest.objects.all(), many=True)
+    languages = serializers.PrimaryKeyRelatedField(queryset=Language.objects.all(), many=True)
     team_members = PlayerMembershipSerializer(source='teammember_set', many=True, read_only=True)
     captain = TeamPlayerSerializer()
     creator = TeamPlayerSerializer(read_only=True)
@@ -65,6 +66,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'regions',
             'available_positions',
             'interests',
+            'languages',
             'team_members',
             'captain',
             'creator',
@@ -97,6 +99,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
             # 'player_position',  # TODO
             'available_positions',
             'interests',
+            'languages',
             'captain',
             'creator',
             'mmr_average',
@@ -129,6 +132,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
             'regions',
             'available_positions',
             'interests',
+            'languages',
             'captain',
             'creator',
             'mmr_average',

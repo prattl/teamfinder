@@ -2,6 +2,7 @@ from common.models import (
     Application,
     Interest,
     Invitation,
+    Language,
     Position,
     Region,
     Status,
@@ -42,6 +43,13 @@ class InterestSerializer(FixtureSerializer):
 
     class Meta(FixtureSerializer.Meta):
         model = Interest
+
+
+class LanguageSerializer(FixtureSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='language-detail')
+
+    class Meta(FixtureSerializer.Meta):
+        model = Language
 
 
 class PositionSerializer(serializers.ModelSerializer):
