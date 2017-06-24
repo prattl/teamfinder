@@ -49,11 +49,12 @@ class EmailMixin:
         )
 
 
-class SkillBracket(UUIDModel):
+class Fixture(UUIDModel):
     name = models.CharField(max_length=255, unique=True)
 
     class Meta:
         ordering = ['name']
+        abstract = True
 
     def __repr__(self):
         return "<{}: {}>".format(type(self).__name__, self.name)
@@ -62,17 +63,12 @@ class SkillBracket(UUIDModel):
         return self.name
 
 
-class Region(UUIDModel):
-    name = models.CharField(max_length=255, unique=True)
+class SkillBracket(Fixture):
+    pass
 
-    class Meta:
-        ordering = ['name']
 
-    def __repr__(self):
-        return "<{}: {}>".format(type(self).__name__, self.name)
-
-    def __str__(self):
-        return self.name
+class Region(Fixture):
+    pass
 
 
 class PositionQuerySet(models.QuerySet):
@@ -83,22 +79,19 @@ class PositionQuerySet(models.QuerySet):
         return self.filter(secondary=True)
 
 
-class Position(UUIDModel):
-    name = models.CharField(max_length=255)
+class Position(Fixture):
     secondary = models.BooleanField(default=False,
                                     help_text='Designates whether this position is only useful in the context of a '
                                               'team member, but not a Team or a Player alone (e.g. Coach or Standin).')
     objects = PositionQuerySet.as_manager()
 
-    class Meta:
-        ordering = ['name']
-
     def __repr__(self):
         return "<{}: {}{}>".format(type(self).__name__, self.name,
                                    ' (secondary)' if self.secondary else '')
 
-    def __str__(self):
-        return self.name
+
+class Interest(Fixture):
+    pass
 
 
 class Status:
