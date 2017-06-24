@@ -16,7 +16,8 @@ class FeedbackButton extends Component {
         return (
             <Button id='feedback-button' className={!inline && 'fixed'}
                     bsStyle='warning' onClick={() => onClick()} {...props}>
-                <strong>Submit Feedback</strong> <i>(alpha)</i>
+                <span className='hidden-xs'><strong>Submit Feedback</strong> <i>(alpha)</i></span>
+                <span className='visible-xs'><i className='fa fa-plus' /></span>
             </Button>
         )
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 
-import Alert from 'react-s-alert';
+import Alert from 'react-s-alert'
 import { Grid } from 'react-bootstrap'
 import TopNav from 'components/layout/TopNav'
 import Footer from 'components/layout/Footer'
