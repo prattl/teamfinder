@@ -47,6 +47,19 @@ const noTeamMMRTooltip = (
     <Tooltip id='no-team-mmr-tooltip'>Unable to calculate average MMR for this team.</Tooltip>
 )
 
+const estimatedMMRFilterTooltip = (
+    <Tooltip id='estimated-mmr-filter-tooltip'>
+        Check this box to include matches for estimated MMR for players who don't make their MMR
+        public. Estimated MMR ratings are collected from OpenDota.
+    </Tooltip>
+)
+
+export const EstimatedMMRHelpIcon = props => (
+    <OverlayTrigger placement='top' overlay={estimatedMMRFilterTooltip}>
+        <i className='fa fa-info-circle' />
+    </OverlayTrigger>
+)
+
 export const TeamMMRDisplay = ({ mmr }) => (
     mmr && mmr > -1 ? <span>{mmr}</span> : (
         <OverlayTrigger placement='top' overlay={noTeamMMRTooltip}>
