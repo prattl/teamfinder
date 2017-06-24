@@ -6,7 +6,7 @@ import moment from 'moment'
 import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
-import { FixtureDisplay, Loading } from 'utils'
+import { FixtureDisplay, Loading, MMRDisplay } from 'utils'
 import { CaptainIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import { tryInviteToTeam } from 'actions/playerSearch'
 
@@ -45,7 +45,8 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, avatarfull, last_login, username, regions, positions, teams } = this.props
+        const { id, fixtures, avatarfull, last_login, username, regions, positions, teams, mmr,
+            mmr_estimate } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -73,10 +74,10 @@ class PlayerSearchResult extends Component {
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                                 </div>
-                                {/*<div>*/}
-                                    {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
-                                    {/*<FixtureDisplay value={mmr}/>*/}
-                                {/*</div>*/}
+                                <div>
+                                    <MMRIcon fixedWidth={true}/>&nbsp;
+                                    <MMRDisplay mmr={mmr} mmrEstimate={mmr_estimate} />
+                                </div>
                                 <div>
                                     <PositionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={positions} fixture={fixtures.positions}/>

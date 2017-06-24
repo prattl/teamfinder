@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { FixtureDisplay } from 'utils'
+import { FixtureDisplay, MMRDisplay } from 'utils'
 import { RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
@@ -127,7 +127,7 @@ class PlayerProfile extends Component {
                             </FixtureRow>
                             <FixtureRow label='MMR:'>
                                 <MMRIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.mmr}/>
+                                <MMRDisplay mmr={player.mmr} mmrEstimate={player.mmr_estimate} />
                             </FixtureRow>
                             <FixtureRow label='Positions:'>
                                 <PositionIcon fixedWidth={true}/>&nbsp;
