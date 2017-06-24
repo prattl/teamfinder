@@ -31,6 +31,19 @@ class Player(AbstractBaseModel):
 
     objects = PlayerQuerySet.as_manager()
 
+    def save(self, *args, **kwargs):
+        try:
+            Player.objects.get(pk=self.pk)
+        except Player.DoesNotExist:
+            new_player = True
+        else:
+            new_player = False
+
+        super(Player, self).save(*args, **kwargs)
+        
+        if new_player:
+            self.update_mmr()
+
     def update_mmr(self):
         from .tasks import update_player_mmr
         update_player_mmr(self.pk)
