@@ -1,5 +1,9 @@
-from common.models import AbstractBaseModel, CreatableModel, UpdateableModel, UUIDModel
+import statistics
+
 from django.db import models
+from django.utils import timezone
+
+from common.models import AbstractBaseModel, CreatableModel, UpdateableModel, UUIDModel
 
 
 class Team(AbstractBaseModel):
@@ -14,8 +18,30 @@ class Team(AbstractBaseModel):
     creator = models.ForeignKey('players.Player', null=True, blank=True, related_name='teams_created',
                                 on_delete=models.SET_NULL)
 
+    mmr_average = models.IntegerField(null=True, blank=True)
+    mmr_last_updated = models.DateTimeField(null=True, blank=True)
+
     # TODO:
     # accepting_applications = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            Team.objects.get(pk=self.pk)
+        except Team.DoesNotExist:
+            new_team = True
+        else:
+            new_team = False
+
+        super(Team, self).save(*args, **kwargs)
+
+        if new_team:
+            self.update_mmr_average()
+
+    def update_mmr_average(self):
+        player_mmrs = [player.most_accurate_mmr for player in self.players.all() if player.most_accurate_mmr > -1]
+        self.mmr_average = int(statistics.mean(player_mmrs)) if len(player_mmrs) > 0 else -1
+        self.mmr_last_updated = timezone.now()
+        self.save()
 
     @property
     def actively_recruiting(self):
