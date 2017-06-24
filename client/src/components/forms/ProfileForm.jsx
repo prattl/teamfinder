@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, RegionSelect, SkillBracketSelect, PositionSelect } from 'components/forms'
+import { createInput, createSelectInput, RegionSelect, PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(submitProfile(values)).then(({ response, json }) => {
@@ -20,7 +20,7 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['email', 'regions', 'skill_bracket', 'positions']
+    const fields = ['email', 'regions', 'positions']
     const multiSelectFields = ['regions', 'positions']
     fields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
@@ -42,7 +42,6 @@ const EmailInput = createInput({
     'your settings.'
 })
 const RegionInput = createSelectInput('Region', RegionSelect)
-const SkillBracketInput = createSelectInput('Skill Bracket', SkillBracketSelect)
 const PositionInput = createSelectInput('Positions', PositionSelect)
 
 class ProfileForm extends Component {
@@ -57,9 +56,6 @@ class ProfileForm extends Component {
                 </div>
                 <div>
                     <Field name='regions' component={RegionInput} />
-                </div>
-                <div>
-                    <Field name='skill_bracket' component={SkillBracketInput} />
                 </div>
                 <div>
                     <Field name='positions' component={PositionInput} />

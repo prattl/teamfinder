@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Button, Col, Row } from 'react-bootstrap'
 import { playerSubmit } from 'components/forms/SearchForm'
-import { createInput, RegionSelect, PositionSelect, SkillBracketSelect } from 'components/forms'
+import { createInput, RegionSelect, PositionSelect } from 'components/forms'
 
 const KeywordsInput = createInput()
 
@@ -28,9 +28,6 @@ class PlayerSearchForm extends Component {
                     <Col sm={4}>
                         <Field name='positions' component={PositionSelect} />
                     </Col>
-                    <Col sm={4}>
-                        <Field name='skill_bracket' component={SkillBracketSelect} />
-                    </Col>
                 </Row>
             </form>
         )
@@ -44,7 +41,6 @@ PlayerSearchForm = reduxForm({
         keywords: '',
         regions: [],
         positions: [],
-        skill_bracket: ''
     },
     onSubmit: playerSubmit
 })(PlayerSearchForm)

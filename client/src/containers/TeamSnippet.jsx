@@ -5,7 +5,7 @@ import { Button, Label } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import { FixtureDisplay, Loading, playerIsOnTeam } from 'utils'
-import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -14,7 +14,7 @@ import { withTeam } from 'components/connectors/WithTeam'
 class TeamSnippet extends Component {
 
     render() {
-        const { fixtures: { regions, positions, skillBrackets } } = this.props
+        const { fixtures: { regions, positions } } = this.props
         const { team: { team, isLoading, lastUpdated }, player, newItems: { new_team_applications } } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
@@ -61,10 +61,10 @@ class TeamSnippet extends Component {
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={team.regions} fixture={regions}/>
                             </div>
-                            <div>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={team.skill_bracket} fixture={skillBrackets}/>
-                            </div>
+                            {/*<div>*/}
+                                {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
+                                {/*<FixtureDisplay value={team.average_mmr}/>*/}
+                            {/*</div>*/}
                             {team.available_positions.length > 0 &&
                                 <div>
                                     <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;

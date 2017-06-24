@@ -7,7 +7,7 @@ import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { Label } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
-import { CaptainIcon, RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import { tryInviteToTeam } from 'actions/playerSearch'
 
 class PlayerSearchResult extends Component {
@@ -17,7 +17,6 @@ class PlayerSearchResult extends Component {
         username: PropTypes.string.isRequired,
         regions: PropTypes.array,
         positions: PropTypes.array,
-        skill_bracket: PropTypes.string,
         teams: PropTypes.array
     }
 
@@ -46,7 +45,7 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, avatarfull, last_login, username, regions, positions, skill_bracket, teams } = this.props
+        const { id, fixtures, avatarfull, last_login, username, regions, positions, teams } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -74,10 +73,10 @@ class PlayerSearchResult extends Component {
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                                 </div>
-                                <div>
-                                    <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                    <FixtureDisplay value={skill_bracket} fixture={fixtures.skillBrackets}/>
-                                </div>
+                                {/*<div>*/}
+                                    {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
+                                    {/*<FixtureDisplay value={mmr}/>*/}
+                                {/*</div>*/}
                                 <div>
                                     <PositionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={positions} fixture={fixtures.positions}/>

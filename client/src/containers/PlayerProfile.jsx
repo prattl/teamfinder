@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay } from 'utils'
-import { RegionIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import TeamSnippet from 'containers/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -85,7 +85,7 @@ class PlayerProfile extends Component {
 
     render() {
         const { selectedPlayer: player, player: ownPlayer,
-            fixtures: { regions, positions, skillBrackets } } = this.props
+            fixtures: { regions, positions } } = this.props
         const { addedFriend, showAddedModal } = this.state
 
         if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
@@ -125,9 +125,9 @@ class PlayerProfile extends Component {
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={player.regions} fixture={regions}/>
                             </FixtureRow>
-                            <FixtureRow label='Skill Bracket:'>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={player.skill_bracket} fixture={skillBrackets}/>
+                            <FixtureRow label='MMR:'>
+                                <MMRIcon fixedWidth={true}/>&nbsp;
+                                <FixtureDisplay value={player.mmr}/>
                             </FixtureRow>
                             <FixtureRow label='Positions:'>
                                 <PositionIcon fixedWidth={true}/>&nbsp;

@@ -8,7 +8,7 @@ import { Link } from 'react-router'
 import { Label } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, Loading } from 'utils'
-import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 
 class TeamProfile extends Component {
 
@@ -33,7 +33,7 @@ class TeamProfile extends Component {
         // const isLoading = teams.isLoading
         // const lastUpdated = teams.lastUpdated
 
-        const { fixtures: { regions, positions, skillBrackets } } = this.props
+        const { fixtures: { regions, positions } } = this.props
 
         return (
             <div>
@@ -61,10 +61,10 @@ class TeamProfile extends Component {
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={team.team.regions} fixture={regions}/>
                                 </div>
-                                <div>
-                                    <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                    <FixtureDisplay value={team.team.skill_bracket} fixture={skillBrackets}/>
-                                </div>
+                                {/*<div>*/}
+                                    {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
+                                    {/*<FixtureDisplay value={team.team.average_mmr}/>*/}
+                                {/*</div>*/}
                                 {team.team.available_positions.length > 0 &&
                                 <div>
                                     <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;

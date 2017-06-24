@@ -10,7 +10,7 @@ import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { Label, Button, Modal } from 'react-bootstrap'
 import { FixtureDisplay, Loading } from 'utils'
-import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, SkillBracketIcon } from 'utils/components/icons'
+import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, MMRIcon } from 'utils/components/icons'
 import TeamApplicationForm from 'components/forms/TeamApplicationForm'
 
 const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
@@ -74,7 +74,7 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, id, name, regions, skill_bracket, team_members, fixtures, tryApplyToTeam,
+        const { available_positions, captain, id, name, regions, team_members, fixtures, tryApplyToTeam,
             player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
@@ -101,10 +101,10 @@ class TeamSearchResult extends Component {
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                             </div>
-                            <div>
-                                <SkillBracketIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={skill_bracket} fixture={fixtures.skillBrackets}/>
-                            </div>
+                            {/*<div>*/}
+                                {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
+                                {/*<FixtureDisplay value={mmr}/>*/}
+                            {/*</div>*/}
                             <div>
                                 <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                 <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
