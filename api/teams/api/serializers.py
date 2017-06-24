@@ -1,5 +1,5 @@
 from common.api.serializers import MembershipSerializer
-from common.models import Position, Region
+from common.models import Interest, Position, Region
 from players.models import Player
 from teams.models import Team
 from rest_framework import serializers
@@ -51,6 +51,7 @@ class TeamSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='team-detail')
     regions = serializers.PrimaryKeyRelatedField(queryset=Region.objects.all(), many=True)
     available_positions = serializers.PrimaryKeyRelatedField(queryset=Position.objects.all(), many=True)
+    interests = serializers.PrimaryKeyRelatedField(queryset=Interest.objects.all(), many=True)
     team_members = PlayerMembershipSerializer(source='teammember_set', many=True, read_only=True)
     captain = TeamPlayerSerializer()
     creator = TeamPlayerSerializer(read_only=True)
@@ -63,6 +64,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'name',
             'regions',
             'available_positions',
+            'interests',
             'team_members',
             'captain',
             'creator',
@@ -94,6 +96,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
             'regions',
             # 'player_position',  # TODO
             'available_positions',
+            'interests',
             'captain',
             'creator',
             'mmr_average',
@@ -125,6 +128,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
             'name',
             'regions',
             'available_positions',
+            'interests',
             'captain',
             'creator',
             'mmr_average',

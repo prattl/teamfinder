@@ -79,6 +79,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'last_login',
             'regions',
             'positions',
+            'interests',
             'teams',
             'avatar',
             'avatarfull',
@@ -108,6 +109,7 @@ class FlatPlayerSerializer(BasePlayerSerializer):
 class PlayerSerializer(BasePlayerSerializer):
     regions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     positions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    interests = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     teams = PlayerTeamSerializer(read_only=True, many=True)
 
 

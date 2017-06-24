@@ -1,5 +1,6 @@
 from common.models import (
     Application,
+    Interest,
     Invitation,
     Position,
     Region,
@@ -15,11 +16,8 @@ from tf_auth.models import EmailPreference, UserEmailPreferences
 User = get_user_model()
 
 
-class RegionSerializer(serializers.ModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='region-detail')
-
+class FixtureSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Region
         fields = (
             'id',
             'name',
@@ -30,6 +28,20 @@ class RegionSerializer(serializers.ModelSerializer):
             'name',
             'url',
         )
+
+
+class RegionSerializer(FixtureSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='region-detail')
+
+    class Meta(FixtureSerializer.Meta):
+        model = Region
+
+
+class InterestSerializer(FixtureSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='interest-detail')
+
+    class Meta(FixtureSerializer.Meta):
+        model = Interest
 
 
 class PositionSerializer(serializers.ModelSerializer):

@@ -1,28 +1,28 @@
 from common.models import (
     Application,
+    Interest,
     Invitation,
     Position,
     Region,
     TeamMember,
 )
 from django.contrib.auth import get_user_model
-from players.models import Player
-from rest_framework import mixins, permissions, status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import list_route
 
 from rest_framework.response import Response
 from teams.models import Team
-from tf_auth.models import EmailPreference, UserEmailPreferences
+from tf_auth.models import UserEmailPreferences
 from .permissions import (
     JoinableActionPermissions,
     MembershipPermissions,
-    UserEmailPreferencesPermissions,
 )
 from .serializers import (
     ApplicationSerializer,
     EditApplicationSerializer,
     EditInvitationSerializer,
     EditMembershipAsCaptainSerializer,
+    InterestSerializer,
     InvitationSerializer,
     PositionSerializer,
     ReadOnlyApplicationSerializer,
@@ -43,6 +43,11 @@ class RegionViewSet(viewsets.ReadOnlyModelViewSet):
 class PositionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
+
+
+class InterestViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Interest.objects.all()
+    serializer_class = InterestSerializer
 
 
 class JoinableEventViewSet(viewsets.ModelViewSet):

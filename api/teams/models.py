@@ -13,6 +13,7 @@ class Team(AbstractBaseModel):
                                                  on_delete=models.SET_NULL)
     regions = models.ManyToManyField('common.Region', related_name='teams', blank=True)
     available_positions = models.ManyToManyField('common.Position', related_name='teams', blank=True)
+    interests = models.ManyToManyField('common.Interest', related_name='teams', blank=True)
     captain = models.ForeignKey('players.Player', null=True, blank=True, related_name='teams_captain_of',
                                 on_delete=models.SET_NULL)
     creator = models.ForeignKey('players.Player', null=True, blank=True, related_name='teams_created',
