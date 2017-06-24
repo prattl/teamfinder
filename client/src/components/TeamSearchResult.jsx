@@ -97,7 +97,7 @@ class TeamSearchResult extends Component {
                                 <Button style={{ marginTop: '1rem'}} bsSize='sm' className='pull-right'
                                         onClick={() => tryApplyToTeam(id)}>Apply</Button>
                             </div>
-                            <div>
+                            <div style={{ marginBottom: '0.5rem' }}>
                                 <RegionIcon fixedWidth={true}/>&nbsp;
                                 <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                             </div>
@@ -105,7 +105,7 @@ class TeamSearchResult extends Component {
                                 {/*<MMRIcon fixedWidth={true}/>&nbsp;*/}
                                 {/*<FixtureDisplay value={mmr}/>*/}
                             {/*</div>*/}
-                            <div>
+                            <div style={{ marginBottom: '0.5rem' }}>
                                 <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                 <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
                             </div>

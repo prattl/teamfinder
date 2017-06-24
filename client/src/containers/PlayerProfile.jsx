@@ -11,7 +11,7 @@ import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 
 const FixtureRow = ({ label, children }) => (
-    <Row>
+    <Row style={{ marginBottom: '1rem' }}>
         <Col sm={2} md={2} lg={2} className='hidden-xs'>
             {label}
         </Col>

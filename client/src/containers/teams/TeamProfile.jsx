@@ -57,7 +57,7 @@ class TeamProfile extends Component {
                                     <div style={{ clear: 'both' }}/>
                                 </div>
 
-                                <div>
+                                <div style={{ marginBottom: '1rem' }}>
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={team.team.regions} fixture={regions}/>
                                 </div>
@@ -66,7 +66,7 @@ class TeamProfile extends Component {
                                     {/*<FixtureDisplay value={team.team.average_mmr}/>*/}
                                 {/*</div>*/}
                                 {team.team.available_positions.length > 0 &&
-                                <div>
+                                <div style={{ marginBottom: '1rem' }}>
                                     <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                     <FixtureDisplay value={team.team.available_positions} fixture={positions}/>
                                 </div>
