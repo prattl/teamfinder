@@ -43,6 +43,18 @@ const noMMRTooltip = (
     <Tooltip id='no-mmr-tooltip'>This player has chosen to keep their MMR hidden from their Steam profile.</Tooltip>
 )
 
+const noTeamMMRTooltip = (
+    <Tooltip id='no-team-mmr-tooltip'>Unable to calculate average MMR for this team.</Tooltip>
+)
+
+export const TeamMMRDisplay = ({ mmr }) => (
+    mmr && mmr > -1 ? <span>{mmr}</span> : (
+        <OverlayTrigger placement='top' overlay={noTeamMMRTooltip}>
+            <i className='fa fa-question' />
+        </OverlayTrigger>
+    )
+)
+
 export const MMRDisplay = ({ mmr, mmrEstimate }) => {
     if (mmr) {
         return <span>{mmr}</span>
