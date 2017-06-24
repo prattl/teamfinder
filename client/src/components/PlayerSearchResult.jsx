@@ -70,21 +70,21 @@ class PlayerSearchResult extends Component {
                                         <strong>{username}</strong>
                                     </Link>
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <RegionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <MMRIcon fixedWidth={true}/>&nbsp;
                                     <MMRDisplay mmr={mmr} mmrEstimate={mmr_estimate} />
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <PositionIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={positions} fixture={fixtures.positions}/>
                                 </div>
                                 <div>
                                     <i className='fa fa-fw fa-clock-o' />&nbsp;
-                                    Last Login: {moment(last_login).format('L')}
+                                    Active {moment(last_login).fromNow()}
                                 </div>
                                 <div style={{ marginTop: '1rem' }}>
                                     {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}
