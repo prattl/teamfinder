@@ -5,7 +5,7 @@ import { Button, Label } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import { FixtureDisplay, Loading, TeamMMRDisplay, playerIsOnTeam } from 'utils'
-import { CaptainIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
+import { CaptainIcon, InterestIcon, RegionIcon, PlayersIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -14,7 +14,7 @@ import { withTeam } from 'components/connectors/WithTeam'
 class TeamSnippet extends Component {
 
     render() {
-        const { fixtures: { regions, positions } } = this.props
+        const { fixtures: { interests, regions, positions } } = this.props
         const { team: { team, isLoading, lastUpdated }, player, newItems: { new_team_applications } } = this.props
         return (
             <div style={{ padding: '1rem', margin: '2rem 0', border: '1px solid #DDD' }}>
@@ -68,6 +68,12 @@ class TeamSnippet extends Component {
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                     <FixtureDisplay value={team.available_positions} fixture={positions}/>
+                                </div>
+                            }
+                            {team.interests.length > 0 &&
+                                <div style={{marginBottom: '0.5rem'}}>
+                                    <InterestIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={team.interests} fixture={interests}/>
                                 </div>
                             }
                             <div style={{ marginBottom: '0.5rem' }}>

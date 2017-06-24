@@ -4,7 +4,8 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, RegionSelect, PositionSelect } from 'components/forms'
+import { createInput, createSelectInput, InterestSelect, RegionSelect,
+    PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
     return dispatch(submitProfile(values)).then(({ response, json }) => {
@@ -20,8 +21,8 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['email', 'regions', 'positions']
-    const multiSelectFields = ['regions', 'positions']
+    const fields = ['email', 'regions', 'positions', 'interests', ]
+    const multiSelectFields = ['regions', 'positions', 'interests', ]
     fields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
             errors[fieldName] = 'Required'
@@ -41,7 +42,8 @@ const EmailInput = createInput({
     'it to let you know when you\'ve been invited or accepted to a team. You can change your email preferences from ' +
     'your settings.'
 })
-const RegionInput = createSelectInput('Region', RegionSelect)
+const InterestInput = createSelectInput('Interests', InterestSelect)
+const RegionInput = createSelectInput('Regions', RegionSelect)
 const PositionInput = createSelectInput('Positions', PositionSelect)
 
 class ProfileForm extends Component {
@@ -59,6 +61,9 @@ class ProfileForm extends Component {
                 </div>
                 <div>
                     <Field name='positions' component={PositionInput} />
+                </div>
+                <div>
+                    <Field name='interests' component={InterestInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>

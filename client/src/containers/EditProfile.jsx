@@ -29,6 +29,7 @@ class EditProfile extends Component {
         const { changesSaved, player, isLoading, lastUpdated } = this.props
         const initialValues = player ? ({
             email: player.email,
+            interests: player.interests,
             positions: player.positions,
             regions: player.regions
         }) : {}

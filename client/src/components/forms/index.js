@@ -165,7 +165,24 @@ let PositionSelect = props => {
 
 PositionSelect = withAllFixtures(PositionSelect)
 
+let InterestSelect = props => {
+    const { input, multi=true, fixtures: { interests: { items, isLoading, lastUpdated } } } = props
+    const options = Object.keys(items).map(itemId => ({
+        value: itemId, label: items[itemId].name
+    }))
+    return (!isLoading && lastUpdated) ? (
+        <SelectWrapper input={input}
+                       multi={multi}
+                       matchProp='label'
+                       placeholder='Interests'
+                       options={options} />
+        ) : null
+}
+
+InterestSelect = withAllFixtures(InterestSelect)
+
 export {
+    InterestSelect,
     RegionSelect,
     PositionSelect,
     SinglePositionSelect

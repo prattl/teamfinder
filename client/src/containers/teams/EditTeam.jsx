@@ -13,6 +13,7 @@ class EditTeam extends Component {
         const initialValues = team ? ({
             name: team.name,
             available_positions: team.available_positions,
+            interests: team.interests,
             regions: team.regions
         }) : {}
         return (

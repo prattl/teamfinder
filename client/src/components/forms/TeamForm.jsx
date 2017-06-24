@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, RegionSelect, PositionSelect } from 'components/forms'
+import { createInput, createSelectInput, InterestSelect, RegionSelect, PositionSelect } from 'components/forms'
 
 const validate = values => {
     const errors = {}
@@ -28,6 +28,7 @@ const NameInput = createInput({ label: 'Name' })
 const RegionInput = createSelectInput('Regions', RegionSelect)
 const PlayerPositionInput = createSelectInput('My Position', PositionSelect, false)
 const AvailablePositionInput = createSelectInput('Available Positions', PositionSelect)
+const InterestInput = createSelectInput('Team Interests', InterestSelect)
 
 class TeamForm extends Component {
 
@@ -79,6 +80,9 @@ class TeamForm extends Component {
                 {/* TODO: Add checkbox for "Currently recruiting?" and conditionally display available positions */}
                 <div>
                     <Field name='available_positions' component={AvailablePositionInput} />
+                </div>
+                <div>
+                    <Field name='interests' component={InterestInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>

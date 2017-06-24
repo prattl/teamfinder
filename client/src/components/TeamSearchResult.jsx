@@ -10,7 +10,7 @@ import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import { Label, Button, Modal } from 'react-bootstrap'
 import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
-import { CaptainIcon, RegionIcon, PositionIcon, PlayersIcon, MMRIcon } from 'utils/components/icons'
+import { CaptainIcon, InterestIcon, RegionIcon, PositionIcon, PlayersIcon, MMRIcon } from 'utils/components/icons'
 import TeamApplicationForm from 'components/forms/TeamApplicationForm'
 
 const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
@@ -74,8 +74,8 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, id, name, regions, team_members, fixtures, tryApplyToTeam, mmr_average,
-            player: { teamApplyingTo }, updated } = this.props
+        const { available_positions, captain, id, name, interests, regions, team_members, fixtures,
+            tryApplyToTeam, mmr_average, player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -109,6 +109,12 @@ class TeamSearchResult extends Component {
                                 <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
                                 <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
                             </div>
+                            {interests.length > 0 && (
+                                <div style={{ marginBottom: '0.5rem' }}>
+                                    <InterestIcon fixedWidth={true}/>&nbsp;
+                                    <FixtureDisplay value={interests} fixture={fixtures.interests}/>
+                                </div>
+                            )}
                             <div>
                                 <PlayersIcon fixedWidth={true}/>&nbsp;
                                 {team_members.map(teamMember => (
