@@ -33,3 +33,9 @@ html body {
   bottom: 2rem;
   right: 2rem;
 }
+
+
+.jumbotron {
+  background-position: center;
+  background-size: cover;
+}
