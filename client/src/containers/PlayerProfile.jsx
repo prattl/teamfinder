@@ -105,7 +105,7 @@ class PlayerProfile extends Component {
                 <h1>
                     Player Profile
                     {ownPlayer.id === player.id && (
-                        <LinkContainer to={`/players/profile`} style={{ float: 'right' }}>
+                        <LinkContainer to={`/profile`} style={{ float: 'right' }}>
                             <Button bsSize='sm'>
                                 <i className='fa fa-pencil'/>&nbsp;Edit Profile
                             </Button>
