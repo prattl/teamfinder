@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import moment from 'moment'
 
+import { LinkContainer } from 'react-router-bootstrap'
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, MMRDisplay } from 'utils'
@@ -101,7 +102,16 @@ class PlayerProfile extends Component {
                 <FriendAddedModal show={showAddedModal}
                                   playerName={player.username}
                                   onClose={e => this.handleFriendAddedOkClick(e)} />
-                <h1>Player Profile</h1>
+                <h1>
+                    Player Profile
+                    {ownPlayer.id === player.id && (
+                        <LinkContainer to={`/players/profile`} style={{ float: 'right' }}>
+                            <Button bsSize='sm'>
+                                <i className='fa fa-pencil'/>&nbsp;Edit Profile
+                            </Button>
+                        </LinkContainer>
+                    )}
+                </h1>
                 <div>
                     <Row>
                         <Col xs={4} sm={3}>

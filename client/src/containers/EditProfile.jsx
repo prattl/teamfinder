@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
+import { LinkContainer } from 'react-router-bootstrap'
 
 import { dismissChangesSaved, requestOwnPlayerIfNeeded } from 'actions/player'
 import { playerSelector } from 'utils/selectors'
 
-import { Alert, Col, Image, Row } from 'react-bootstrap'
+import { Alert, Button, Col, Image, Row } from 'react-bootstrap'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
 import ProfileForm from 'components/forms/ProfileForm'
 import { Loading } from 'utils'
@@ -39,7 +40,14 @@ class EditProfile extends Component {
                 <Helmet>
                     <title>Edit Profile | Dota 2 Team Finder</title>
                 </Helmet>
-                <h1>Profile{player.username && `: ${player.username}`}</h1>
+                <h1>
+                    Profile{player.username && `: ${player.username}`}
+                    <LinkContainer to={`/players/${player.id}/`} style={{ float: 'right' }}>
+                        <Button bsSize='sm'>
+                            <i className='fa fa-eye'/>&nbsp;View Public Profile
+                        </Button>
+                    </LinkContainer>
+                </h1>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <Row>
