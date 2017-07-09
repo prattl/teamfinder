@@ -5,6 +5,8 @@ import { requestOwnPlayer } from 'actions/player'
 import { createUrl, metaGenerator } from 'utils'
 import { GET, PATCH, POST, DELETE } from 'utils/api'
 import { notify } from 'utils/actions'
+import querystring from 'querystring'
+
 
 const actions = keyMirror({
     REQUEST_TEAM: null,
@@ -159,4 +161,11 @@ export const submitEditTeamMember = (teamMemberId, data) => (dispatch, getState)
             })
         )
     }
+}
+
+export const submitLogoUpload = params => (dispatch, getState) => {
+    const { auth: { authToken } } = getState()
+    return GET(createUrl(`/s3/sign/?${querystring.stringify(params)}`), authToken).then(
+        response => response.json()
+    )
 }

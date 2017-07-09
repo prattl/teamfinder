@@ -63,6 +63,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'name',
+            'logo_url',
             'regions',
             'available_positions',
             'interests',
@@ -76,6 +77,7 @@ class TeamSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
             'url',
+            'logo_url',
             'team_members',
             'creator',
             'mmr_average',
@@ -95,6 +97,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'logo_url',
             'regions',
             # 'player_position',  # TODO
             'available_positions',
@@ -107,6 +110,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
+            'logo_url',
             'captain',
             'creator',
             'mmr_average',
@@ -129,6 +133,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'logo_url',
             'regions',
             'available_positions',
             'interests',
@@ -141,6 +146,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
             'url',
+            'logo_url',
             'team_members',
             'mmr_average',
             'creator',

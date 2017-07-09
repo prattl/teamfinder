@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm, SubmissionError } from 'redux-form'
+import ReactS3Uploader from 'react-s3-uploader'
+import { createUrl } from 'utils'
 
-import { submitCreateTeam, submitEditTeam } from 'actions/teams'
+import { submitCreateTeam, submitEditTeam, submitLogoUpload } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
 import { createInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
@@ -47,6 +49,8 @@ class TeamForm extends Component {
     constructor(props) {
         super(props)
         this.submit = this.submit.bind(this)
+        this.getSignedUrl = this.getSignedUrl.bind(this)
+        this.handleUploadFinish = this.handleUploadFinish.bind(this)
     }
 
     submit(values, dispatch) {
@@ -61,6 +65,25 @@ class TeamForm extends Component {
                 throw new SubmissionError(errors)
             }
         })
+    }
+
+    getSignedUrl(file, callback) {
+        const params = {
+            objectName: file.name,
+            contentType: file.type
+        }
+        this.props.dispatch(
+            submitLogoUpload(params)
+        ).then(json => {
+            console.log('Got json', json)
+            callback(json)
+        }).catch(error => {
+            console.error(error)
+        })
+    }
+
+    handleUploadFinish(...args) {
+        console.log('Upload finished: args', args)
     }
 
     render() {
@@ -93,6 +116,17 @@ class TeamForm extends Component {
                     <Button type='submit' disabled={submitting}>
                         Submit
                     </Button>
+                </div>
+
+                <div>
+                    <ReactS3Uploader getSignedUrl={this.getSignedUrl}
+                                     accept='image/*'
+                                     uploadRequestHeaders={{}}
+                                     onFinish={this.handleUploadFinish}
+                                     signingUrlWithCredentials={ true }
+                                     contentDisposition='auto'
+s
+                    />
                 </div>
             </form>
         )

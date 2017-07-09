@@ -8,6 +8,7 @@ from common.models import AbstractBaseModel, CreatableModel, UpdateableModel, UU
 
 class Team(AbstractBaseModel):
     name = models.CharField(max_length=255)
+    logo_url = models.CharField(max_length=255, null=True, blank=True)
     players = models.ManyToManyField('players.Player', through='common.TeamMember', related_name='teams')
     deprecated_skill_bracket = models.ForeignKey('common.SkillBracket', null=True, blank=True,
                                                  on_delete=models.SET_NULL)
