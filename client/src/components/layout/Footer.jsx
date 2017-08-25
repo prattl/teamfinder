@@ -21,11 +21,11 @@ class Footer extends Component {
                             <NavItem eventKey={3} href='https://github.com/prattl/teamfinder'>
                                 <i className='fa fa-github'/>&nbsp;View on Github
                             </NavItem>
-                            <p className='navbar-text'>
-                                Copyright &copy; {new Date().getFullYear()}, dotateamfinder.com. Powered
-                                by <a href='http://store.steampowered.com/'>Steam <i className='fa fa-steam'/></a>
-                            </p>
                         </Nav>
+                        <p className='navbar-text'>
+                            Copyright &copy; {new Date().getFullYear()}, dotateamfinder.com. Powered
+                            by <a href='http://store.steampowered.com/'>Steam <i className='fa fa-steam'/></a>
+                        </p>
                     </Navbar.Collapse>
 
                 </Navbar>

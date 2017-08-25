@@ -77,7 +77,6 @@ class TeamSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
             'url',
-            'logo_url',
             'team_members',
             'creator',
             'mmr_average',
@@ -110,7 +109,6 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id',
-            'logo_url',
             'captain',
             'creator',
             'mmr_average',
@@ -146,11 +144,15 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         read_only_fields = (
             'id',
             'url',
-            'logo_url',
             'team_members',
             'mmr_average',
             'creator',
         )
+
+    def validate_logo_url(self, value):
+        if not value.startswith('https://dotateamfinder.s3.amazonaws.com/team-logos/'):
+            raise serializers.ValidationError('Logo url must be registered to the dotateamfinder.com S3 bucket.')
+        return value
 
 
 class TeamMembershipSerializer(MembershipSerializer):

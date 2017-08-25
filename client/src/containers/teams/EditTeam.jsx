@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Col, Row } from 'react-bootstrap'
+import { Col, Image, Row } from 'react-bootstrap'
 
 import { withTeam } from 'components/connectors/WithTeam'
 import TeamForm from 'components/forms/TeamForm'
@@ -22,8 +22,17 @@ class EditTeam extends Component {
             <div>
                 <h1>Edit Team</h1>
                 <Row>
-                    <Col lg={4} lgOffset={4} md={6} mdOffset={3} sm={8} smOffset={2}>
-                        {team && <TeamForm initialValues={initialValues} showPlayerPosition={false} teamId={team.id} />}
+                    {team && (
+                        <Col lg={4} md={3} sm={2}>
+                            <div className='text-right'>
+                                <Image src={team.logo_url || 'http://via.placeholder.com/300x300'}
+                                       thumbnail />
+                            </div>
+                        </Col>
+                    )}
+                    <Col lg={4} md={6} sm={8}>
+                        {team && <TeamForm initialValues={initialValues}
+                                           showPlayerPosition={false} teamId={team.id} />}
                     </Col>
                 </Row>
 

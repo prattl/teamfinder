@@ -203,7 +203,7 @@ class S3SignView(views.APIView):
             HttpMethod="PUT",
             Params={
                 'Bucket': 'dotateamfinder',
-                'Key': 'team-logos/{}-{}'.format(object_name, uuid4()),
+                'Key': 'team-logos/{}'.format(object_name),
             }
         )
 
