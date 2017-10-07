@@ -103,7 +103,6 @@ class TeamForm extends Component {
                         Submit
                     </Button>
                 </div>
-
             </form>
         )
     }
