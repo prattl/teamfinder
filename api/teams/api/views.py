@@ -87,14 +87,6 @@ class TeamViewSet(viewsets.ModelViewSet):
 
         return queryset.order_by('-updated')
 
-    @detail_route(permission_classes=(permissions.IsAuthenticated, ), methods=('GET', ))
-    def memberships(self, request, pk=None):
-        team = self.get_object()
-        serializer = PlayerMembershipSerializer(
-            team.teammember_set.all(), many=True, context={'request': request}
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def create(self, request, *args, **kwargs):
         data = request.data
         # Validate with the flat serializer
@@ -135,3 +127,11 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         return serializer.save()
+
+    @detail_route(permission_classes=(permissions.IsAuthenticated,), methods=('GET',))
+    def memberships(self, request, pk=None):
+        team = self.get_object()
+        serializer = PlayerMembershipSerializer(
+            team.teammember_set.all(), many=True, context={'request': request}
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)

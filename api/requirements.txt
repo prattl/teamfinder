@@ -26,3 +26,5 @@ Werkzeug==0.11.10
 psycopg2==2.7.1
 social-auth-app-django==1.1.0
 social-auth-core==1.2.0
+boto3==1.4.4
+botocore==1.5.80

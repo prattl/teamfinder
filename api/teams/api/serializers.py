@@ -63,6 +63,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'name',
+            'logo_url',
             'regions',
             'available_positions',
             'interests',
@@ -95,6 +96,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'logo_url',
             'regions',
             # 'player_position',  # TODO
             'available_positions',
@@ -129,6 +131,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'logo_url',
             'regions',
             'available_positions',
             'interests',
@@ -145,6 +148,11 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
             'mmr_average',
             'creator',
         )
+
+    def validate_logo_url(self, value):
+        if not value.startswith('https://dotateamfinder.s3.amazonaws.com/team-logos/'):
+            raise serializers.ValidationError('Logo url must be registered to the dotateamfinder.com S3 bucket.')
+        return value
 
 
 class TeamMembershipSerializer(MembershipSerializer):

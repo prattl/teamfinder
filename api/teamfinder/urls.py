@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^deploy/', deploy),
+    url(r'^s3/sign/', common_views.S3SignView.as_view()),
     url(r'^social-redirect/', social_redirect),
     url('', include('social_django.urls', namespace='social'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

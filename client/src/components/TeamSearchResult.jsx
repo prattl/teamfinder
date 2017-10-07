@@ -3,12 +3,12 @@ import { Link } from 'react-router'
 import { submit } from 'redux-form'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { Button, Col, Image, Label, Modal, Row, } from 'react-bootstrap'
 
 import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
-import { Label, Button, Modal } from 'react-bootstrap'
 import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, PlayersIcon,
     MMRIcon } from 'utils/components/icons'
@@ -76,7 +76,7 @@ class TeamSearchResult extends Component {
 
     render() {
         const { available_positions, captain, id, name, interests, languages, regions, team_members, fixtures,
-            tryApplyToTeam, mmr_average, player: { teamApplyingTo }, updated } = this.props
+            tryApplyToTeam, logo_url, mmr_average, player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -86,62 +86,71 @@ class TeamSearchResult extends Component {
                     lastUpdated ? (
                         <div>
                             {teamApplyingTo && this.renderApplyToTeamConfirmModal()}
-                            <div style={{ marginBottom: '1rem' }}>
-                                <Link to={`teams/${id}`}>
-                                    <strong>{name}</strong>
-                                </Link>
-                                <span className='pull-right'>
-                                    <i className={`fa fa-${available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
-                                    &nbsp;Recruiting
-                                </span>
-                                <div style={{ clear: 'both' }} />
-                                <Button style={{ marginTop: '1rem'}} bsSize='sm' className='pull-right'
-                                        onClick={() => tryApplyToTeam(id)}>Apply</Button>
-                            </div>
-                            <div style={{ marginBottom: '0.5rem' }}>
-                                <RegionIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={regions} fixture={fixtures.regions}/>
-                            </div>
-                            <div style={{ marginBottom: '0.5rem' }}>
-                                <MMRIcon fixedWidth={true}/>&nbsp;
-                                <TeamMMRDisplay mmr={mmr_average}/>
-                            </div>
-                            <div style={{ marginBottom: '0.5rem' }}>
-                                <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
-                                <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
-                            </div>
-                            {interests.length > 0 && (
-                                <div style={{ marginBottom: '0.5rem' }}>
-                                    <InterestIcon fixedWidth={true}/>&nbsp;
-                                    <FixtureDisplay value={interests} fixture={fixtures.interests}/>
-                                </div>
-                            )}
-                            <div style={{ marginBottom: '0.5rem' }}>
-                                <LanguageIcon fixedWidth={true}/>&nbsp;
-                                <FixtureDisplay value={languages} fixture={fixtures.languages}/>
-                            </div>
-                            <div>
-                                <PlayersIcon fixedWidth={true}/>&nbsp;
-                                {team_members.map(teamMember => (
-                                    <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
-                                         key={`team-member-${teamMember.id}`}>
-                                        <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
-                                            <Label>
-                                                {captain === teamMember.player.id && (
-                                                    <span><CaptainIcon />&nbsp;</span>
-                                                )}
-                                                {teamMember.player.username}{teamMember.position && (
-                                                    ` - ${fixtures.positions.items[teamMember.position].name}`
-                                                )}
-                                            </Label>
+                            <Row>
+                                <Col xs={4} sm={2}>
+                                    <Image src={logo_url || 'http://via.placeholder.com/300x300'}
+                                       thumbnail />
+                                </Col>
+                                <Col xs={8} sm={10}>
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <Link to={`teams/${id}`}>
+                                            <strong>{name}</strong>
                                         </Link>
+                                        <span className='pull-right'>
+                                            <i className={`fa fa-${available_positions.length > 0 ? 'check-square-o' : 'square-o'}`}/>
+                                            &nbsp;Recruiting
+                                        </span>
+                                        <div style={{ clear: 'both' }} />
+                                        <Button style={{ marginTop: '1rem'}} bsSize='sm' className='pull-right'
+                                                onClick={() => tryApplyToTeam(id)}>Apply</Button>
                                     </div>
+                                    <div style={{ marginBottom: '0.5rem' }}>
+                                        <RegionIcon fixedWidth={true}/>&nbsp;
+                                        <FixtureDisplay value={regions} fixture={fixtures.regions}/>
+                                    </div>
+                                    <div style={{ marginBottom: '0.5rem' }}>
+                                        <MMRIcon fixedWidth={true}/>&nbsp;
+                                        <TeamMMRDisplay mmr={mmr_average}/>
+                                    </div>
+                                    <div style={{ marginBottom: '0.5rem' }}>
+                                        <PositionIcon fixedWidth={true}/>&nbsp;Recruiting:&nbsp;
+                                        <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
+                                    </div>
+                                    {interests.length > 0 && (
+                                        <div style={{ marginBottom: '0.5rem' }}>
+                                            <InterestIcon fixedWidth={true}/>&nbsp;
+                                            <FixtureDisplay value={interests} fixture={fixtures.interests}/>
+                                        </div>
+                                    )}
+                                    <div style={{ marginBottom: '0.5rem' }}>
+                                        <LanguageIcon fixedWidth={true}/>&nbsp;
+                                        <FixtureDisplay value={languages} fixture={fixtures.languages}/>
+                                    </div>
+                                    <div>
+                                        <PlayersIcon fixedWidth={true}/>&nbsp;
+                                        {team_members.map(teamMember => (
+                                            <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
+                                                 key={`team-member-${teamMember.id}`}>
+                                                <Link to={`/players/${teamMember.player.id}/`} style={{ color: '#FFF' }}>
+                                                    <Label>
+                                                        {captain === teamMember.player.id && (
+                                                            <span><CaptainIcon />&nbsp;</span>
+                                                        )}
+                                                        {teamMember.player.username}{teamMember.position && (
+                                                            ` - ${fixtures.positions.items[teamMember.position].name}`
+                                                        )}
+                                                    </Label>
+                                                </Link>
+                                            </div>
 
-                                ))}
-                            </div>
-                            <div style={{ marginTop: '1rem' }}>
-                                Last updated {moment(updated).format('L')}
-                            </div>
+                                        ))}
+                                    </div>
+                                    <div style={{ marginTop: '1rem' }}>
+                                        Last updated {moment(updated).format('L')}
+                                    </div>
+                                </Col>
+                            </Row>
+
                         </div>
                     ) : <p>Error, please try again.</p>
                 )}

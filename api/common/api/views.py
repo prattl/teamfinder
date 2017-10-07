@@ -1,3 +1,11 @@
+import mimetypes
+from uuid import uuid4
+
+from django.contrib.auth import get_user_model
+from rest_framework import mixins, permissions, status, views, viewsets
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
+
 from common.models import (
     Application,
     Interest,
@@ -7,11 +15,7 @@ from common.models import (
     Region,
     TeamMember,
 )
-from django.contrib.auth import get_user_model
-from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import list_route
-
-from rest_framework.response import Response
+from lib.boto import init_boto
 from teams.models import Team
 from tf_auth.models import UserEmailPreferences
 from .permissions import (
@@ -183,3 +187,24 @@ class UserEmailPreferencesViewSet(mixins.RetrieveModelMixin,
         user = request.user
         serializer = self.get_serializer(user.user_email_preferences)
         return Response(serializer.data)
+
+
+class S3SignView(views.APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        object_name = request.GET['objectName']
+        content_type = mimetypes.guess_type(object_name)[0]
+        conn = init_boto()
+
+        signed_url = conn.generate_presigned_url(
+            'put_object',
+            ExpiresIn=300,
+            HttpMethod="PUT",
+            Params={
+                'Bucket': 'dotateamfinder',
+                'Key': 'team-logos/{}'.format(object_name),
+            }
+        )
+
+        return Response({'signedUrl': signed_url})

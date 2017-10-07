@@ -4,10 +4,10 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
-    PositionSelect } from 'components/forms'
+import { createInput, createS3UploadInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
+    PositionSelect, INVALID_LOGO_DIMENSIONS } from 'components/forms'
 
-const validate = values => {
+const validate = (values, props) => {
     const errors = {}
     const fields = ['name', 'regions', 'player_position', 'available_positions']
     const multiSelectFields = ['regions', 'available_positions']
@@ -22,6 +22,9 @@ const validate = values => {
             errors[fieldName] = 'Required'
         }
     })
+    if (values.logo_url && values.logo_url === INVALID_LOGO_DIMENSIONS) {
+        errors.logo_url = 'Image dimensions are too big.'
+    }
     return errors
 }
 
@@ -31,6 +34,7 @@ const PlayerPositionInput = createSelectInput('My Position', PositionSelect, fal
 const AvailablePositionInput = createSelectInput('Available Positions', PositionSelect)
 const InterestInput = createSelectInput('Team Interests', InterestSelect)
 const LanguageInput = createSelectInput('Team Languages', LanguageSelect)
+const S3UploadInput = createS3UploadInput()
 
 class TeamForm extends Component {
 
@@ -64,7 +68,7 @@ class TeamForm extends Component {
     }
 
     render() {
-        const { error, handleSubmit, submitting, showPlayerPosition } = this.props
+        const { error, handleSubmit, submitting, showPlayerPosition, teamId } = this.props
         return (
             <form onSubmit={handleSubmit(this.submit)}>
                 {error && <Alert bsStyle='danger'>{error}</Alert>}
@@ -89,6 +93,11 @@ class TeamForm extends Component {
                 <div>
                     <Field name='languages' component={LanguageInput} />
                 </div>
+                {teamId && (
+                    <div>
+                        <Field name='logo_url' component={S3UploadInput} />
+                    </div>
+                )}
                 <div>
                     <Button type='submit' disabled={submitting}>
                         Submit

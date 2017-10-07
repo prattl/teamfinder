@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { Field, change, touch } from 'redux-form'
 import { Checkbox, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap'
 import Select from 'react-select'
+import ReactS3Uploader from 'react-s3-uploader'
 
 import { withAllFixtures, withPositions } from 'components/connectors/WithFixtures'
+import { submitLogoUpload } from 'actions/teams'
 
 export const createGenericInput = (Component, label) => field => (
     <FormGroup controlId={field.input.name}
@@ -85,6 +89,95 @@ let SinglePositionSelect = ({ positions, input, meta, children, ...rest }) => (
 )
 SinglePositionSelect = withPositions(SinglePositionSelect)
 
+export const INVALID_LOGO_DIMENSIONS = 'invalid_logo_dimensions'
+export const createS3UploadInput = props => {
+    const LogoUrlInput = createInput({ type: 'hidden' })
+
+    class _S3Upload extends Component {
+
+        constructor(props) {
+            super(props)
+            this.formatFilename = this.formatFilename.bind(this)
+            this.getSignedUrl = this.getSignedUrl.bind(this)
+            this.handleClick = this.handleClick.bind(this)
+            this.handleUploadStart = this.handleUploadStart.bind(this)
+            this.handleUploadFinish = this.handleUploadFinish.bind(this)
+        }
+
+        formatFilename(filename) {
+            return `${this.props.teamId}-${filename}`
+        }
+
+        getSignedUrl(file, callback) {
+            const params = {
+                objectName: this.formatFilename(file.name),
+                contentType: file.type
+            }
+            this.props.dispatch(
+                submitLogoUpload(params)
+            ).then(json => {
+                callback(json)
+            }).catch(error => {
+                console.error(error)
+            })
+        }
+
+        handleClick() {
+            this.props.dispatch(touch('team', ['logo_url']))
+        }
+
+        handleUploadStart(file, next) {
+            let url = URL.createObjectURL(file)
+            const img = new Image()
+            img.onload = () => {
+                const invalidDimensions = img.height > 300 || img.width > 300
+                if (invalidDimensions) {
+                    this.props.dispatch(
+                        change('team', 'logo_url', INVALID_LOGO_DIMENSIONS)
+                    )
+                } else {
+                    next(file)
+                }
+            }
+            img.src = url
+        }
+
+        handleUploadFinish(obj, file) {
+            const filename = this.formatFilename(file.name)
+            this.props.dispatch(
+                change('team', 'logo_url', `https://dotateamfinder.s3.amazonaws.com/team-logos/${filename}`)
+            )
+        }
+
+        render() {
+            const { meta } = this.props
+            const uploaderProps = {
+                getSignedUrl: this.getSignedUrl,
+                accept: 'image/*',
+                uploadRequestHeaders: {},
+                preprocess: this.handleUploadStart,
+                onFinish: this.handleUploadFinish,
+                signingUrlWithCredentials: true,
+                scrubFilename: this.formatFilename,
+                contentDisposition: 'auto',
+            }
+
+            return (
+                <FormGroup validationState={meta.touched && meta.error ? 'error' : null}>
+                    <ControlLabel>Team Logo</ControlLabel>
+                        <ReactS3Uploader {...uploaderProps}
+                                         onClick={this.handleClick}
+                                         className='form-control' />
+                    <HelpBlock>File must be no larger than 300x300 pixels.</HelpBlock>
+                    <Field name='logo_url' component={LogoUrlInput} />
+                </FormGroup>
+            )
+
+        }
+    }
+
+    return connect(null)(_S3Upload)
+}
 
 class SelectWrapper extends Component {
 
@@ -202,5 +295,5 @@ export {
     LanguageSelect,
     RegionSelect,
     PositionSelect,
-    SinglePositionSelect
+    SinglePositionSelect,
 }
