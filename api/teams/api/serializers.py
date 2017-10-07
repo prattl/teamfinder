@@ -63,6 +63,7 @@ class TeamSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'name',
+            'bio',
             'logo_url',
             'regions',
             'available_positions',
@@ -96,6 +97,7 @@ class FlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'bio',
             'logo_url',
             'regions',
             # 'player_position',  # TODO
@@ -131,6 +133,7 @@ class EditableFlatTeamSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'bio',
             'logo_url',
             'regions',
             'available_positions',

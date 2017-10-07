@@ -77,6 +77,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'steamid',
             'steam_friends',
             'username',
+            'bio',
             'email',
             'last_login',
             'regions',
