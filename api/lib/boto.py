@@ -1,6 +1,6 @@
-from django.conf import settings
 import boto3
 from botocore.client import Config
+from django.conf import settings
 
 
 def init_boto():

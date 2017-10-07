@@ -39,7 +39,6 @@ from .serializers import (
 )
 
 User = get_user_model()
-conn = init_boto()
 
 
 class RegionViewSet(viewsets.ReadOnlyModelViewSet):
@@ -196,6 +195,7 @@ class S3SignView(views.APIView):
     def get(self, request, *args, **kwargs):
         object_name = request.GET['objectName']
         content_type = mimetypes.guess_type(object_name)[0]
+        conn = init_boto()
 
         signed_url = conn.generate_presigned_url(
             'put_object',
