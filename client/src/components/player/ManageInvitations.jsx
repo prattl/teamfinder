@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Link } from 'react-router'
 import { Badge, Button, ButtonToolbar, Modal, Table, Tab, Tabs } from 'react-bootstrap'
 
-import TeamName from 'containers/teams/TeamName'
+import TeamName from 'components/teams/TeamName'
 import { withPositions } from 'components/connectors/WithFixtures'
 import { requestPlayerInvitations,
     acceptInvitation, rejectInvitation,

@@ -7,7 +7,7 @@ import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, MMRDisplay } from 'utils'
 import { InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
-import TeamSnippet from 'containers/TeamSnippet'
+import TeamSnippet from 'components/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 

@@ -4,7 +4,7 @@ import { Button, ButtonToolbar, Col, Jumbotron, Row } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import FeedbackButton from 'containers/feedback/FeedbackButton'
+import FeedbackButton from 'components/feedback/FeedbackButton'
 
 import splash from 'images/splash.png'
 

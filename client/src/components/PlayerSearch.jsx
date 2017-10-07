@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import PlayerSearchForm from 'components/forms/PlayerSearchForm'
-import PlayerSearchResults from 'containers/PlayerSearchResults'
+import PlayerSearchResults from 'components/PlayerSearchResults'
 
 class PlayerSearch extends Component {
 
