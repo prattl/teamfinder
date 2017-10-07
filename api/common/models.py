@@ -388,9 +388,22 @@ class TeamMember(AbstractBaseModel):
     class Meta:
         ordering = ('team', 'player', )
 
+    def save(self, *args, **kwargs):
+        try:
+            TeamMember.objects.get(pk=self.pk)
+        except TeamMember.DoesNotExist:
+            new_member = True
+        else:
+            new_member = False
+
+        super(TeamMember, self).save(*args, **kwargs)
+
+        if new_member:
+            self.team.update_mmr_average()
+
     def delete(self, player_id=None, *args, **kwargs):
-        # TODO: Is this the best way to inject the "reason" field?
         TeamMemberHistory.objects.create_from_team_member(self, player_id)
+        self.team.update_mmr_average()
         return super(TeamMember, self).delete(*args, **kwargs)
 
     def __repr__(self):
