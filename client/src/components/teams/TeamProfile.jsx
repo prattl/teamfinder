@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet'
 import moment from 'moment'
 import { Col, Image, Label, Row, } from 'react-bootstrap'
 
+import Bio from 'components/utils'
 import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
@@ -74,6 +75,9 @@ class TeamProfile extends Component {
                                 <div style={{ marginBottom: '1rem' }}>
                                     <LanguageIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={team.team.languages} fixture={languages}/>
+                                </div>
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <Bio bio={team.team.bio} id={team.team.id} />
                                 </div>
                                 <div>
                                     <PlayersIcon fixedWidth={true}/>&nbsp;

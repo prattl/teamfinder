@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import moment from 'moment'
+import { Label } from 'react-bootstrap'
 
 import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { Label } from 'react-bootstrap'
+import Bio from 'components/utils'
 import { FixtureDisplay, Loading, MMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import { tryInviteToTeam } from 'actions/playerSearch'
@@ -49,8 +50,6 @@ class PlayerSearchResult extends Component {
             mmr, mmr_estimate } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
-
-        console.log('bio', bio)
 
         return (
             <div className='player-search-result' style={{ border: '1px solid #DDD', padding: '2rem', marginBottom: '2rem' }}>
@@ -99,7 +98,7 @@ class PlayerSearchResult extends Component {
                                     Active {moment(last_login).fromNow()}
                                 </div>
                                 <div>
-                                    {bio && bio.split('\n').map((part, i) => <span key={`bio-${id}-${i}`}>{part}<br/></span>)}
+                                    <Bio bio={bio} id={id} />
                                 </div>
                                 <div style={{ marginTop: '1rem' }}>
                                     {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}

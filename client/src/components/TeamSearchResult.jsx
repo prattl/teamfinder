@@ -9,6 +9,7 @@ import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
+import Bio from 'components/utils'
 import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, PlayersIcon,
     MMRIcon } from 'utils/components/icons'
@@ -75,7 +76,7 @@ class TeamSearchResult extends Component {
     }
 
     render() {
-        const { available_positions, captain, id, name, interests, languages, regions, team_members, fixtures,
+        const { available_positions, bio, captain, id, name, interests, languages, regions, team_members, fixtures,
             tryApplyToTeam, logo_url, mmr_average, player: { teamApplyingTo }, updated } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
@@ -87,11 +88,10 @@ class TeamSearchResult extends Component {
                         <div>
                             {teamApplyingTo && this.renderApplyToTeamConfirmModal()}
                             <Row>
-                                <Col xs={4} sm={2}>
-                                    <Image src={logo_url || 'http://via.placeholder.com/300x300'}
-                                       thumbnail />
+                                <Col sm={2}>
+                                    {logo_url && <Image src={logo_url} thumbnail style={{ marginBottom: '1rem' }} />}
                                 </Col>
-                                <Col xs={8} sm={10}>
+                                <Col sm={10}>
                                     <div style={{ marginBottom: '1rem' }}>
                                         <Link to={`teams/${id}`}>
                                             <strong>{name}</strong>
@@ -125,6 +125,9 @@ class TeamSearchResult extends Component {
                                     <div style={{ marginBottom: '0.5rem' }}>
                                         <LanguageIcon fixedWidth={true}/>&nbsp;
                                         <FixtureDisplay value={languages} fixture={fixtures.languages}/>
+                                    </div>
+                                    <div style={{ marginBottom: '0.5rem' }}>
+                                        <Bio bio={bio} id={id} />
                                     </div>
                                     <div>
                                         <PlayersIcon fixedWidth={true}/>&nbsp;
