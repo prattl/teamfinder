@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import moment from 'moment'
+import { Col, Image, Label, Row, } from 'react-bootstrap'
 
 import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
-import { Label } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PlayersIcon, PositionIcon,
@@ -34,10 +34,14 @@ class TeamProfile extends Component {
                 <h1>Team Profile</h1>
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
-                        <div>
-                            <div>
+                        <Row>
+                            <Col xs={4} sm={2}>
+                                <Image src={team.team.logo_url || 'http://via.placeholder.com/300x300'}
+                                       thumbnail />
+                            </Col>
+                            <Col xs={8} sm={10}>
                                 <div>
-                                    <h2 className='pull-left'>
+                                    <h2 className='pull-left' style={{ marginTop: 0 }}>
                                         {team.team.name}
                                     </h2>
                                     <span className='pull-right'>
@@ -92,8 +96,8 @@ class TeamProfile extends Component {
                                 <div style={{ marginTop: '1rem' }}>
                                     Last updated {moment(team.team.updated).format('L')}
                                 </div>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                     ) : <div>Error loading team</div>
                 )}
             </div>
