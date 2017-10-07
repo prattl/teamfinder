@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import TeamSearchForm from 'components/forms/TeamSearchForm'
-import TeamSearchResults from 'containers/teams/TeamSearchResults'
+import TeamSearchResults from 'components/teams/TeamSearchResults'
 
 class TeamSearch extends Component {
 

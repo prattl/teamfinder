@@ -5,11 +5,11 @@ import { Button, Col, Row } from 'react-bootstrap'
 
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import requireAuthentication from 'components/auth/AuthenticationRequired'
-import ManageApplications from 'containers/player/ManageApplications'
-import ManageInvitations from 'containers/player/ManageInvitations'
+import ManageApplications from 'components/player/ManageApplications'
+import ManageInvitations from 'components/player/ManageInvitations'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Loading } from 'utils'
-import TeamSnippet from 'containers/TeamSnippet'
+import TeamSnippet from 'components/TeamSnippet'
 
 class ManageTeams extends Component {
 

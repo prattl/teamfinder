@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import moment from 'moment'
+import { Label } from 'react-bootstrap'
 
 import { Col, DropdownButton, Image, MenuItem, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { Label } from 'react-bootstrap'
+import Bio from 'components/utils'
 import { FixtureDisplay, Loading, MMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
 import { tryInviteToTeam } from 'actions/playerSearch'
@@ -45,8 +46,8 @@ class PlayerSearchResult extends Component {
 
     render() {
         // captain of team, current user's teams don't match player's teams
-        const { id, fixtures, avatarfull, last_login, username, interests, languages, regions, positions, teams, mmr,
-            mmr_estimate } = this.props
+        const { id, fixtures, avatarfull, bio, last_login, username, interests, languages, regions, positions, teams,
+            mmr, mmr_estimate } = this.props
         const isLoading = Object.keys(fixtures).some(fixture => fixtures[fixture].isLoading)
         const lastUpdated = Object.keys(fixtures).every(fixture => fixtures[fixture].lastUpdated)
 
@@ -55,20 +56,20 @@ class PlayerSearchResult extends Component {
                 {isLoading ? <Loading /> : (
                     lastUpdated ? (
                         <Row>
-                            <Col xs={4} sm={2}>
-                                <Image thumbnail src={avatarfull} />
-                                <div className='visible-xs' style={{ paddingTop: '1rem' }}>
-                                    {this.renderInviteButton(true)}
-                                </div>
+                            <Col sm={2}>
+                                <Image thumbnail src={avatarfull} style={{ marginBottom: '1rem' }} />
                             </Col>
-                            <Col xs={8} sm={10}>
+                            <Col sm={10}>
                                 <span className='pull-right hidden-xs'>
                                     {this.renderInviteButton()}
                                 </span>
-                                <div style={{ marginBottom: '1rem' }}>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <Link to={`players/${id}`}>
                                         <strong>{username}</strong>
                                     </Link>
+                                </div>
+                                <div className='visible-xs' style={{ margin: '1rem 0' }}>
+                                    {this.renderInviteButton(true)}
                                 </div>
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <RegionIcon fixedWidth={true}/>&nbsp;
@@ -92,9 +93,12 @@ class PlayerSearchResult extends Component {
                                     <LanguageIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={languages} fixture={fixtures.languages}/>
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: '0.5rem' }}>
                                     <i className='fa fa-fw fa-clock-o' />&nbsp;
                                     Active {moment(last_login).fromNow()}
+                                </div>
+                                <div>
+                                    <Bio bio={bio} id={id} />
                                 </div>
                                 <div style={{ marginTop: '1rem' }}>
                                     {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}

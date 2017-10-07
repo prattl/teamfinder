@@ -5,9 +5,10 @@ import moment from 'moment'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Button, Col, Image, Modal, Row } from 'react-bootstrap'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
+import Bio from 'components/utils'
 import { FixtureDisplay, MMRDisplay } from 'utils'
 import { InterestIcon, LanguageIcon, RegionIcon, PositionIcon, MMRIcon } from 'utils/components/icons'
-import TeamSnippet from 'containers/TeamSnippet'
+import TeamSnippet from 'components/TeamSnippet'
 import { withPlayer } from 'components/connectors/WithPlayer'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 
@@ -158,6 +159,9 @@ class PlayerProfile extends Component {
                                 <i className='fa fa-fw fa-clock-o' />&nbsp;
                                 <span>{moment(player.last_login).format('L')}</span>
                             </FixtureRow>
+                            <div>
+                                <Bio bio={player.bio} id={player.id} />
+                            </div>
                         </Col>
                     </Row>
 

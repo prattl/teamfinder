@@ -16,6 +16,7 @@ class PlayerQuerySet(models.QuerySet):
 
 class Player(AbstractBaseModel):
     username = models.CharField(max_length=255)
+    bio = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     deprecated_skill_bracket = models.ForeignKey('common.SkillBracket', null=True, blank=True,
                                                  on_delete=models.SET_NULL)

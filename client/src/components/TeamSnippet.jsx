@@ -7,6 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { FixtureDisplay, Loading, TeamMMRDisplay, playerIsOnTeam } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PlayersIcon, PositionIcon,
     MMRIcon } from 'utils/components/icons'
+import Bio from 'components/utils'
 
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
@@ -85,6 +86,9 @@ class TeamSnippet extends Component {
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <LanguageIcon fixedWidth={true}/>&nbsp;
                                     <FixtureDisplay value={team.languages} fixture={languages}/>
+                                </div>
+                                <div style={{ marginBottom: '0.5rem' }}>
+                                    <Bio bio={team.bio} id={team.id} />
                                 </div>
                                 <div style={{ marginBottom: '0.5rem' }}>
                                     <PlayersIcon fixedWidth={true}/>&nbsp;

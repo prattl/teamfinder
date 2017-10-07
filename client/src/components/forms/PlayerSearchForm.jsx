@@ -14,46 +14,22 @@ class PlayerSearchForm extends Component {
         const { handleSubmit, submitting } = this.props
         return (
             <form onSubmit={handleSubmit}>
-                <Row>
-                    <Col sm={4}>
-                        <Field name='keywords' component={KeywordsInput} placeholder='Keywords' />
-                    </Col>
-                    <Col sm={4}>
-                        <Field name='regions' component={RegionSelect} />
-                    </Col>
-                    <Col sm={4}>
-                        <Field name='positions' component={PositionSelect} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={4}>
-                        <Field name='interests' component={InterestSelect} />
-                    </Col>
-                    <Col sm={2}>
-                        <Field name='min_mmr' component={MMRInput} placeholder='Min. MMR' />
-                    </Col>
-                    <Col sm={2}>
-                        <Field name='max_mmr' component={MMRInput} placeholder='Max. MMR' />
-                    </Col>
-                    <Col sm={4}>
-                        <div className='checkbox'>
-                            <label>
-                                <Field name='include_estimated_mmr' component='input' type='checkbox'/>
-                                &nbsp;Include Estimated MMR&nbsp;<EstimatedMMRHelpIcon />
-                            </label>
-                        </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={4}>
-                        <Field name='languages' component={LanguageSelect} />
-                    </Col>
-                    <Col sm={4}>
-                        <Button type='submit' disabled={submitting}>
-                            <i className='fa fa-search'/>&nbsp;Submit
-                        </Button>
-                    </Col>
-                </Row>
+                <Field name='keywords' component={KeywordsInput} placeholder='Keywords' />
+                <Field name='regions' component={RegionSelect} />
+                <Field name='positions' component={PositionSelect} />
+                <Field name='interests' component={InterestSelect} />
+                <Field name='languages' component={LanguageSelect} />
+                <Field name='min_mmr' component={MMRInput} placeholder='Min. MMR' />
+                <Field name='max_mmr' component={MMRInput} placeholder='Max. MMR' />
+                <div className='checkbox'>
+                    <label>
+                        <Field name='include_estimated_mmr' component='input' type='checkbox'/>
+                        &nbsp;Include Estimated MMR&nbsp;<EstimatedMMRHelpIcon />
+                    </label>
+                </div>
+                <Button type='submit' disabled={submitting}>
+                    <i className='fa fa-search'/>&nbsp;Submit
+                </Button>
             </form>
         )
     }

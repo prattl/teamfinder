@@ -29,6 +29,7 @@ class EditProfile extends Component {
     render() {
         const { changesSaved, player, isLoading, lastUpdated } = this.props
         const initialValues = player ? ({
+            bio: player.bio,
             email: player.email,
             interests: player.interests,
             languages: player.languages,

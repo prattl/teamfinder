@@ -4,8 +4,8 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitCreateTeam, submitEditTeam } from 'actions/teams'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createS3UploadInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
-    PositionSelect, INVALID_LOGO_DIMENSIONS } from 'components/forms'
+import { createInput, createS3UploadInput, createSelectInput, createTextArea, InterestSelect, LanguageSelect,
+    RegionSelect, PositionSelect, INVALID_LOGO_DIMENSIONS } from 'components/forms'
 
 const validate = (values, props) => {
     const errors = {}
@@ -35,7 +35,9 @@ const AvailablePositionInput = createSelectInput('Available Positions', Position
 const InterestInput = createSelectInput('Team Interests', InterestSelect)
 const LanguageInput = createSelectInput('Team Languages', LanguageSelect)
 const S3UploadInput = createS3UploadInput()
-
+const BioInput = createTextArea({
+    label: 'Team Bio', maxLength: 255,
+})
 class TeamForm extends Component {
 
     static propTypes = {
@@ -98,6 +100,9 @@ class TeamForm extends Component {
                         <Field name='logo_url' component={S3UploadInput} />
                     </div>
                 )}
+                <div>
+                    <Field name='bio' component={BioInput} />
+                </div>
                 <div>
                     <Button type='submit' disabled={submitting}>
                         Submit
