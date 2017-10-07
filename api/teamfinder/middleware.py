@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from re import sub
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -10,6 +12,16 @@ class LastLoginMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        header_token = request.META.get('HTTP_AUTHORIZATION', None)
+
+        if header_token:
+            try:
+                token = sub('Token ', '', header_token)
+                token_obj = Token.objects.get(key=token)
+                request.user = token_obj.user
+            except Token.DoesNotExist:
+                pass
+
         if request.user.is_authenticated():
             User.objects.filter(pk=request.user.pk).update(last_login=timezone.now())
         response = self.get_response(request)
