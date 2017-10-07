@@ -82,7 +82,7 @@ class PlayerSearchResults extends PureComponent {
                 {confirmInvitation.playerId && confirmInvitation.teamId && (
                     this.renderInviteToTeamModal(confirmInvitation.playerId, confirmInvitation.teamId)
                 )}
-                <div style={{ margin: '2rem 0', visibility: lastUpdated ? 'visible' : 'hidden' }}>
+                <div style={{ visibility: lastUpdated ? 'visible' : 'hidden' }}>
                     <div className='pull-left'>
                         {count} players found
                     </div>

@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form'
 import { submitProfile } from 'actions/player'
 
 import { Alert, Button } from 'react-bootstrap'
-import { createInput, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
+import { createInput, createTextArea, createSelectInput, InterestSelect, LanguageSelect, RegionSelect,
     PositionSelect } from 'components/forms'
 
 const submit = (values, dispatch) => {
@@ -21,9 +21,9 @@ const submit = (values, dispatch) => {
 
 const validate = values => {
     const errors = {}
-    const fields = ['email', 'regions', 'positions', 'interests', ]
+    const requiredFields = ['email', 'regions', 'positions', 'interests', ]
     const multiSelectFields = ['regions', 'positions', 'interests', ]
-    fields.forEach(fieldName => {
+    requiredFields.forEach(fieldName => {
         if ([null, undefined, ''].includes(values[fieldName])) {
             errors[fieldName] = 'Required'
         }
@@ -34,6 +34,9 @@ const validate = values => {
             errors[fieldName] = 'Required'
         }
     })
+    if (values.bio.length > 255) {
+        errors.bio = 'Must 255 characters or less.'
+    }
     return errors
 }
 
@@ -41,6 +44,9 @@ const EmailInput = createInput({
     label: 'Email', type: 'email', helpText: 'Your email is private and will not be shared with anyone. We\'ll use ' +
     'it to let you know when you\'ve been invited or accepted to a team. You can change your email preferences from ' +
     'your settings.'
+})
+const BioInput = createTextArea({
+    label: 'Bio', maxLength: 255,
 })
 const InterestInput = createSelectInput('Interests', InterestSelect)
 const LanguageInput = createSelectInput('Languages', LanguageSelect)
@@ -68,6 +74,9 @@ class ProfileForm extends Component {
                 </div>
                 <div>
                     <Field name='languages' component={LanguageInput} />
+                </div>
+                <div>
+                    <Field name='bio' component={BioInput} />
                 </div>
                 <div>
                     <Button type='submit' disabled={submitting}>

@@ -29,11 +29,12 @@ export const createInput = ({ label='', type='text', disabled=false, helpText=nu
         {helpText && <HelpBlock>{helpText}</HelpBlock>}
     </FormGroup>
 )
-export const createTextArea = (label, rows=5) => (field) => (
+export const createTextArea = ({ label, maxLength, rows = 5 }) => (field) => (
     <FormGroup controlId={field.input.name}
                validationState={field.meta.touched && field.meta.error ? 'error' : null}>
         {label && <ControlLabel>{label}</ControlLabel>}
         <FormControl {...field.input} componentClass='textarea' rows={rows} placeholder={field.placeholder} />
+        {maxLength && <div className='text-right'>{field.input.value.length}/{maxLength}</div>}
         {field.meta.touched && field.meta.error &&
         <HelpBlock>{field.meta.error}</HelpBlock>}
     </FormGroup>

@@ -24,7 +24,7 @@ const validate = values => {
     return errors
 }
 
-const CommentsInput = createTextArea('Comments', 10)
+const CommentsInput = createTextArea({ label: 'Comments', rows: 10 })
 const FeedbackTypeSelect = createSelect('Type')
 
 class FeedbackForm extends Component {
