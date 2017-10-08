@@ -14,7 +14,7 @@ class Footer extends Component {
                             <i className='fa fa-github'/>&nbsp;View on Github
                         </NavItem>
                         <NavItem eventKey={2} href='https://discord.gg/gbWhPB3'>
-                            Join us on <img style={{ maxHeight: '24px' }} src={discord} alt='discord'/>
+                            Join us on <img style={{ maxHeight: '20px' }} src={discord} alt='discord'/>
                         </NavItem>
                     </Nav>
 
