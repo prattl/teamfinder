@@ -8,7 +8,7 @@ class Footer extends Component {
     render() {
         return (
             <div id='footer'>
-                <Navbar>
+                <Navbar inverse>
                     <Nav>
                         <NavItem eventKey={1} href='https://github.com/prattl/teamfinder'>
                             <i className='fa fa-github'/>&nbsp;View on Github

@@ -1,0 +1,95 @@
+html, body {
+    min-height: 100%;
+    margin: 0;
+}
+
+#root {
+    min-height: 100%;
+}
+
+.index-container {
+    height: 100vh;
+}
+
+.index {
+    position: relative;
+    height: 100%;
+}
+
+.index .navbar {
+    margin-bottom: 0;
+}
+
+.index.index-splash {
+    background-image: url('../images/splash.png');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+}
+
+.index .navigation {
+    height: 10rem;
+    padding-top: 2rem;
+}
+
+.index .navigation h3 {
+    float: left;
+    line-height: 4rem;
+}
+
+.index .navigation .links {
+    float: right;
+    margin: 2rem 0 1rem 0;
+    line-height: 4rem;
+    font-weight: bold;
+}
+
+.index .navigation .links .list-inline > li {
+    padding: 0 1rem;
+}
+
+.index .intro-container {
+    width: 100%;
+    height: calc(100% - 30rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.index .intro h1 {
+    margin-bottom: 4rem;
+    font-weight: 700;
+    letter-spacing: 0.075rem;
+}
+
+.index .intro .btn-toolbar {
+    display: flex;
+    justify-content: center;
+    margin: 4rem 0 0 0;
+}
+
+.index .intro .btn-toolbar .btn {
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0 1rem;
+}
+
+.index .featured-teams {
+    min-height: 20rem;
+}
+
+.index .featured-team {
+    background-color: rgba(0, 0, 0, .5);
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+}
+.index .featured-team h5 {
+    margin-top: 0;
+}
+
+.btn.index-cta {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.075rem;
+}
