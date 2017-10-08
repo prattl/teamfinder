@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Field, reduxForm } from 'redux-form'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { playerSubmit } from 'components/forms/SearchForm'
 import { createInput, InterestSelect, LanguageSelect, RegionSelect, PositionSelect } from 'components/forms'
 import { EstimatedMMRHelpIcon } from 'utils'
