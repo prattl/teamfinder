@@ -37,7 +37,7 @@ class TopNav extends Component {
         const menuLinks = baseMenuLinks.concat(loggedIn ? loggedInMenuLinks : [])
 
         return (
-            <Navbar staticTop={true}>
+            <Navbar inverse staticTop>
                 <Navbar.Header>
                     <Navbar.Brand>
                         <Link to='/'>Dota 2 Team Finder <small><i>alpha</i></small></Link>

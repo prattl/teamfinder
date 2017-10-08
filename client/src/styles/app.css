@@ -4,12 +4,20 @@ html {
 }
 
 html body {
-  margin: 0 0 16.2rem 0;
+  margin: 0;
   padding: 0;
-  font-family: sans-serif;
+}
+
+html .navbar {
+    margin-bottom: 0;
+}
+
+#page-content {
+  padding-bottom: 7.2rem;
 }
 
 #footer {
+  margin-top: 2rem;
   position: absolute;
   left: 0;
   right: 0;
