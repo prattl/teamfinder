@@ -20,6 +20,36 @@ const FeatureListItem = ({ children, complete=false, extra=null }) => (
 )
 const openDotaLink = <a href='https://www.opendota.com/' target='_blank' rel='external'>OpenDota</a>
 
+const RecentUpdates = () => (
+    <ul className='list-unstyled' style={{ marginLeft: '2rem' }}>
+        <FeatureListItem complete={true}>Sign in with Steam</FeatureListItem>
+        <FeatureListItem complete={true}>Email notifications</FeatureListItem>
+        <FeatureListItem complete={true}>Add Friend and View Steam Profile Links added</FeatureListItem>
+        <FeatureListItem complete={true} extra={<span>(thanks {openDotaLink}!)</span>}>
+            Confirm MMR
+        </FeatureListItem>
+        <FeatureListItem complete={true}>
+            Player and team interests (competitive, casual, battle cup, etc.)
+        </FeatureListItem>
+        <FeatureListItem complete={true}>Language preferences</FeatureListItem>
+        <FeatureListItem complete={true}>Player bios</FeatureListItem>
+        <FeatureListItem complete={true}>Team bios and logo upload</FeatureListItem>
+    </ul>
+)
+
+const ComingSoon = () => (
+    <ul className='list-unstyled' style={{ marginLeft: '2rem' }}>
+        <FeatureListItem complete={false}>Complete redesign</FeatureListItem>
+        <FeatureListItem complete={false}>Send messages to your team and recruits</FeatureListItem>
+
+        <FeatureListItem complete={false}>Timezone preferences</FeatureListItem>
+        <FeatureListItem complete={false}>Automated matching / recommendations</FeatureListItem>
+        <FeatureListItem complete={false}>Verify players</FeatureListItem>
+        <FeatureListItem>Schedule team events</FeatureListItem>
+        <FeatureListItem>Scrim against other teams</FeatureListItem>
+    </ul>
+)
+
 class Index extends Component {
 
     render() {
@@ -69,30 +99,9 @@ class Index extends Component {
                             use the <FeedbackButton inline={true} /> button to submit feedback on any page.
                         </p>
                         <h4>Recent Updates:</h4>
-                        <ul className='list-unstyled' style={{ marginLeft: '2rem' }}>
-                            <FeatureListItem complete={true}>Sign in with Steam</FeatureListItem>
-                            <FeatureListItem complete={true}>Email notifications</FeatureListItem>
-                            <FeatureListItem complete={true}>Add Friend and View Steam Profile Links added</FeatureListItem>
-                            <FeatureListItem complete={true} extra={<span>(thanks {openDotaLink}!)</span>}>
-                                Confirm MMR
-                            </FeatureListItem>
-                            <FeatureListItem complete={true}>
-                                Player and team interests (competitive, casual, battle cup, etc.)
-                            </FeatureListItem>
-                            <FeatureListItem complete={true}>Language preferences</FeatureListItem>
-                        </ul>
+                        <RecentUpdates/>
                         <h4>Coming Soon:</h4>
-                        <ul className='list-unstyled' style={{ marginLeft: '2rem' }}>
-                            <FeatureListItem complete={false}>Complete redesign</FeatureListItem>
-                            <FeatureListItem complete={false}>Send messages to your team and recruits</FeatureListItem>
-                            <FeatureListItem complete={false}>Player bios</FeatureListItem>
-                            <FeatureListItem complete={false}>Team bios and logo upload</FeatureListItem>
-                            <FeatureListItem complete={false}>Timezone preferences</FeatureListItem>
-                            <FeatureListItem complete={false}>Automated matching / recommendations</FeatureListItem>
-                            <FeatureListItem complete={false}>Verify players</FeatureListItem>
-                            <FeatureListItem>Schedule team events</FeatureListItem>
-                            <FeatureListItem>Scrim against other teams</FeatureListItem>
-                        </ul>
+                        <ComingSoon/>
                     </Col>
                 </Row>
             </div>
