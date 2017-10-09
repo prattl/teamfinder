@@ -256,7 +256,7 @@
     "@modal-inner-padding": "15px",
     "@modal-title-padding": "15px",
     "@modal-title-line-height": "@line-height-base",
-    "@modal-content-bg": "#fff",
+    "@modal-content-bg": "#0d1012",
     "@modal-content-border-color": "rgba(0,0,0,.2)",
     "@modal-content-fallback-border-color": "#999",
     "@modal-backdrop-bg": "#000",
@@ -417,5 +417,5 @@
     "carousel.less"
   ],
   "js": [],
-  "customizerUrl": "https://getbootstrap.com/docs/3.3/customize/?id=9f9452f7fdb2e7b31b58deff8bf4ed32"
+  "customizerUrl": "https://getbootstrap.com/docs/3.3/customize/?id=68157b6ca0a42b76d948f40b57eda83f"
 }

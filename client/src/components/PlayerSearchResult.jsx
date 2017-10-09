@@ -94,14 +94,14 @@ class PlayerSearchResult extends Component {
                                     <FixtureDisplay value={languages} fixture={fixtures.languages}/>
                                 </div>
                                 <div style={{ marginBottom: '0.5rem' }}>
-                                    <i className='fa fa-fw fa-clock-o' />&nbsp;
-                                    Active {moment(last_login).fromNow()}
+                                    <i className='fa fa-fw fa-clock-o' />&nbsp;Active {moment(last_login).fromNow()}
                                 </div>
+                                {bio && (
+                                    <div style={{ marginBottom: '1rem' }}>
+                                        <Bio bio={bio} id={id} />
+                                    </div>
+                                )}
                                 <div>
-                                    <Bio bio={bio} id={id} />
-                                </div>
-                                <div style={{ marginTop: '1rem' }}>
-                                    {teams.length === 0 && <Label style={{ visibility: 'hidden' }}>Placeholder</Label>}
                                     {teams.map(team => (
                                         <div style={{ display: 'inline-block', marginRight: '0.5rem' }}
                                              key={`player-${id}-team-${team.id}`}>
