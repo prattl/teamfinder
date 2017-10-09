@@ -24,7 +24,7 @@ class TeamSnippet extends Component {
                     lastUpdated ? (
                         <Row>
                             <Col xs={4} sm={2}>
-                                <Image src={team.logo_url || 'http://via.placeholder.com/300x300'}
+                                <Image src={team.logo_url || 'https://via.placeholder.com/300x300'}
                                        thumbnail />
                             </Col>
                             <Col xs={8} sm={10}>

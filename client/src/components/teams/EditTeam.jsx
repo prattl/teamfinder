@@ -25,7 +25,7 @@ class EditTeam extends Component {
                     {team && (
                         <Col lg={4} md={3} sm={2}>
                             <div className='text-right'>
-                                <Image src={team.logo_url || 'http://via.placeholder.com/300x300'}
+                                <Image src={team.logo_url || 'https://via.placeholder.com/300x300'}
                                        thumbnail />
                             </div>
                         </Col>

@@ -30,7 +30,7 @@ const FeaturedTeam = ({ name, mmr, region, positions, color }) => (
     <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
         <Row>
             <Col xs={4}>
-                <img className='img-responsive' src={'http://via.placeholder.com/75x75'} />
+                <img className='img-responsive' src={'https://via.placeholder.com/75x75'} />
             </Col>
             <Col xs={8}>
                 <div>
