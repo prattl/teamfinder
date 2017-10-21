@@ -25,6 +25,8 @@ class Team(AbstractBaseModel):
     mmr_average = models.IntegerField(null=True, blank=True)
     mmr_last_updated = models.DateTimeField(null=True, blank=True)
 
+    search_score = models.IntegerField(default=0)
+
     # TODO:
     # accepting_applications = models.BooleanField(default=True)
 
@@ -36,6 +38,8 @@ class Team(AbstractBaseModel):
         else:
             new_team = False
 
+        self.update_search_score()
+
         super(Team, self).save(*args, **kwargs)
 
         if new_team:
@@ -46,6 +50,21 @@ class Team(AbstractBaseModel):
         self.mmr_average = int(statistics.mean(player_mmrs)) if len(player_mmrs) > 0 else -1
         self.mmr_last_updated = timezone.now()
         self.save()
+
+    def update_search_score(self):
+        profile_score = 0
+        logo_score = 10 if self.logo_url else 0  # TODO: Broken logo URLs?
+
+        if self.bio:
+            profile_score += 1
+        if self.interests.exists():
+            profile_score += 1
+        if self.languages.exists():
+            profile_score += 1
+
+        new_score = profile_score + logo_score
+        if new_score != self.search_score:
+            self.search_score = new_score
 
     @property
     def actively_recruiting(self):

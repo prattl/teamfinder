@@ -64,10 +64,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         serializer_class = _get_serializer_class()
         return serializer_class
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = self.setup_eager_loading(queryset)
-
+    def get_queryset_for_search(self, queryset):
         keywords = self.request.query_params.get('keywords')
         regions = self.request.query_params.getlist('regions[]')
         available_positions = self.request.query_params.getlist('available_positions[]')
@@ -84,6 +81,16 @@ class TeamViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(interests__in=Interest.objects.filter(pk__in=interests))
         if languages:
             queryset = queryset.filter(languages__in=Language.objects.filter(pk__in=languages))
+
+        return queryset.order_by('-search_score')
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = self.setup_eager_loading(queryset)
+
+        search = self.request.query_params.get('search')
+        if search:
+            queryset = self.get_queryset_for_search(queryset)
 
         return queryset.order_by('-updated')
 

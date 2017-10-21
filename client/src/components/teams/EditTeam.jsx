@@ -12,6 +12,7 @@ class EditTeam extends Component {
         const { team: { team } } = this.props
         const initialValues = team ? ({
             name: team.name,
+            bio: team.bio,
             available_positions: team.available_positions,
             interests: team.interests,
             languages: team.languages,
