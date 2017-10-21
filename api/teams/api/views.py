@@ -82,7 +82,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         if languages:
             queryset = queryset.filter(languages__in=Language.objects.filter(pk__in=languages))
 
-        return queryset.order_by('-search_score')
+        return queryset.order_by('-search_score', '-updated', )
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -92,7 +92,7 @@ class TeamViewSet(viewsets.ModelViewSet):
         if search:
             queryset = self.get_queryset_for_search(queryset)
 
-        return queryset.order_by('-updated')
+        return queryset
 
     def create(self, request, *args, **kwargs):
         data = request.data
