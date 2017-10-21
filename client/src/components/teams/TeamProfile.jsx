@@ -8,7 +8,7 @@ import Bio from 'components/utils'
 import { requestTeam } from 'actions/teams'
 import { Link } from 'react-router'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
-import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
+import { encodeLogoUrl, FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PlayersIcon, PositionIcon,
     MMRIcon } from 'utils/components/icons'
 
@@ -37,7 +37,7 @@ class TeamProfile extends Component {
                     lastUpdated ? (
                         <Row>
                             <Col xs={4} sm={2}>
-                                <Image src={team.team.logo_url || 'https://via.placeholder.com/300x300'}
+                                <Image src={team.team.logo_url ? encodeLogoUrl(team.team.logo_url) : 'https://via.placeholder.com/300x300'}
                                        thumbnail />
                             </Col>
                             <Col xs={8} sm={10}>

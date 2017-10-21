@@ -9,7 +9,7 @@ import { requestTeamSearch } from 'actions/teamSearch'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { RegionIcon, MMRIcon, PositionIcon } from 'utils/components/icons'
 import { teamSearchSelector } from 'utils/selectors'
-import { FixtureDisplay, TeamMMRDisplay } from 'utils'
+import { encodeLogoUrl, FixtureDisplay, TeamMMRDisplay } from 'utils'
 
 const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
     'https://dotateamfinder.com:8000' :
@@ -38,10 +38,9 @@ let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, availa
         <Row>
             {logo_url && (
                 <Col xs={4}>
-                    <img className='img-responsive' src={logo_url} role='presentation' alt='' />
+                    <img className='img-responsive' src={encodeLogoUrl(logo_url)} role='presentation' alt='' />
                 </Col>
             )}
-
             <Col xs={logo_url ? 8 : 12}>
                 <div>
                     <h5>

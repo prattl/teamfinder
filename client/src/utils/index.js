@@ -92,3 +92,8 @@ export const playerIsCaptain = (player, team) => (
 export const playerIsOnTeam = (player, team) => (
     team.team_members.map(teamMember => teamMember.player.id).includes(player.id)
 )
+
+export const encodeLogoUrl = url => {
+    const [ base, filename ] = url.split("team-logos/")
+    return `${base}team-logos/${encodeURIComponent(filename)}`
+}

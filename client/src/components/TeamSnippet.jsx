@@ -4,7 +4,7 @@ import { Button, Col, Image, Label, Row, } from 'react-bootstrap'
 
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
-import { FixtureDisplay, Loading, TeamMMRDisplay, playerIsOnTeam } from 'utils'
+import { encodeLogoUrl, FixtureDisplay, Loading, TeamMMRDisplay, playerIsOnTeam } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PlayersIcon, PositionIcon,
     MMRIcon } from 'utils/components/icons'
 import Bio from 'components/utils'
@@ -24,7 +24,7 @@ class TeamSnippet extends Component {
                     lastUpdated ? (
                         <Row>
                             <Col xs={4} sm={2}>
-                                <Image src={team.logo_url || 'https://via.placeholder.com/300x300'}
+                                <Image src={team.logo_url ? encodeLogoUrl(team.logo_url) : 'https://via.placeholder.com/300x300'}
                                        thumbnail />
                             </Col>
                             <Col xs={8} sm={10}>

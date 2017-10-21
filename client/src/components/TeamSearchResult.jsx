@@ -10,7 +10,7 @@ import { tryApplyToTeam, cancelApplyToTeam } from 'actions/player'
 import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { withOwnPlayer } from 'components/connectors/WithOwnPlayer'
 import Bio from 'components/utils'
-import { FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
+import { encodeLogoUrl, FixtureDisplay, Loading, TeamMMRDisplay } from 'utils'
 import { CaptainIcon, InterestIcon, LanguageIcon, RegionIcon, PositionIcon, PlayersIcon,
     MMRIcon } from 'utils/components/icons'
 import TeamApplicationForm from 'components/forms/TeamApplicationForm'
@@ -89,7 +89,7 @@ class TeamSearchResult extends Component {
                             {teamApplyingTo && this.renderApplyToTeamConfirmModal()}
                             <Row>
                                 <Col sm={2}>
-                                    {logo_url && <Image src={logo_url} thumbnail style={{ marginBottom: '1rem' }} />}
+                                    {logo_url && <Image src={encodeLogoUrl(logo_url)} thumbnail style={{ marginBottom: '1rem' }} />}
                                 </Col>
                                 <Col sm={10}>
                                     <div style={{ marginBottom: '1rem' }}>
