@@ -48,14 +48,16 @@ let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, availa
                         <Link to={`/teams/${id}`}>{name}</Link>
                     </h5>
                     <div style={{ marginBottom: '0.5rem' }}>
-                        <MMRIcon fixedWidth />&nbsp;<TeamMMRDisplay mmr={mmr_average} />
+                        <MMRIcon fixedWidth />&nbsp;
+                        <TeamMMRDisplay mmr={mmr_average} />
                     </div>
                     <div style={{ marginBottom: '0.5rem' }}>
-                        <RegionIcon fixedWidth />&nbsp;<FixtureDisplay value={regions} fixture={fixtures.regions}/>
+                        <RegionIcon fixedWidth />&nbsp;
+                        <FixtureDisplay value={regions.splice(0, 2)} fixture={fixtures.regions}/>
                     </div>
                     <div>
                         <PositionIcon fixedWidth />&nbsp;
-                        <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
+                        <FixtureDisplay value={available_positions.splice(0, 2)} fixture={fixtures.positions}/>
                     </div>
                 </div>
             </Col>
