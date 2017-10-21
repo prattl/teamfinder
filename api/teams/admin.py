@@ -18,7 +18,7 @@ class TeamAdmin(admin.ModelAdmin):
     form = TeamAdminForm
     readonly_fields = ('id', 'players', 'created', 'updated', )
     list_display = ('name', 'captain', 'creator', 'created', 'updated', )
-    list_filter = ('regions', 'available_positions', 'interests', 'languages', 'created', 'updated', )
+    list_filter = ('regions', 'available_positions', 'interests', 'languages', 'search_score', 'created', 'updated', )
     search_fields = ('name', 'bio', 'captain__username', 'creator__username', )
     ordering = ('-created', )
     inlines = (

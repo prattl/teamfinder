@@ -17,7 +17,7 @@ export default actions
 export const requestTeamSearch = (values) => (dispatch, getStates) => {
     dispatch(createAction(actions.REQUEST_TEAM_SEARCH)())
     const { keywords, interests, languages, regions, positions } = values
-    let url = createUrl(`/api/teams/?keywords=${keywords}`)
+    let url = createUrl(`/api/teams/?search=true&keywords=${keywords}`)
     regions.forEach(region => url += `&regions[]=${region}`)
     interests.forEach(interest => url += `&interests[]=${interest}`)
     languages.forEach(language => url += `&languages[]=${language}`)
