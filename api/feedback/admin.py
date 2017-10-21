@@ -34,6 +34,9 @@ class FeedbackAdmin(admin.ModelAdmin):
         'redux_state',
         'player__username',
     )
+    ordering = (
+        '-created',
+    )
 
     def get_type(self, obj):
         return obj.get_type_display()
