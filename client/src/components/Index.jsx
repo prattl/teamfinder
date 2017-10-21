@@ -33,36 +33,40 @@ const Links = () => (
     </ButtonToolbar>
 )
 
-let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, available_positions, color }) => (
-    <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
-        <Row>
-            {logo_url && (
-                <Col xs={4}>
-                    <img className='img-responsive' src={encodeLogoUrl(logo_url)} role='presentation' alt='' />
-                </Col>
-            )}
-            <Col xs={logo_url ? 8 : 12}>
-                <div>
-                    <h5>
-                        <Link to={`/teams/${id}`}>{name}</Link>
-                    </h5>
-                    <div style={{ marginBottom: '0.5rem' }}>
-                        <MMRIcon fixedWidth />&nbsp;
-                        <TeamMMRDisplay mmr={mmr_average} />
-                    </div>
-                    <div style={{ marginBottom: '0.5rem' }}>
-                        <RegionIcon fixedWidth />&nbsp;
-                        <FixtureDisplay value={regions.splice(0, 2)} fixture={fixtures.regions}/>
-                    </div>
+let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, available_positions, color }) => {
+    if (regions && regions.length > 2) regions.splice(0, 2)
+    if (available_positions && available_positions.length > 2) available_positions.splice(0, 2)
+    return (
+        <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>device mana
+            <Row>
+                {logo_url && (
+                    <Col xs={4}>
+                        <img className='img-responsive' src={encodeLogoUrl(logo_url)} role='presentation' alt='' />
+                    </Col>
+                )}
+                <Col xs={logo_url ? 8 : 12}>
                     <div>
-                        <PositionIcon fixedWidth />&nbsp;
-                        <FixtureDisplay value={available_positions.splice(0, 2)} fixture={fixtures.positions}/>
+                        <h5>
+                            <Link to={`/teams/${id}`}>{name}</Link>
+                        </h5>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <MMRIcon fixedWidth />&nbsp;
+                            <TeamMMRDisplay mmr={mmr_average} />
+                        </div>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <RegionIcon fixedWidth />&nbsp;
+                            <FixtureDisplay value={regions} fixture={fixtures.regions}/>
+                        </div>
+                        <div>
+                            <PositionIcon fixedWidth />&nbsp;
+                            <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
+                        </div>
                     </div>
-                </div>
-            </Col>
-        </Row>
-    </div>
-)
+                </Col>
+            </Row>
+        </div>
+    )
+}
 FeaturedTeam = withAllFixtures(FeaturedTeam)
 
 const featuredTeamColors = [
