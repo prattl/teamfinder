@@ -21,8 +21,8 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = (
         'player',
         'get_type',
-        'created',
         'comments',
+        'created',
     )
     list_filter = (
         'type',
@@ -33,6 +33,9 @@ class FeedbackAdmin(admin.ModelAdmin):
         'user_agent',
         'redux_state',
         'player__username',
+    )
+    ordering = (
+        '-created',
     )
 
     def get_type(self, obj):

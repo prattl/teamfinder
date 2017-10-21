@@ -6,6 +6,7 @@ class EmailRecordAdmin(admin.ModelAdmin):
     model = models.EmailRecord
     list_display = ('subject', 'to', 'from_address', 'created', 'updated', )
     search_fields = ('subject', 'to', 'from_address', 'text_content', )
+    ordering = ('-created', )
 
 
 class RegionAdmin(admin.ModelAdmin):
@@ -37,6 +38,7 @@ class PositionAdmin(admin.ModelAdmin):
 class TeamMemberAdminInline(admin.TabularInline):
     model = models.TeamMember
     fields = ('team', 'player', 'position', 'created', 'updated', )
+    ordering = ('-created', )
     readonly_fields = fields
     extra = 0
     show_change_link = True
@@ -50,6 +52,21 @@ class TeamMemberAdmin(admin.ModelAdmin):
     list_filter = ('position', 'created', 'updated', )
     raw_id_fields = ('team', 'player', )
     search_fields = ('name', 'player__username', )
+
+
+class JoinableActionAdmin(admin.ModelAdmin):
+    list_display = ('player', 'team', 'position', 'status', 'created', 'updated', )
+    list_filter = ('status', 'position', 'created', 'updated', )
+    ordering = ('-created', )
+
+
+class ApplicationAdmin(JoinableActionAdmin):
+    model = models.Application
+
+
+class InvitationAdmin(JoinableActionAdmin):
+    list_display = JoinableActionAdmin.list_display + ('created_by', )
+    model = models.Invitation
 
 
 class JoinableActionAdminInline(admin.TabularInline):
@@ -75,9 +92,9 @@ class TeamInvitationAdminInline(InvitationAdminInline):
     fk_name = 'team'
 
 
-admin.site.register(models.Application)
+admin.site.register(models.Application, ApplicationAdmin)
 admin.site.register(models.EmailRecord, EmailRecordAdmin)
-admin.site.register(models.Invitation)
+admin.site.register(models.Invitation, InvitationAdmin)
 admin.site.register(models.Interest, InterestAdmin)
 admin.site.register(models.Language, LanguageAdmin)
 admin.site.register(models.Region, RegionAdmin)
