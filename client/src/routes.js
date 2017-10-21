@@ -1,6 +1,7 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 
+import About from 'components/About'
 import Base from 'components/Base'
 import CreateTeam from 'components/teams/CreateTeam'
 import EditProfile from 'components/EditProfile'
@@ -22,6 +23,7 @@ export default (
     <Route path=''>
         <Route path='/' component={Base}>
             <IndexRoute component={Index} />
+            <Route path='about' component={About} />
             <Route path='login-required' component={props => <LogIn alertRequired={true} {...props} />}/>
             <Route path='logout' component={LogOut}/>
             <Route path='settings' component={EditSettings}/>

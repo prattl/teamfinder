@@ -16,7 +16,7 @@ const Links = () => (
     <ul className='list-inline'>
         <li><Link to='/teams'><span className='hidden-sm'>Find </span>Teams</Link></li>
         <li><Link to='/players'><span className='hidden-sm'>Find </span>Players</Link></li>
-        <li><Link to=''>About</Link></li>
+        <li><Link to='/about'>About</Link></li>
         <li>
             <Button className='index-cta' bsStyle='success'
                     href={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
@@ -161,15 +161,11 @@ class IndexRedesign extends Component {
     render() {
         return (
             <div className='index-container'>
-                <Helmet>
-                    <meta name='robots' content='noindex' />
-                </Helmet>
                 <DesktopIndex />
                 <MobileIndex />
             </div>
         )
     }
-
 }
 
 export default IndexRedesign
