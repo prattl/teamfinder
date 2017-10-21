@@ -9,6 +9,7 @@ import configureStore from './store/configureStore'
 import routes from './routes'
 
 import 'styles/app.css'
+import 'styles/redesign.css'
 
 import 'styles/bootstrap/css/bootstrap.css'
 

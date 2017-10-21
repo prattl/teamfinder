@@ -50,7 +50,7 @@ html, body {
 
 .index .intro-container {
     width: 100%;
-    height: calc(100% - 30rem);
+    height: calc(100% - 35rem);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -76,7 +76,7 @@ html, body {
 }
 
 .index .featured-teams {
-    min-height: 20rem;
+    min-height: 25rem;
 }
 
 .index .featured-team {
@@ -86,6 +86,7 @@ html, body {
 }
 .index .featured-team h5 {
     margin-top: 0;
+    font-weight: bold;
 }
 
 .btn.index-cta {
