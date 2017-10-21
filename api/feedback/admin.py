@@ -21,8 +21,8 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = (
         'player',
         'get_type',
-        'created',
         'comments',
+        'created',
     )
     list_filter = (
         'type',

@@ -179,6 +179,12 @@ class ApplicationStatusHistory(JoinableStatusHistory):
 class Application(JoinableAction, EmailMixin):
     status_history_class = ApplicationStatusHistory
 
+    def __str__(self):
+        return "Application for {} to join {}".format(
+            self.player,
+            self.team,
+        )
+
     def _get_previous_status_history(self):
         return self.applicationstatushistory_set.first()
 
@@ -271,6 +277,12 @@ class InvitationStatusHistory(JoinableStatusHistory):
 class Invitation(JoinableAction, EmailMixin):
     created_by = models.ForeignKey('players.Player', on_delete=models.CASCADE,
                                    related_name='invitations_created')
+
+    def __str__(self):
+        return "Invitation for {} to join {}".format(
+            self.player,
+            self.team,
+        )
 
     def _get_previous_status_history(self):
         return self.invitationstatushistory_set.first()
