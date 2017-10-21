@@ -9,7 +9,6 @@ import EditSettings from 'components/EditSettings'
 import EditTeam from 'components/teams/EditTeam'
 import FinishSteamSignIn from 'components/auth/FinishSteamSignIn'
 import Index from 'components/Index'
-import IndexRedesign from 'components/IndexRedesign'
 import LogIn from 'components/auth/LogIn'
 import LogOut from 'components/auth/LogOut'
 import ManageTeam from 'components/teams/ManageTeam'
@@ -20,9 +19,9 @@ import TeamProfile from 'components/teams/TeamProfile'
 import TeamSearch from 'components/TeamSearch'
 
 export default (
-    <Route path=''>
-        <Route path='/' component={Base}>
-            <IndexRoute component={Index} />
+    <Route path='/'>
+        <IndexRoute component={Index} />
+        <Route path='' component={Base}>
             <Route path='about' component={About} />
             <Route path='login-required' component={props => <LogIn alertRequired={true} {...props} />}/>
             <Route path='logout' component={LogOut}/>
@@ -42,9 +41,6 @@ export default (
                 </Route>
                 <Route path=':id' component={TeamProfile} />
             </Route>
-        </Route>
-        <Route path='/redesign'>
-            <IndexRoute component={IndexRedesign} />
         </Route>
         <Route path='finish-steam/:token' component={FinishSteamSignIn} />
     </Route>
