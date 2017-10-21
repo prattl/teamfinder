@@ -1,63 +1,80 @@
 import React, { Component } from 'react'
-import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
 import { Button, ButtonToolbar, Col, Grid, Navbar, Nav, NavItem, Row } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
+import { createStructuredSelector } from 'reselect'
 
+import { requestTeamSearch } from 'actions/teamSearch'
+import { withAllFixtures } from 'components/connectors/WithFixtures'
 import { RegionIcon, MMRIcon, PositionIcon } from 'utils/components/icons'
-
-import 'styles/redesign.css'
+import { teamSearchSelector } from 'utils/selectors'
+import { FixtureDisplay, TeamMMRDisplay } from 'utils'
 
 const steamSignInRedirectDomain = process.env.NODE_ENV === 'production' ?
     'https://dotateamfinder.com:8000' :
     'http://localhost:8000'
 
 const Links = () => (
-    <ul className='list-inline'>
-        <li><Link to='/teams'><span className='hidden-sm'>Find </span>Teams</Link></li>
-        <li><Link to='/players'><span className='hidden-sm'>Find </span>Players</Link></li>
-        <li><Link to='/about'>About</Link></li>
-        <li>
-            <Button className='index-cta' bsStyle='success'
-                    href={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
-                <i className='fa fa-steam'/>&nbsp;Sign in with steam
-            </Button>
-        </li>
-    </ul>
+    <ButtonToolbar>
+        <LinkContainer to='/teams'>
+            <Button bsStyle='link'><strong>Find Teams</strong></Button>
+        </LinkContainer>
+        <LinkContainer to='/players'>
+            <Button bsStyle='link'><strong>Find Players</strong></Button>
+        </LinkContainer>
+        <LinkContainer to='/about'>
+            <Button bsStyle='link'><strong>About</strong></Button>
+        </LinkContainer>
+        <Button className='index-cta' bsStyle='success'
+                href={`${steamSignInRedirectDomain}/login/steam/?next=/social-redirect`}>
+            <i className='fa fa-steam'/>&nbsp;Sign in with steam
+        </Button>
+    </ButtonToolbar>
 )
 
-const FeaturedTeam = ({ name, mmr, region, positions, color }) => (
-    <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
-        <Row>
-            <Col xs={4}>
-                <img className='img-responsive' src={'https://via.placeholder.com/75x75'} />
-            </Col>
-            <Col xs={8}>
-                <div>
-                    <h5>{name}</h5>
-                    <div style={{ marginBottom: '0.5rem' }}>
-                        <MMRIcon />&nbsp;{mmr}&nbsp;&nbsp;&nbsp;
-                        <RegionIcon />&nbsp;{region}
-                    </div>
+let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, available_positions, color }) => {
+    console.log('FeaturedTeam fixtures', fixtures)
+    return (
+        <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
+            <Row>
+                {logo_url && (
+                    <Col xs={4}>
+                        <img className='img-responsive' src={logo_url} role='presentation' alt='' />
+                    </Col>
+                )}
+
+                <Col xs={logo_url ? 8 : 12}>
                     <div>
-                        <PositionIcon />&nbsp;{positions.join(', ')}
+                        <h5>
+                            <Link to={`/teams/${id}`}>{name}</Link>
+                        </h5>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <MMRIcon fixedWidth />&nbsp;<TeamMMRDisplay mmr={mmr_average} />
+                        </div>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <RegionIcon fixedWidth />&nbsp;<FixtureDisplay value={regions} fixture={fixtures.regions}/>
+                        </div>
+                        <div>
+                            <PositionIcon fixedWidth />&nbsp;
+                            <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
+                        </div>
                     </div>
-                </div>
+                </Col>
+            </Row>
+        </div>
+    )
+}
+FeaturedTeam = withAllFixtures(FeaturedTeam)
 
-
-            </Col>
-        </Row>
-    </div>
-)
-
-const featuredTeams = [
-    { name: 'Natus Vincere', mmr: '7k', region: 'Europe', positions: [ 'Carry' ], color: '#eaff00' },
-    { name: 'Alliance', mmr: '6k', region: 'Europe', positions: [ 'Carry', 'Offlane' ], color: '#147e40' },
-    { name: 'Team Secret', mmr: '6k', region: 'Europe', positions: [ 'Carry' ], color: '#FFF' },
-    { name: 'Cloud 9', mmr: '7k', region: 'USA', positions: [ 'All positions' ], color: '#009ee6' },
+const featuredTeamColors = [
+    '#eaff00',
+    '#147e40',
+    '#FFF',
+    '#009ee6',
 ]
 
-const DesktopIndex = () => (
+const DesktopIndex = ({ teams }) => (
     <div className='index index-splash hidden-xs'>
         <div className='navigation clearfix'>
             <Grid>
@@ -95,9 +112,9 @@ const DesktopIndex = () => (
             <Grid>
                 <h4>Featured Teams</h4>
                 <Row>
-                    {featuredTeams.map(team => (
+                    {teams.map((team, i) => (
                         <Col md={3} sm={6} key={`featured-team-${team.name}`}>
-                            <FeaturedTeam {...team} />
+                            <FeaturedTeam {...team} color={featuredTeamColors[i]} />
                         </Col>
                     ))}
                 </Row>
@@ -106,7 +123,8 @@ const DesktopIndex = () => (
     </div>
 )
 
-const MobileIndex = () => (
+
+const MobileIndex = ({ teams }) => (
     <div className='index index-splash visible-xs'>
         <Navbar inverse collapseOnSelect>
             <Navbar.Header>
@@ -146,9 +164,9 @@ const MobileIndex = () => (
             <Grid>
                 <h4>Featured Teams</h4>
                 <Row>
-                    {featuredTeams.map(team => (
+                    {teams.map((team, i) => (
                         <Col md={3} sm={6} key={`featured-team-${team.name}`}>
-                            <FeaturedTeam {...team} />
+                            <FeaturedTeam {...team} color={featuredTeamColors[i]} />
                         </Col>
                     ))}
                 </Row>
@@ -158,14 +176,25 @@ const MobileIndex = () => (
 )
 
 class IndexRedesign extends Component {
+    componentDidMount() {
+        this.props.onLoad()
+    }
+
     render() {
+        const { teamSearch: { isLoading, lastUpdated, results } } = this.props
+        const teams = !isLoading && lastUpdated ? results.splice(0, 4) : []
         return (
             <div className='index-container'>
-                <DesktopIndex />
-                <MobileIndex />
+                <DesktopIndex teams={teams} />
+                <MobileIndex teams={teams} />
             </div>
         )
     }
 }
 
-export default IndexRedesign
+export default connect(
+    createStructuredSelector({
+        teamSearch: teamSearchSelector,
+    }),
+    { onLoad: () => requestTeamSearch({ keywords: '' }) }
+)(IndexRedesign)

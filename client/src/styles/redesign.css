@@ -86,6 +86,7 @@ html, body {
 }
 .index .featured-team h5 {
     margin-top: 0;
+    font-weight: bold;
 }
 
 .btn.index-cta {
