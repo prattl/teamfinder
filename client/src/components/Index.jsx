@@ -37,7 +37,7 @@ let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, availa
     if (regions && regions.length > 2) regions.splice(0, 2)
     if (available_positions && available_positions.length > 2) available_positions.splice(0, 2)
     return (
-        <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>device mana
+        <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
             <Row>
                 {logo_url && (
                     <Col xs={4}>
