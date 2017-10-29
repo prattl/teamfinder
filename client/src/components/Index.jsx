@@ -33,9 +33,13 @@ const Links = () => (
     </ButtonToolbar>
 )
 
+const hideOverflowStyle = {
+    textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'
+}
+
 let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, available_positions, color }) => {
-    if (regions && regions.length > 2) regions.splice(0, 2)
-    if (available_positions && available_positions.length > 2) available_positions.splice(0, 2)
+    // if (regions && regions.length > 2) regions.splice(0, 2)
+    // if (available_positions && available_positions.length > 2) available_positions.splice(0, 2)
     return (
         <div className='featured-team' style={{ borderLeft: `4px solid ${color}` }}>
             <Row>
@@ -46,18 +50,18 @@ let FeaturedTeam = ({ fixtures, id, logo_url, name, mmr_average, regions, availa
                 )}
                 <Col xs={logo_url ? 8 : 12}>
                     <div>
-                        <h5>
-                            <Link to={`/teams/${id}`}>{name}</Link>
+                        <h5 style={hideOverflowStyle}>
+                            <Link to={`/teams/${id}`} >{name}</Link>
                         </h5>
-                        <div style={{ marginBottom: '0.5rem' }}>
+                        <div style={{...hideOverflowStyle, marginBottom: '0.5rem'}}>
                             <MMRIcon fixedWidth />&nbsp;
                             <TeamMMRDisplay mmr={mmr_average} />
                         </div>
-                        <div style={{ marginBottom: '0.5rem' }}>
+                        <div style={{...hideOverflowStyle, marginBottom: '0.5rem'}}>
                             <RegionIcon fixedWidth />&nbsp;
                             <FixtureDisplay value={regions} fixture={fixtures.regions}/>
                         </div>
-                        <div>
+                        <div style={hideOverflowStyle}>
                             <PositionIcon fixedWidth />&nbsp;
                             <FixtureDisplay value={available_positions} fixture={fixtures.positions}/>
                         </div>
@@ -111,7 +115,7 @@ const DesktopIndex = ({ teams }) => (
             </div>
         </div>
         <div className='featured-teams'>
-            <Grid>
+            <Grid fluid style={{ maxWidth: '1440px', margin: '0 3rem' }}>
                 <h4>Featured Teams</h4>
                 <Row>
                     {teams.map((team, i) => (
