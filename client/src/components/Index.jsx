@@ -115,7 +115,7 @@ const DesktopIndex = ({ teams }) => (
             </div>
         </div>
         <div className='featured-teams'>
-            <Grid fluid style={{ maxWidth: '1440px', margin: '0 3rem' }}>
+            <Grid fluid style={{ maxWidth: '1440px' }}>
                 <h4>Featured Teams</h4>
                 <Row>
                     {teams.map((team, i) => (
