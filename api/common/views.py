@@ -26,6 +26,5 @@ def social_redirect(request):
         protocol='http' if settings.DEBUG else 'https',
         domain=Site.objects.get_current().domain,
         token=token.key
-
     )
     return redirect(return_url)
