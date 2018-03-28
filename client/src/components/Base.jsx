@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
 
 import AlertSystem from 'react-s-alert'
 import {
@@ -10,15 +11,16 @@ import {
     Row,
 } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { openFeedbackForm } from 'actions/feedback'
 import TopNav from 'components/layout/TopNav'
 import Footer from 'components/layout/Footer'
 import FeedbackButton from 'components/feedback/FeedbackButton'
 import FeedbackModal from 'components/feedback/FeedbackModal'
 
-const surveyLink = 'https://docs.google.com/forms/d/e/1FAIpQLSeIvtZYRnAiUo0Cq5jHK_z_RD53apj7VW-TaboFAUn0TTgzrg/viewform'
+const leagueSiteLink = 'https://wepickheroes.com/'
 
-class SurveyAlert extends Component {
-    storageKey = 'hideSurveyAlert'
+class LeagueAlert extends Component {
+    storageKey = 'hideWPHLeagueAlert'
     storageValue = '1'
 
     state = {
@@ -30,6 +32,11 @@ class SurveyAlert extends Component {
         this.setState({ show: false })
     }
 
+    handleFeedbackClick = e => {
+        e.preventDefault()
+        this.props.onClick()
+    }
+
     componentDidMount() {
         const hideSurveyAlert = localStorage.getItem(this.storageKey) === this.storageValue
         if (!hideSurveyAlert) {
@@ -39,23 +46,38 @@ class SurveyAlert extends Component {
 
     render() {
         const { show } = this.state
+        const linkProps = { href: leagueSiteLink, target: '_blank' }
+        const externalIcon = <i className='fa fa-external-link' />
+        const link = (
+            <strong><a {...linkProps} className='alert-link'>
+                We Pick Heroes&nbsp;{externalIcon}
+            </a></strong>
+        )
         return show && (
             <Row>
                 <Col md={8} mdOffset={2}>
                     <Alert onDismiss={this.handleDismiss} bsStyle='info' style={{ marginTop: '2rem' }}>
-                        <h4>We need your help!</h4>
-                        <p>
-                            We are planning out some big changes and would love to get your feedback. We've
-                            created a survey for amatuer Dota 2 players. It would be a huge help if you could fill it
-                            out. Thanks!
+                        <h4>Looking for an amateur Dota 2 league?</h4>
+                        <p style={{ marginTop: '2rem' }}>
+                            We are partnered with {link},
+                            a new competitive amateur Dota 2 league. If you are looking to bring your team to the
+                            next level of competition, head on over &mdash; registration is open!
                         </p>
-                        <p>
-                            <Button bsStyle='info' href={surveyLink}>Click here to take survey</Button>
+                        <p style={{ marginTop: '2rem' }} className='text-center'>
+                            <Button bsStyle='info' {...linkProps}>
+                                Go to wepickheroes.com&nbsp;{externalIcon}
+                            </Button>
                             <Button bsStyle='link' onClick={this.handleDismiss}>
                                 <span className='text-info'>
                                     Hide
                                 </span>
                             </Button>
+                        </p>
+                        <p style={{ marginTop: '2rem' }}>
+                            <small>Want to see your tournament or league listed here?{' '}
+                            <a href='' className='alert-link' onClick={this.handleFeedbackClick}>
+                                Let us know
+                            </a>.</small>
                         </p>
                     </Alert>
                 </Col>
@@ -64,9 +86,11 @@ class SurveyAlert extends Component {
     }
 }
 
+LeagueAlert = connect(null, {
+    onClick: openFeedbackForm
+})(LeagueAlert)
+
 class Base extends Component {
-
-
 
     render() {
         return (
@@ -80,8 +104,7 @@ class Base extends Component {
 
                 <div id='page-content'>
                     <Grid>
-                        <SurveyAlert />
-
+                        <LeagueAlert />
                         {this.props.children}
                     </Grid>
                 </div>
