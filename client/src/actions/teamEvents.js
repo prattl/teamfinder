@@ -29,7 +29,7 @@ const TEAM_EVENT_TYPES = {
 
 export const requestTeamInvitations = id => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_TEAM_INVITATIONS)(id))
-    const url = createUrl(`/api/invitations/?team=${id}`)
+    const url = createUrl(`/api/invitations/?team=${id}&limit=9999`)
     return GET(url, getState().auth.authToken).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving team invitations.')
         return dispatch(createAction(actions.RECEIVE_TEAM_INVITATIONS, null, metaGenerator)(payload))
@@ -38,7 +38,7 @@ export const requestTeamInvitations = id => (dispatch, getState) => {
 
 export const requestTeamApplications = id => (dispatch, getState) => {
     dispatch(createAction(actions.REQUEST_TEAM_APPLICATIONS)(id))
-    const url = createUrl(`/api/applications/?team=${id}`)
+    const url = createUrl(`/api/applications/?team=${id}&limit=9999`)
     return GET(url, getState().auth.authToken).then(response => response.json().then(json => {
         const payload = response.ok ? json : new Error('Error retrieving team applications.')
         return dispatch(createAction(actions.RECEIVE_TEAM_APPLICATIONS, null, metaGenerator)(payload))
