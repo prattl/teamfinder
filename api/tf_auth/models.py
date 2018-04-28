@@ -114,7 +114,11 @@ class TFUser(AbstractBaseUser, PermissionsMixin, UUIDModel):
 class EmailPreference(AbstractBaseModel):
     tag = models.IntegerField(choices=EmailTag.CHOICES)
     receive = models.BooleanField(default=True)
-    user_email_preferences = models.ForeignKey('tf_auth.UserEmailPreferences', related_name='email_preferences')
+    user_email_preferences = models.ForeignKey(
+        'tf_auth.UserEmailPreferences',
+        related_name='email_preferences',
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         unique_together = (
