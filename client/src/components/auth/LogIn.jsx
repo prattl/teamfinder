@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Alert, Col, Row } from 'react-bootstrap'
+
 import LogInForm from 'components/forms/LogInForm'
 
 class LogIn extends Component {

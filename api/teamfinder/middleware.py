@@ -22,7 +22,7 @@ class LastLoginMiddleware:
             except Token.DoesNotExist:
                 pass
 
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             User.objects.filter(pk=request.user.pk).update(last_login=timezone.now())
         response = self.get_response(request)
 

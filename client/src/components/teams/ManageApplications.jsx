@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
@@ -7,7 +8,7 @@ import { Badge, Button, ButtonToolbar, Modal, Table, Tab, Tabs } from 'react-boo
 
 import PlayerName from 'components/players/PlayerName'
 import { withPositions } from 'components/connectors/WithFixtures'
-import { requestTeamApplications, 
+import { requestTeamApplications,
     acceptApplication, rejectApplication,
     tryAcceptApplication, cancelAcceptApplication,
     tryRejectApplication, cancelRejectApplication,
@@ -71,7 +72,7 @@ class ManageApplications extends Component {
         const { tryRejectApplication } = this.props
         tryRejectApplication(applicationId)
     }
-    
+
     handleRejectCancelClick() {
         const { cancelRejectApplication } = this.props
         cancelRejectApplication()

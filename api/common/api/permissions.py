@@ -7,7 +7,7 @@ class IsStaffOrTargetPlayer(permissions.IsAuthenticatedOrReadOnly):
 
     def has_permission(self, request, view):
         return request.method in permissions.SAFE_METHODS or (
-            request.user.is_authenticated()
+            request.user.is_authenticated
         )
 
     def has_object_permission(self, request, view, obj):
@@ -16,7 +16,7 @@ class IsStaffOrTargetPlayer(permissions.IsAuthenticatedOrReadOnly):
             return False
         return (
             request.method in permissions.SAFE_METHODS or (
-                request.user.is_authenticated() and (
+                request.user.is_authenticated and (
                     request.user.is_staff or obj == getattr(request.user, 'player')
                 )
             )

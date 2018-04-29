@@ -24,7 +24,7 @@ class FixtureSerializer(serializers.ModelSerializer):
             'name',
             'url',
         )
-        readonly_fields = (
+        read_only_fields = (
             'id',
             'name',
             'url',
@@ -63,7 +63,7 @@ class PositionSerializer(serializers.ModelSerializer):
             'secondary',
             'url',
         )
-        readonly_fields = (
+        read_only_fields = (
             'id',
             'name',
             'secondary',
@@ -383,7 +383,7 @@ class EmailPreferenceSerializer(serializers.ModelSerializer):
             'tag',
             'receive',
         )
-        readonly_fields = (
+        read_only_fields = (
             'created',
             'updated',
             'tag',
@@ -438,7 +438,7 @@ class UserEmailPreferencesSerializer(serializers.ModelSerializer):
             'user',
             'email_preferences',
         )
-        readonly_fields = (
+        read_only_fields = (
             'id',
             'created',
             'updated',
