@@ -19,4 +19,5 @@ ${VENV_DIR}/bin/pip install --noinput -r ../requirements.txt
 ${VENV_DIR}/bin/python manage.py migrate --noinput
 ${VENV_DIR}/bin/python manage.py collectstatic --noinput
 cd ${CLIENT_DIR}
+yarn
 yarn run build
