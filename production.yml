@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "python api/manage.py migrate --noinput && python api/manage.py collectstatic --noinput && uwsgi --ini api/uwsgi.ini"
+    volumes:
+      - webv:/code
+      - sock:/var/sock
+    expose:
+      - "8000"
+    restart: always
+    depends_on:
+      - db
+  nginx:
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - webv:/code
+      - sock:/var/sock
+    links:
+      - web:web
+  db:
+    image: postgres
+
+volumes:
+  webv:
+  sock:
+
