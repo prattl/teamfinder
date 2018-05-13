@@ -7,6 +7,9 @@ from rest_framework import permissions, viewsets
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from .serializers import FlatPlayerSerializer, PlayerSerializer
+import logging
+logger = logging.getLogger(__name__)
+logger2 = logging.getLogger('django')
 
 
 class PlayerViewSet(viewsets.ModelViewSet):
@@ -27,6 +30,10 @@ class PlayerViewSet(viewsets.ModelViewSet):
         min_mmr = self.request.query_params.get('min_mmr')
         max_mmr = self.request.query_params.get('max_mmr')
         include_estimated_mmr = self.request.query_params.get('include_estimated_mmr')
+
+        logger.error('PLAYERS')
+        logger2.warning('PLAYERS')
+        print('PLAYERS')
 
         if keywords:
             queryset = queryset.filter(user__username__icontains=keywords)

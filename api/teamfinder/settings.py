@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
+import sys
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -193,5 +193,30 @@ SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player_data']
 SOCIAL_AUTH_CLEAN_USERNAMES = False
 SOCIAL_AUTH_SANITIZE_REDIRECTS = False
 SOCIAL_AUTH_PROTECTED_FIELDS = ('id', 'pk', 'email', )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[django] %(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 
 from .settings_local import *
