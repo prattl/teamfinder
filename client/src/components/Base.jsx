@@ -20,7 +20,8 @@ import FeedbackModal from 'components/feedback/FeedbackModal'
 const leagueSiteLink = 'https://wepickheroes.com/'
 
 class LeagueAlert extends Component {
-    storageKey = 'hideWPHLeagueAlert'
+    // storageKey = 'hideWPHLeagueAlert'
+    storageKey = 'hideWPHTournamentAlert'
     storageValue = '1'
 
     state = {
@@ -56,13 +57,29 @@ class LeagueAlert extends Component {
         return show && (
             <Row>
                 <Col md={8} mdOffset={2}>
-                    <Alert onDismiss={this.handleDismiss} bsStyle='info' style={{ marginTop: '2rem' }}>
-                        <h4>Looking for an amateur Dota 2 league?</h4>
+                    <Alert onDismiss={this.handleDismiss} bsStyle='info'
+                           style={{ marginTop: '2rem', marginBottom: '0.5rem' }}>
+                        <h4>Looking for an amateur Dota 2 tournament?</h4>
                         <p style={{ marginTop: '2rem' }}>
-                            We are partnered with {link},
-                            a new competitive amateur Dota 2 league. If you are looking to bring your team to the
-                            next level of competition, head on over &mdash; registration is open!
+                            The {link} June Amateur League is now open for registration!
                         </p>
+                        <ul style={{ marginTop: '1rem' }}>
+                            <li>$175 prize pool, double-elimination bracket</li>
+                            <li>
+                                Open qualifiers start on <strong>May 26</strong> at {' '}
+                                <strong>12:00pm PST</strong> / <strong>3:00pm EST</strong>
+                            </li>
+                            <li>Main event will go from <strong>June 2 - June 17</strong></li>
+                        </ul>
+                        <p style={{ marginTop: '1rem' }}>
+                            If you are looking to bring your team to the next level of competition, head on
+                            over &mdash; registration is open!
+                        </p>
+                        {/*<p style={{ marginTop: '2rem' }}>*/}
+                            {/*We are partnered with {link},*/}
+                            {/*a new competitive amateur Dota 2 league. If you are looking to bring your team to the*/}
+                            {/*next level of competition, head on over &mdash; registration is open!*/}
+                        {/*</p>*/}
                         <p style={{ marginTop: '2rem' }} className='text-center'>
                             <Button bsStyle='info' {...linkProps}>
                                 Go to wepickheroes.com&nbsp;{externalIcon}
@@ -73,13 +90,13 @@ class LeagueAlert extends Component {
                                 </span>
                             </Button>
                         </p>
-                        <p style={{ marginTop: '2rem' }}>
-                            <small>Want to see your tournament or league listed here?{' '}
-                            <a href='' className='alert-link' onClick={this.handleFeedbackClick}>
-                                Let us know
-                            </a>.</small>
-                        </p>
                     </Alert>
+                    <p className='text-muted' style={{ marginBottom: '0' }}>
+                        <small>Want to see your tournament or league listed here?{' '}
+                        <a href='' onClick={this.handleFeedbackClick}>
+                            Let us know
+                        </a>.</small>
+                    </p>
                 </Col>
             </Row>
         )
