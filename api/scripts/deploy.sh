@@ -14,7 +14,7 @@ CLIENT_DIR=${BASE_DIR}/client
 cd ${API_DIR}
 git fetch
 git checkout --force ${COMMIT}
-yes w | ${VENV_DIR}/bin/pip install -r ../requirements.txt
+${VENV_DIR}/bin/pip install --no-input -r ../requirements.txt
 ${VENV_DIR}/bin/python manage.py migrate --noinput
 ${VENV_DIR}/bin/python manage.py collectstatic --noinput
 cd ${CLIENT_DIR}
