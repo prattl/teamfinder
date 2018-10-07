@@ -37,8 +37,8 @@ class PlayerTeamSerializer(serializers.ModelSerializer):
 
 class BasePlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
-    steamid = serializers.CharField(source='user.steamid')
-    steam_friends = serializers.ListField(child=serializers.CharField(), source='user.steam_friends')
+    steamid = serializers.CharField(source='user.steamid', required=False)
+    steam_friends = serializers.ListField(child=serializers.CharField(), source='user.steam_friends', required=False)
     email = serializers.EmailField(source='user.email')
     username = serializers.CharField(source='user.username')
     avatar = serializers.CharField(source='user.avatar')
@@ -46,13 +46,14 @@ class BasePlayerSerializer(serializers.ModelSerializer):
     last_login = serializers.CharField(source='user.last_login')
 
     def update(self, instance, validated_data):
-        user = validated_data.pop('user')
+        user_data = validated_data.pop('user', None)
 
-        if user:
-            email = user.pop('email')
-            if email:
-                instance.user.email = email
-                instance.user.save()
+        if user_data:
+            if 'email' in user_data.keys():
+                instance.user.email = user_data.get('email')
+            if 'username' in user_data.keys():
+                instance.user.username = user_data.get('username')
+            instance.user.save()
 
         return super(BasePlayerSerializer, self).update(instance, validated_data)
 

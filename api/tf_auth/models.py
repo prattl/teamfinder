@@ -24,7 +24,7 @@ class TFUserManager(BaseUserManager):
         user = self.model(steamid=steamid, username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
-        Player.objects.create(user=user)
+        Player.objects.create(user=user, username=username)
         UserEmailPreferences.objects.create(user=user)
         return user
 
