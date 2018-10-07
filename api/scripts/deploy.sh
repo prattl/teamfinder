@@ -5,6 +5,8 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
+echo 'Debug'
+
 COMMIT=$1
 BASE_DIR=/home/ubuntu/teamfinder
 API_DIR=${BASE_DIR}/api
