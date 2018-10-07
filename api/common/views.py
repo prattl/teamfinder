@@ -16,7 +16,8 @@ def deploy(request):
     if deploy_secret_key != settings.SECRET_KEY:
         return HttpResponseBadRequest('Incorrect key.')
 
-    subprocess.Popen(['scripts/deploy.sh', commit], stdout=subprocess.PIPE)
+    subprocess.run(['scripts/deploy.sh', commit],
+                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return JsonResponse({'result': 'deploy started'})
 
 
