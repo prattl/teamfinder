@@ -205,7 +205,6 @@ class AuthenticatedRegionDetailViewTests(BaseTestCases.AuthenticatedTests,
     @classmethod
     def setUpTestData(cls):
         super(AuthenticatedRegionDetailViewTests, cls).setUpTestData()
-        # cls.region = Region.objects.first()
         cls.url = reverse('region-detail', (Region.objects.first().pk, ))
 
 
