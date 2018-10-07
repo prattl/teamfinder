@@ -3,12 +3,31 @@ version: '3'
 services:
   db:
     image: postgres
-  web:
-    build: .
-    command: python3 api/manage.py runserver 0.0.0.0:8000
+    env_file:
+      - ./api/docker/.db.env
+    restart: unless-stopped
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  api:
+    build:
+      context: .
+      dockerfile: ./api/docker/Dockerfile
+    # env_file:
+      # - ./api/.env/.env
     volumes:
       - .:/code
-    ports:
-      - "8000:8000"
     depends_on:
       - db
+    command: python3 api/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+    # build: .
+    # command: python3 api/manage.py runserver 0.0.0.0:8000
+    # volumes:
+    #   - .:/code
+    # ports:
+    #   - "8000:8000"
+    # depends_on:
+    #   - db

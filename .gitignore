@@ -1,5 +1,6 @@
 # Local database files
 *.sqlite3
+postgres-data/
 
 # IDE files
 .idea/
@@ -82,7 +83,7 @@ target/
 celerybeat-schedule
 
 # dotenv
-.env
+*.env
 
 # virtualenv
 venv/
