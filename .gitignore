@@ -4,6 +4,7 @@ postgres-data/
 
 # IDE files
 .idea/
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
