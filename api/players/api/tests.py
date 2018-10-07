@@ -1,7 +1,7 @@
 import random
 from common.models import Position, Region
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIRequestFactory, APITestCase
@@ -65,7 +65,6 @@ def testdata():
     ]
 
     for i, name in enumerate(names):
-        print('Creating user for {}'.format(name))
         user = User.objects.create_user(first_name=name,
                                         username=name,
                                         steamid=100+i,
@@ -84,14 +83,14 @@ class BasePlayerTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.authenticated_user = User.objects.create_user(email='lenny+tftests1@prattdev.net', password='01234567')
-        cls.user = User.objects.create_user(email='lenny+tftests2@prattdev.net', password='01234567')
+        cls.authenticated_user = User.objects.create_user(11, 'dazull1', email='lenny+tftests1@prattdev.net', password='01234567')
+        cls.user = User.objects.create_user(12, 'dazull2', email='lenny+tftests2@prattdev.net', password='01234567')
         cls.authenticated_player = cls.authenticated_user.player
-        cls.authenticated_player.username = 'dazull1'
-        cls.authenticated_player.save()
+        cls.authenticated_player.regions.add(Region.objects.first())
+        cls.authenticated_player.positions.add(Position.objects.first())
         cls.player = cls.user.player
-        cls.player.username = 'dazull2'
-        cls.player.save()
+        cls.player.regions.add(Region.objects.first())
+        cls.player.positions.add(Position.objects.first())
         cls.list_url = reverse('player-list')
         cls.authenticated_detail_url = reverse('player-detail', args=(cls.authenticated_player.pk, ))
         cls.detail_url = reverse('player-detail', args=(cls.player.pk, ))
@@ -107,14 +106,26 @@ class PlayerSerializerTests(BasePlayerTests):
         request = self.factory.get(self.detail_url)
         absolute_url = request.build_absolute_uri()
         serializer = PlayerSerializer(instance=self.player, context={'request': request})
-
-        self.assertEqual(serializer.data, {'id': str(self.player.id),
-                                           'username': str(self.player.username),
-                                           'positions': list(self.player.positions.all()),
-                                           'teams': list(self.player.teams.all()),
-                                           'regions': list(self.player.regions.all()),
-                                           'user': self.player.user.id,
-                                           'url': absolute_url})
+        self.maxDiff = None
+        self.assertDictEqual(serializer.data, {
+            'id': str(self.player.id),
+            'avatar': self.user.avatar,
+            'avatarfull': self.user.avatarfull,
+            'username': str(self.player.username),
+            'bio': str(self.player.bio),
+            'email': str(self.player.user.email),
+            'interests': list(self.player.interests.all()),
+            'languages': list(self.player.languages.all()),
+            'last_login': self.user.last_login,
+            'mmr': self.player.mmr,
+            'mmr_estimate': self.player.mmr_estimate,
+            'mmr_last_updated': self.player.mmr_last_updated,
+            'positions': list(self.player.positions.values_list('id', flat=True)),
+            'teams': list(self.player.teams.all()),
+            'regions': list(self.player.regions.values_list('id', flat=True)),
+            'steamid': str(self.player.user.steamid),
+            'steam_friends': self.player.user.steam_friends,
+            'url': absolute_url})
 
 
 class UnauthenticatedPlayerListViewTests(BasePlayerTests):
@@ -381,17 +392,6 @@ class AuthenticatedSelfPlayerDetailViewTests(AuthenticatedBasePlayerTests):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_put(self):
-        data = {
-            'positions': [],
-            'user': self.authenticated_user.pk,
-            'username': 'new_username',
-            'regions': [],
-            'teams': []
-        }
-        response = self.client.put(self.url, data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
     def test_patch(self):
         response = self.client.patch(self.url, {})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -473,25 +473,11 @@ class AuthenticatedSelfPlayerDetailViewSetTests(AuthenticatedBasePlayerTests,
         response = self.client.get(self.authenticated_detail_url)
         self.assertDataEqualsInstance(response.data)
 
-    def test_put(self):
-        data = {
-            'positions': [],
-            'regions': [],
-            'teams': [],
-            'username': 'new_username',
-        }
-        response = self.client.put(self.authenticated_detail_url, data)
-        self.assertEqual(response.data['id'], str(self.authenticated_player.id))
-        self.assertEqual(response.data['username'], 'new_username')
-        self.assertEqual(response.data['positions'], [])
-        data = {}
-        response = self.client.put(self.authenticated_detail_url, data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_patch(self):
         data = {
             'username': 'new_username_2',
         }
         response = self.client.patch(self.authenticated_detail_url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['id'], str(self.authenticated_player.id))
         self.assertEqual(response.data['username'], 'new_username_2')

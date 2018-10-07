@@ -11,7 +11,11 @@ class OPENDOTA:
 
 
 def _update_player_mmr(player_id):
-    player = Player.objects.get(pk=player_id)
+    try:
+        player = Player.objects.get(pk=player_id)
+    except Player.DoesNotExist:
+        return
+
     steamid32 = player.user.steamid32
 
     url = OPENDOTA.PLAYERS.format(account_id=steamid32)

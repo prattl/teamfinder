@@ -1,7 +1,7 @@
 import random
 from common.models import Position, Region, TeamMember
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from players.models import Player
 from teams.models import Team
 from rest_framework import status
@@ -41,14 +41,10 @@ class BaseTeamTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.user = User.objects.create_user(email='lenny+tftests@prattdev.net', password='01234567')
+        cls.user = User.objects.create_user(11, 'dazull', email='lenny+tftests@prattdev.net', password='01234567')
         cls.player = cls.user.player
-        cls.player.username = 'dazull'
-        cls.player.save()
-        cls.owner = User.objects.create_user(email='lenny+tftests2@prattdev.net', password='01234567')
+        cls.owner = User.objects.create_user(12, 'dazull2', email='lenny+tftests2@prattdev.net', password='01234567')
         cls.owner_player = cls.owner.player
-        cls.owner.username = 'dazull2'
-        cls.owner.save()
         cls.team = Team.objects.create(name='Team 123', captain=cls.owner_player, creator=cls.owner_player)
         cls.list_url = reverse('team-list')
         cls.detail_url = reverse('team-detail', args=(cls.team.pk, ))
@@ -170,7 +166,8 @@ class AuthenticatedTeamListViewTests(AuthenticatedBaseTeamTests):
 
     def test_post(self):
         response = self.client.post(self.url)
-        self.assertTrue(200 <= response.status_code < 300)
+        # This method should be allowed but will result in a 400 when no data is supplied
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_put(self):
         response = self.client.put(self.url)

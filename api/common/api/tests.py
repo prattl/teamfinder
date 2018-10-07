@@ -49,7 +49,7 @@ class CommonApiSerializerTests(APITestCase):
                                            'url': absolute_url})
 
     def test_MembershipSerializer(self):
-        user = TFUser.objects.create_user('lenny+tftests@prattdev.net', '12345678')
+        user = TFUser.objects.create_user(11, 'admin', 'lenny+tftests@prattdev.net', '12345678')
         player = user.player
         team = Team.objects.create(name='team')
         member = TeamMember.objects.create(player=player, team=team)
@@ -76,7 +76,7 @@ class BaseTestCases:
         @classmethod
         def setUpTestData(cls):
             super(BaseTestCases.AuthenticatedTests, cls).setUpTestData()
-            cls.user = User.objects.create_user('lenny+tftests@prattdev.net', '01234567')
+            cls.user = User.objects.create_user(11, 'admin', 'lenny+tftests@prattdev.net', '01234567')
             token, _ = Token.objects.get_or_create(user=cls.user)
             cls.token = token
 
@@ -165,7 +165,11 @@ class UnauthenticatedPositionListViewTests(CommonModelTests.UnauthenticatedListV
 
 
 class UnauthenticatedPositionDetailViewTests(CommonModelTests.UnauthenticatedDetailViewTests):
-    url = reverse('position-detail', (Position.objects.first().pk, ))
+
+    @classmethod
+    def setUpTestData(cls):
+        super(UnauthenticatedPositionDetailViewTests, cls).setUpTestData()
+        cls.url = reverse('position-detail', (Position.objects.first().pk, ))
 
 
 class UnauthenticatedRegionListViewTests(CommonModelTests.UnauthenticatedListViewTests):
@@ -173,7 +177,11 @@ class UnauthenticatedRegionListViewTests(CommonModelTests.UnauthenticatedListVie
 
 
 class UnauthenticatedRegionDetailViewTests(CommonModelTests.UnauthenticatedDetailViewTests):
-    url = reverse('region-detail', (Region.objects.first().pk, ))
+
+    @classmethod
+    def setUpTestData(cls):
+        super(UnauthenticatedRegionDetailViewTests, cls).setUpTestData()
+        cls.url = reverse('region-detail', (Region.objects.first().pk, ))
 
 
 class AuthenticatedPositionListViewTests(BaseTestCases.AuthenticatedTests,
@@ -193,7 +201,11 @@ class AuthenticatedRegionListViewTests(BaseTestCases.AuthenticatedTests,
 
 class AuthenticatedRegionDetailViewTests(BaseTestCases.AuthenticatedTests,
                                          CommonModelTests.UnauthenticatedDetailViewTests):
-    url = reverse('region-detail', (Region.objects.first().pk, ))
+
+    @classmethod
+    def setUpTestData(cls):
+        super(AuthenticatedRegionDetailViewTests, cls).setUpTestData()
+        cls.url = reverse('region-detail', (Region.objects.first().pk, ))
 
 
 # Viewset test cases
@@ -215,8 +227,12 @@ class UnauthenticatedRegionListViewSetTests(APITestCase):
 
 
 class UnauthenticatedRegionDetailViewSetTests(APITestCase):
-    region = Region.objects.first()
-    url = reverse('region-detail', (region.pk, ))
+
+    @classmethod
+    def setUpTestData(cls):
+        super(UnauthenticatedRegionDetailViewSetTests, cls).setUpTestData()
+        cls.region = Region.objects.first()
+        cls.url = reverse('region-detail', (cls.region.pk, ))
 
     def assertDataEqualsInstance(self, data):
         self.assertEqual(data['id'], str(self.region.id))
@@ -254,8 +270,12 @@ class UnauthenticatedPositionListViewSetTests(APITestCase):
 
 
 class UnauthenticatedPositionDetailViewSetTests(APITestCase):
-    position = Position.objects.first()
-    url = reverse('position-detail', (position.pk, ))
+
+    @classmethod
+    def setUpTestData(cls):
+        super(UnauthenticatedPositionDetailViewSetTests, cls).setUpTestData()
+        cls.position = Position.objects.first()
+        cls.url = reverse('position-detail', (cls.position.pk, ))
 
     def assertDataEqualsInstance(self, data):
         self.assertEqual(data['id'], str(self.position.id))

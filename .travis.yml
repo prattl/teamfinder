@@ -10,9 +10,10 @@ before_script:
   - psql -c 'create user teamfinder with CREATEDB;' -U postgres
   - psql -c 'create database teamfinder owner teamfinder;' -U postgres
   - echo "SECRET_KEY = 'foo'" > api/teamfinder/settings_local.py
-  - python api/manage.py migrate
+  - cd api
+  - python manage.py migrate
 script:
-  - python api/manage.py test -v 2
+  - python manage.py test -v 2
 deploy:
   - provider: script
     script: api/scripts/start_deploy.sh

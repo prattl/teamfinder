@@ -26,7 +26,7 @@ class ModelTests(TestCase):
         self.assertAbstractModelSaveRaises(instance)
 
     def test_Region(self):
-        self.assertEqual(Region.objects.count(), 12)
+        self.assertEqual(Region.objects.count(), 16)
         self.assertTrue(Region.objects.first().name < Region.objects.last().name)
         region = Region.objects.first()
         self.assertTrue(type(region).__name__ in repr(region))
@@ -35,7 +35,7 @@ class ModelTests(TestCase):
 
     def test_Position(self):
         self.assertEqual(Position.objects.count(), 8)
-        self.assertEqual(Position.objects.primary().count(), 6)
+        self.assertEqual(Position.objects.primary().count(), 5)
         self.assertEqual(Position.objects.secondary().count(), 3)
         self.assertTrue(Position.objects.first().name < Position.objects.last().name)
         primary_position = Position.objects.primary().first()
@@ -46,10 +46,8 @@ class ModelTests(TestCase):
         self.assertTrue('secondary' in repr(secondary_position))
 
     def test_TeamMember(self):
-        user = User.objects.create_user(email='lenny+tftests@prattdev.net', password='012345678')
+        user = User.objects.create_user(11, 'admin', email='lenny+tftests@prattdev.net', password='012345678')
         player = user.player
-        player.username = 'testuser'
-        player.save()
         team = Team.objects.create(name='Test Team')
         position = Position.objects.first()
         team_member = TeamMember.objects.create(player=player, team=team, position=position)
