@@ -16,7 +16,7 @@ script:
   - python manage.py test -v 2
 deploy:
   - provider: script
-    script: api/scripts/start_deploy.sh
+    script: scripts/start_deploy.sh
     on:
       branch: master
 
