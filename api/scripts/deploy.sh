@@ -5,8 +5,6 @@ if [[ $# -eq 0 ]] ; then
     exit 0
 fi
 
-echo 'Debug'
-
 COMMIT=$1
 BASE_DIR=/home/ubuntu/teamfinder
 API_DIR=${BASE_DIR}/api
@@ -20,7 +18,5 @@ ${VENV_DIR}/bin/pip install --no-input -r ../requirements.txt
 ${VENV_DIR}/bin/python manage.py migrate --noinput
 ${VENV_DIR}/bin/python manage.py collectstatic --noinput
 cd ${CLIENT_DIR}
-which node
-node --version
 yarn
 yarn build
