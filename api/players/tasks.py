@@ -1,6 +1,7 @@
 import requests
 from threading import Thread
 
+from django.db import connection
 from django.utils import timezone
 
 from .models import Player
@@ -32,6 +33,8 @@ def _update_player_mmr(player_id):
 
     player.mmr_last_updated = timezone.now()
     player.save()
+
+    connection.close()
 
 
 def update_player_mmr(player_id):
