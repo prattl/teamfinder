@@ -22,7 +22,7 @@ const RecentUpdates = () => (
     <ul className='list-unstyled' style={{ marginLeft: '2rem' }}>
         <FeatureListItem complete={true}>Sign in with Steam</FeatureListItem>
         <FeatureListItem complete={true}>Email notifications</FeatureListItem>
-        <FeatureListItem complete={true}>Add Friend and View Steam Profile Links added</FeatureListItem>
+        <FeatureListItem complete={true}>View Steam Profile Link added</FeatureListItem>
         <FeatureListItem complete={true} extra={<span>(thanks {openDotaLink}!)</span>}>
             Confirm MMR
         </FeatureListItem>

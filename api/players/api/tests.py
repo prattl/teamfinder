@@ -124,7 +124,7 @@ class PlayerSerializerTests(BasePlayerTests):
             'teams': list(self.player.teams.all()),
             'regions': list(self.player.regions.values_list('id', flat=True)),
             'steamid': str(self.player.user.steamid),
-            'steam_friends': self.player.user.steam_friends,
+            # 'steam_friends': self.player.user.steam_friends,
             'url': absolute_url})
 
 

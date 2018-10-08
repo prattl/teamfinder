@@ -23,76 +23,11 @@ const FixtureRow = ({ label, children }) => (
     </Row>
 )
 
-const FriendButton = ({ friends, steamId, ownSteamId, onClick }) => {
-    let disabled = false
-    let iconName = 'steam'
-    let buttonText = 'Add friend on Steam'
-
-    if (ownSteamId === steamId) {
-        disabled = true
-    } else if (friends && friends.includes(steamId)) {
-        disabled = true
-        iconName = 'check'
-        buttonText = 'Already friends'
-    }
-
-    return (
-        <Button bsStyle='default' href={`steam://friends/add/${steamId}/`}
-                disabled={disabled} onClick={onClick}>
-            <i className={`fa fa-${iconName}`}/>&nbsp;{buttonText}
-        </Button>
-    )
-}
-
-const FriendAddedModal = ({ show, onClose, playerName }) => (
-    <Modal show={show} onHide={onClose} backdrop='static'>
-        <Modal.Header closeButton>
-            <Modal.Title>Friend Request Sent</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <p>
-                If you have Steam installed, a friend request has been sent
-                to {playerName}. <a href='steam://open/friends/'>Click here</a> to open your Steam friends to
-                view the invitation.
-            </p>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button bsStyle='success' onClick={onClose}>Ok</Button>
-        </Modal.Footer>
-    </Modal>
-)
-
 class PlayerProfile extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            addedFriend: false,
-            showAddedModal: false,
-        }
-    }
-
-    handleAddFriendClick(e) {
-        this.setState({
-            addedFriend: true,
-            showAddedModal: true,
-        })
-    }
-
-    handleFriendAddedOkClick(e) {
-        this.setState({
-            showAddedModal: false,
-        })
-    }
 
     render() {
         const { selectedPlayer: player, player: ownPlayer,
             fixtures: { interests, languages, regions, positions } } = this.props
-        const { addedFriend, showAddedModal } = this.state
-
-        if (addedFriend && ownPlayer.steam_friends && !ownPlayer.steam_friends.includes(player.steamid)) {
-            ownPlayer.steam_friends.push(player.steamid)
-        }
 
         return (
             <div>
@@ -100,9 +35,6 @@ class PlayerProfile extends Component {
                     <title>{`${player.username} - Player Profile | Dota 2 Team Finder`}</title>
                     <meta name="description" content={`View ${player.username}'s profile on Dota 2 team finder.`} />
                 </Helmet>
-                <FriendAddedModal show={showAddedModal}
-                                  playerName={player.username}
-                                  onClose={e => this.handleFriendAddedOkClick(e)} />
                 <h1>
                     Player Profile
                     {ownPlayer.id === player.id && (
@@ -122,12 +54,6 @@ class PlayerProfile extends Component {
                                    target='_blank'>
                                     View Steam Profile
                                 </a>
-                            </div>
-                            <div style={{ marginTop: '1rem' }}>
-                                <FriendButton friends={ownPlayer.steam_friends}
-                                              steamId={player.steamid}
-                                              ownSteamId={ownPlayer.steamid}
-                                              onClick={e => this.handleAddFriendClick(e)} />
                             </div>
                         </Col>
                         <Col xs={8} sm={9}>

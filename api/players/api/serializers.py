@@ -38,7 +38,7 @@ class PlayerTeamSerializer(serializers.ModelSerializer):
 class BasePlayerSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='player-detail')
     steamid = serializers.CharField(source='user.steamid', required=False)
-    steam_friends = serializers.ListField(child=serializers.CharField(), source='user.steam_friends', required=False)
+    # steam_friends = serializers.ListField(child=serializers.CharField(), source='user.steam_friends', required=False)
     email = serializers.EmailField(source='user.email')
     username = serializers.CharField(source='user.username')
     avatar = serializers.CharField(source='user.avatar')
@@ -76,7 +76,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'steamid',
-            'steam_friends',
+            # 'steam_friends',
             'username',
             'bio',
             'email',
@@ -96,7 +96,7 @@ class BasePlayerSerializer(serializers.ModelSerializer):
             'id',
             'url',
             'steamid',
-            'steam_friends',
+            # 'steam_friends',
             'username',
             'last_login',
             'avatar',

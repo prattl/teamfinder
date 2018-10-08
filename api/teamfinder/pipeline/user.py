@@ -8,7 +8,7 @@ FRIEND_URL = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key={k
 
 def create_user(strategy, details, backend, user=None, *args, **kwargs):
     if user:
-        request_user_friends(user)
+        # request_user_friends(user)
         return {'is_new': False}
 
     fields = dict((name, kwargs.get(name, details.get(name)))
@@ -18,7 +18,7 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         return
 
     new_user = strategy.create_user(**fields)
-    request_user_friends(new_user)
+    # request_user_friends(new_user)
     return {
         'is_new': True,
         'user': new_user
