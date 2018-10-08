@@ -1,17 +1,22 @@
-import { handleActions } from 'redux-actions'
-import actions from 'actions/feedback'
+import { handleActions } from "redux-actions";
+import actions from "actions/feedback";
 
 const initialState = {
-    feedbackFormOpen: false
-}
+  feedbackFormOpen: false
+};
 
-const feedback = handleActions({
+const feedback = handleActions(
+  {
     [actions.OPEN_FEEDBACK_FORM]: (state, action) => ({
-        ...state, feedbackFormOpen: true
+      ...state,
+      feedbackFormOpen: true
     }),
     [actions.CLOSE_FEEDBACK_FORM]: (state, action) => ({
-        ...state, feedbackFormOpen: false
+      ...state,
+      feedbackFormOpen: false
     })
-}, initialState)
+  },
+  initialState
+);
 
-export default feedback
+export default feedback;

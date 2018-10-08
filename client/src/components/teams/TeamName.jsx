@@ -1,22 +1,21 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-
-import { withTeam } from 'components/connectors/WithTeam'
+import { withTeam } from "components/connectors/WithTeam";
 
 class TeamName extends Component {
+  static propTypes = {
+    teamId: PropTypes.string.isRequired
+  };
 
-    static propTypes = {
-        teamId: PropTypes.string.isRequired
-    }
-
-    render() {
-        const { team: { team } } = this.props
-        return <span>{team && team.name}</span>
-    }
-
+  render() {
+    const {
+      team: { team }
+    } = this.props;
+    return <span>{team && team.name}</span>;
+  }
 }
 
-TeamName = withTeam(props => props.teamId)(TeamName)
+TeamName = withTeam(props => props.teamId)(TeamName);
 
-export default TeamName
+export default TeamName;

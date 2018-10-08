@@ -47,7 +47,8 @@ class LeagueAlert extends Component {
     const link = (
       <strong>
         <a {...linkProps} className="alert-link">
-          We Pick Heroes&nbsp;{externalIcon}
+          We Pick Heroes&nbsp;
+          {externalIcon}
         </a>
       </strong>
     );
@@ -85,7 +86,8 @@ class LeagueAlert extends Component {
               {/*</p>*/}
               <p style={{ marginTop: "2rem" }} className="text-center">
                 <Button bsStyle="info" {...linkProps}>
-                  Go to wepickheroes.com&nbsp;{externalIcon}
+                  Go to wepickheroes.com&nbsp;
+                  {externalIcon}
                 </Button>
                 <Button bsStyle="link" onClick={this.handleDismiss}>
                   <span className="text-info">Hide</span>
@@ -97,7 +99,8 @@ class LeagueAlert extends Component {
                 Want to see your tournament or league listed here?{" "}
                 <a href="" onClick={this.handleFeedbackClick}>
                   Let us know
-                </a>.
+                </a>
+                .
               </small>
             </p>
           </Col>

@@ -1,38 +1,41 @@
-import { handleActions } from 'redux-actions'
-import actions from 'actions/fixtures'
-import { arrayToObject } from 'utils'
+import { handleActions } from "redux-actions";
+import actions from "actions/fixtures";
+import { arrayToObject } from "utils";
 
 const initialFixtureState = endpoint => ({
-    items: {},
-    endpoint,
-    isLoading: false,
-    lastUpdated: null
-})
+  items: {},
+  endpoint,
+  isLoading: false,
+  lastUpdated: null
+});
 
 const initialState = {
-    interests: initialFixtureState('/api/interests/'),
-    languages: initialFixtureState('/api/languages/'),
-    positions: initialFixtureState('/api/positions/'),
-    regions: initialFixtureState('/api/regions/'),
-}
+  interests: initialFixtureState("/api/interests/"),
+  languages: initialFixtureState("/api/languages/"),
+  positions: initialFixtureState("/api/positions/"),
+  regions: initialFixtureState("/api/regions/")
+};
 
-const fixtures = handleActions({
+const fixtures = handleActions(
+  {
     [actions.REQUEST_FIXTURE]: (state, action) => ({
-        ...state,
-        [action.payload]: {
-            ...state[action.payload],
-            isLoading: true
-        }
+      ...state,
+      [action.payload]: {
+        ...state[action.payload],
+        isLoading: true
+      }
     }),
     [actions.RECEIVE_FIXTURE]: (state, action) => ({
-        ...state,
-        [action.payload.fixtureType]: {
-            ...state[action.payload.fixtureType],
-            items: arrayToObject(action.payload.json.results),
-            isLoading: false,
-            lastUpdated: action.meta.receivedAt
-        }
+      ...state,
+      [action.payload.fixtureType]: {
+        ...state[action.payload.fixtureType],
+        items: arrayToObject(action.payload.json.results),
+        isLoading: false,
+        lastUpdated: action.meta.receivedAt
+      }
     })
-}, initialState)
+  },
+  initialState
+);
 
-export default fixtures
+export default fixtures;

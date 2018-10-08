@@ -1,20 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import TeamSearchForm from 'components/forms/TeamSearchForm'
-import TeamSearchResults from 'components/teams/TeamSearchResults'
+import TeamSearchForm from "components/forms/TeamSearchForm";
+import TeamSearchResults from "components/teams/TeamSearchResults";
 
 class TeamSearch extends Component {
-
-    render() {
-        return (
-            <div>
-                <h1>Teams</h1>
-                <TeamSearchForm />
-                <TeamSearchResults />
-            </div>
-        )
-    }
-
+  render() {
+    return (
+      <div>
+        <h1>Teams</h1>
+        <TeamSearchForm />
+        <TeamSearchResults />
+      </div>
+    );
+  }
 }
 
-export default TeamSearch
+export default TeamSearch;

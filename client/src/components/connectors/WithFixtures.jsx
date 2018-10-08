@@ -1,34 +1,35 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
-import { requestAllFixturesIfNeeded } from 'actions/fixtures'
-import { fixturesSelector, positionsSelector } from 'utils/selectors'
+import { requestAllFixturesIfNeeded } from "actions/fixtures";
+import { fixturesSelector, positionsSelector } from "utils/selectors";
 
-const withFixtures = (selector) => (WrappedComponent) => {
-    class WithFixtures extends Component {
-
-        componentDidMount() {
-            this.props.onLoad()
-        }
-
-        render() {
-            return <WrappedComponent {...this.props} />
-        }
-
+const withFixtures = selector => WrappedComponent => {
+  class WithFixtures extends Component {
+    componentDidMount() {
+      this.props.onLoad();
     }
-    WithFixtures = connect(selector, { onLoad: requestAllFixturesIfNeeded })(WithFixtures)
-    return WithFixtures
-}
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  WithFixtures = connect(
+    selector,
+    { onLoad: requestAllFixturesIfNeeded }
+  )(WithFixtures);
+  return WithFixtures;
+};
 
 export const withAllFixtures = withFixtures(
-    createStructuredSelector({
-        fixtures: fixturesSelector,
-    })
-)
+  createStructuredSelector({
+    fixtures: fixturesSelector
+  })
+);
 
 export const withPositions = withFixtures(
-    createStructuredSelector({
-        positions: positionsSelector,
-    })
-)
+  createStructuredSelector({
+    positions: positionsSelector
+  })
+);

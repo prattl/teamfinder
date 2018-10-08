@@ -1,25 +1,24 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { setAuthTokenFromSteamSignIn } from 'actions/auth'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { setAuthTokenFromSteamSignIn } from "actions/auth";
 
 class FinishSteamSignIn extends Component {
+  componentDidMount() {
+    console.log("Finish steam mount");
+    const {
+      params: { token }
+    } = this.props;
+    this.props.onLoad(token);
+  }
 
-    componentDidMount() {
-        console.log('Finish steam mount')
-        const { params: { token } } = this.props
-        this.props.onLoad(token)
-    }
-
-    render() {
-        return (
-            <div>
-
-            </div>
-        )
-    }
-
+  render() {
+    return <div />;
+  }
 }
 
-FinishSteamSignIn = connect(null, { onLoad: setAuthTokenFromSteamSignIn })(FinishSteamSignIn)
+FinishSteamSignIn = connect(
+  null,
+  { onLoad: setAuthTokenFromSteamSignIn }
+)(FinishSteamSignIn);
 
-export default FinishSteamSignIn
+export default FinishSteamSignIn;
