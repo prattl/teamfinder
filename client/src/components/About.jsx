@@ -101,14 +101,14 @@ class Index extends Component {
             <h3>How it Works</h3>
             <p>
               Getting started is easy. Within minutes you can apply to join a
-              team, or create your own team and invite players. Here's how it
-              works:
+              {"team, or create your own team and invite players. Here's how "}
+              it works:
             </p>
             <ol>
               <li>Sign in with Steam</li>
               <li>Complete your player profile</li>
               <li>
-                If you're looking for a team, click{" "}
+                {"If you're looking for a team, click "}
                 <Link to="/teams">Find Teams</Link> and apply.
               </li>
               <li>
