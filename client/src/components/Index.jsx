@@ -79,7 +79,6 @@ let FeaturedTeam = ({
             <img
               className="img-responsive"
               src={encodeLogoUrl(logo_url)}
-              role="presentation"
               alt=""
             />
           </Col>
@@ -191,7 +190,7 @@ const MobileIndex = ({ teams }) => (
     <Navbar inverse collapseOnSelect>
       <Navbar.Header>
         <Navbar.Brand>
-          <a href="#">
+          <a href="/">
             <strong>
               Dota 2 Team Finder{" "}
               <sup>

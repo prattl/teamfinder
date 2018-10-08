@@ -23,7 +23,11 @@ const FeatureListItem = ({ children, complete = false, extra = null }) => (
   </li>
 );
 const openDotaLink = (
-  <a href="https://www.opendota.com/" target="_blank" rel="external">
+  <a
+    href="https://www.opendota.com/"
+    target="_blank"
+    rel="external noopener noreferrer"
+  >
     OpenDota
   </a>
 );

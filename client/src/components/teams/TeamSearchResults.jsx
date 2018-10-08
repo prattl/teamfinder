@@ -61,7 +61,7 @@ class TeamSearchResults extends PureComponent {
             Last updated{" "}
             {lastUpdated && <LastUpdated lastUpdated={lastUpdated} />}
             &nbsp; (
-            <a href="" onClick={this.handleRefreshClick}>
+            <a href="/teams" onClick={this.handleRefreshClick}>
               refresh
             </a>
             )

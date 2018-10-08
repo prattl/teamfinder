@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import moment from "moment";
 
 import { LinkContainer } from "react-router-bootstrap";
-import { Button, Col, Image, Modal, Row } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import { withAllFixtures } from "components/connectors/WithFixtures";
 import Bio from "components/utils";
 import { FixtureDisplay, MMRDisplay } from "utils";
@@ -67,6 +67,7 @@ class PlayerProfile extends Component {
                 <a
                   href={`http://steamcommunity.com/profiles/${player.steamid}`}
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   View Steam Profile
                 </a>
