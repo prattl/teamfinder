@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-jest": "^21.24.1",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^1.1.1",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
     "react-scripts": "2.0.4"
   },
   "dependencies": {
@@ -48,5 +55,16 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
 }

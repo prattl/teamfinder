@@ -1,10 +1,10 @@
-import { requestPlayerSearch } from 'actions/playerSearch'
-import { requestTeamSearch } from 'actions/teamSearch'
+import { requestPlayerSearch } from "actions/playerSearch";
+import { requestTeamSearch } from "actions/teamSearch";
 
 export const playerSubmit = (values, dispatch) => {
-    return dispatch(requestPlayerSearch(values))
-}
+  return dispatch(requestPlayerSearch(values));
+};
 
 export const teamSubmit = (values, dispatch) => {
-    return dispatch(requestTeamSearch(values))
-}
+  return dispatch(requestTeamSearch(values));
+};
