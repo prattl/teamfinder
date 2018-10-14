@@ -1,17 +1,12 @@
 language: python
 python:
-  - '3.6'
+  - '3.5'
 services:
   - postgresql
 addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
+  postgresql: "9.4"
 install: pip install -r requirements.txt
 before_script:
-  - psql --version
   - psql -c 'create user teamfinder with CREATEDB;' -U postgres
   - psql -c 'create database teamfinder owner teamfinder;' -U postgres
   - echo "SECRET_KEY = 'foo'" > api/teamfinder/settings_local.py
@@ -24,7 +19,4 @@ deploy:
     script: scripts/start_deploy.sh
     on:
       branch: master
-env:
-  global:
-  - PGPORT=5433
 
