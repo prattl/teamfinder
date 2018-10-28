@@ -13,7 +13,6 @@ from common.views import deploy, social_redirect
 
 router = routers.DefaultRouter()
 router.register(r'applications', common_views.ApplicationViewSet)
-# router.register(r'account', tf_auth_views.AccountView, base_name="account")
 router.register(r'feedback', feedback_views.FeedbackViewSet)
 router.register(r'interests', common_views.InterestViewSet)
 router.register(r'invitations', common_views.InvitationViewSet)
