@@ -17,7 +17,7 @@ const requireAuthentication = WrappedComponent => {
       this.checkAuthenticationAndRedirect(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
       this.checkAuthenticationAndRedirect(nextProps);
     }
 

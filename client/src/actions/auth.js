@@ -3,6 +3,7 @@ import keyMirror from "keymirror";
 import { browserHistory } from "react-router";
 import { createUrl, metaGenerator } from "utils";
 import { GET, POST } from "utils/api";
+import { DELETE } from "../utils/api";
 
 const actions = keyMirror({
   REQUEST_AUTH_STATUS: null,
@@ -114,3 +115,8 @@ export const signUp = credentials => (dispatch, getState) => {
       })
   );
 };
+
+export const deleteAccount = () => (dispatch, getState) =>
+  DELETE(createUrl("/api/account/"), getState().auth.authToken).then(
+    browserHistory.push("/logout")
+  );

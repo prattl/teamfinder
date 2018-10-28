@@ -9,8 +9,8 @@ class AccountView(APIView):
 
     def delete(self, request):
         if request.user.is_authenticated:
+            user = request.user
             logout(request)
-            print("Deleteing account", request.user)
-            # request.user.delete()
+            user.delete()
             return Response({}, status=status.HTTP_200_OK)
         return Response({}, status=status.HTTP_403_FORBIDDEN)
