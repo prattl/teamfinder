@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { Helmet } from "react-helmet";
 
+import DeleteAccount from "components/auth/DeleteAccount";
 import { withOwnPlayer } from "components/connectors/WithOwnPlayer";
-
 import requireAuthentication from "components/auth/AuthenticationRequired";
 import EmailPreferencesForm from "components/forms/EmailPreferencesForm";
 import { Loading } from "utils";
@@ -16,6 +16,7 @@ class EditSettings extends Component {
   render() {
     const {
       userEmailPreferences: { email_preferences },
+      authToken,
       receivedEmailPreferences,
       isLoading,
       lastUpdated
@@ -41,6 +42,8 @@ class EditSettings extends Component {
           <div>
             <h2>Email Preferences</h2>
             <EmailPreferencesForm initialValues={initialValues} />
+            <h2>Delete Account</h2>
+            <DeleteAccount authToken={authToken} />
           </div>
         ) : (
           <div>Error</div>

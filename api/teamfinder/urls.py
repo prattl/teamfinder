@@ -8,6 +8,7 @@ from common.api import views as common_views
 from feedback.api import views as feedback_views
 from players.api import views as player_views
 from teams.api import views as team_views
+from tf_auth import views as tf_auth_views
 from common.views import deploy, social_redirect
 
 router = routers.DefaultRouter()
@@ -27,6 +28,7 @@ router.register(r'user_email_preferences', common_views.UserEmailPreferencesView
 urlpatterns = [
     path('api/auth/', include('djoser.urls.authtoken')),
     path('api/', include(router.urls)),
+    path('api/account/', tf_auth_views.AccountView.as_view()),
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('deploy/', deploy),
