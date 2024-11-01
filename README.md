@@ -1,7 +1,7 @@
 # Dota Team Finder *alpha*
 [![Build Status](https://travis-ci.org/prattl/teamfinder.svg?branch=master)](https://travis-ci.org/prattl/teamfinder)
 
-This project contains the source code running the [Dota Team Finder website](http://dotateamfinder.com).
+This project contains the source code running the Dota Team Finder website (no longer available).
 
 ## Install (development)
 
